@@ -200,11 +200,11 @@ namespace eosiosystem {
    }
 
    void system_contract::voteproducer( const name& voter_name, const name& proxy, const std::vector<name>& producers ) {
-      if ( voter_name == "b1"_n ) {
-         require_auth("eosio"_n);
-      } else {
+      //if ( voter_name == "b1"_n ) {
+      //   require_auth("eosio"_n);
+      //} else {
          require_auth( voter_name );
-      }
+      //}
 
       vote_stake_updater( voter_name );
       update_votes( voter_name, proxy, producers, true );
