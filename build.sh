@@ -79,6 +79,6 @@ NC='\033[0m'
 CPU_CORES=$(getconf _NPROCESSORS_ONLN)
 mkdir -p build
 pushd build &> /dev/null
-cmake -DBUILD_TESTS=${BUILD_TESTS} ${SPRING_DIR_CMAKE_OPTION} ${CDT_DIR_CMAKE_OPTION} ../
+cmake ${CMAKE_OPTIONS} -DBUILD_TESTS=${BUILD_TESTS} ${SPRING_DIR_CMAKE_OPTION} ${CDT_DIR_CMAKE_OPTION} ../
 make -j $CPU_CORES
 popd &> /dev/null
