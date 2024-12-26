@@ -226,12 +226,8 @@ namespace eosiosystem {
    }
 
    void system_contract::voteproducer( const name& voter_name, const name& proxy, const std::vector<name>& producers ) {
-      if ( voter_name == "b1"_n ) {
-         require_auth("eosio"_n);
-      } else {
-         require_auth( voter_name );
-      }
 
+      require_auth( voter_name );
       vote_stake_updater( voter_name );
       update_votes( voter_name, proxy, producers, true );
    }
@@ -241,9 +237,9 @@ namespace eosiosystem {
       check( voter != _voters.end(), "no voter found" );
 
       int64_t new_staked = 0;
-      
+
       updaterex(voter_name);
-      
+
       // get rex bal
       auto rex_itr = _rexbalance.find( voter_name.value );
       if( rex_itr != _rexbalance.end() && rex_itr->rex_balance.amount > 0 ) {
@@ -263,7 +259,7 @@ namespace eosiosystem {
             av.staked = new_staked;
          });
       }
-      
+
       update_votes(voter_name, voter->proxy, voter->producers, true);
    } // voteupdate
 

@@ -1218,7 +1218,7 @@ namespace eosiosystem {
           */
          [[eosio::action]]
          void setrexmature(const std::optional<uint32_t> num_of_maturity_buckets, const std::optional<bool> sell_matured_rex, const std::optional<bool> buy_rex_to_savings );
-         
+
          /**
           * Donatetorex action, donates funds to REX, increases REX pool return buckets
           * Executes inline transfer from payer to system contract of tokens will be executed.
@@ -1700,16 +1700,6 @@ namespace eosiosystem {
          void execschedule();
 
          /**
-          * Facilitates the removal of vested staked tokens from an account, ensuring that these tokens are reallocated to the system's pool.
-          *
-          * @param account - the target account from which tokens are to be unvested.
-          * @param unvest_net_quantity - the amount of NET tokens to unvest.
-          * @param unvest_cpu_quantity - the amount of CPU tokens to unvest.
-          */
-         [[eosio::action]]
-         void unvest(const name account, const asset unvest_net_quantity, const asset unvest_cpu_quantity);
-
-         /**
           * Configure the `power` market. The market becomes available the first time this
           * action is invoked.
           */
@@ -1819,7 +1809,6 @@ namespace eosiosystem {
          using execschedule_action = eosio::action_wrapper<"execschedule"_n, &system_contract::execschedule>;
          using setschedule_action = eosio::action_wrapper<"setschedule"_n, &system_contract::setschedule>;
          using delschedule_action = eosio::action_wrapper<"delschedule"_n, &system_contract::delschedule>;
-         using unvest_action = eosio::action_wrapper<"unvest"_n, &system_contract::unvest>;
 
       private:
          //defined in eosio.system.cpp
