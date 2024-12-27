@@ -13,14 +13,14 @@ BOOST_FIXTURE_TEST_CASE( fees_with_rex, eosio_system_tester ) try {
    buyrex( alice, core_sym::from_string("10.0000"));
 
    // manual token transfer to fees account
-   const asset fees_before = get_balance( "eosio.fees" );
+   const asset fees_before = get_balance( "flon.fees" );
    const asset rex_before = get_balance( "eosio.rex" );
    const asset eosio_before = get_balance( "eosio" );
 
    const asset fee = core_sym::from_string("100.0000");
-   transfer( config::system_account_name, "eosio.fees"_n, fee, config::system_account_name );
+   transfer( config::system_account_name, "flon.fees"_n, fee, config::system_account_name );
 
-   const asset fees_after = get_balance( "eosio.fees" );
+   const asset fees_after = get_balance( "flon.fees" );
    const asset rex_after = get_balance( "eosio.rex" );
    const asset eosio_after = get_balance( "eosio" );
 
@@ -32,14 +32,14 @@ BOOST_FIXTURE_TEST_CASE( fees_with_rex, eosio_system_tester ) try {
 
 BOOST_FIXTURE_TEST_CASE( fees_without_rex, eosio_system_tester ) try {
    // manual token transfer to fees account
-   const asset fees_before = get_balance( "eosio.fees" );
+   const asset fees_before = get_balance( "flon.fees" );
    const asset rex_before = get_balance( "eosio.rex" );
    const asset eosio_before = get_balance( "eosio" );
 
    const asset fee = core_sym::from_string("100.0000");
-   transfer( config::system_account_name, "eosio.fees"_n, fee, config::system_account_name );
+   transfer( config::system_account_name, "flon.fees"_n, fee, config::system_account_name );
 
-   const asset fees_after = get_balance( "eosio.fees" );
+   const asset fees_after = get_balance( "flon.fees" );
    const asset rex_after = get_balance( "eosio.rex" );
    const asset eosio_after = get_balance( "eosio" );
 

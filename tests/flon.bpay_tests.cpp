@@ -7,7 +7,7 @@ BOOST_AUTO_TEST_SUITE(eosio_bpay_tests);
 account_name voter = "alice1111111"_n;
 account_name standby = "bp.standby"_n;
 account_name inactive = "bp.inactive"_n;
-account_name fees = "eosio.fees"_n;
+account_name fees = "flon.fees"_n;
 account_name bpay = "flon.bpay"_n;
 
 BOOST_FIXTURE_TEST_CASE( bpay_test, eosio_system_tester ) try {

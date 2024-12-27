@@ -24,7 +24,7 @@ public:
       produce_block();
 
       create_accounts({ "flon.token"_n, "eosio.ram"_n, "eosio.ramfee"_n, "eosio.stake"_n,
-               "flon.bpay"_n, "eosio.vpay"_n, "eosio.saving"_n, "eosio.names"_n, "eosio.rex"_n, "eosio.fees"_n });
+               "flon.bpay"_n, "eosio.vpay"_n, "eosio.saving"_n, "eosio.names"_n, "eosio.rex"_n, "flon.fees"_n });
 
 
       produce_blocks( 100 );
@@ -38,7 +38,7 @@ public:
          token_abi_ser.set_abi(abi, abi_serializer::create_yield_function(abi_serializer_max_time));
       }
 
-      set_code( "eosio.fees"_n, contracts::fees_wasm());
+      set_code( "flon.fees"_n, contracts::fees_wasm());
 
       set_code( "flon.bpay"_n, contracts::bpay_wasm());
       set_abi( "flon.bpay"_n, contracts::bpay_abi().data() );
@@ -84,7 +84,7 @@ public:
       create_account_with_resources( "bob111111111"_n, config::system_account_name, core_sym::from_string("0.4500"), false );
       create_account_with_resources( "carol1111111"_n, config::system_account_name, core_sym::from_string("1.0000"), false );
 
-      BOOST_REQUIRE_EQUAL( core_sym::from_string("1000000000.0000"), get_balance("eosio")  + get_balance("eosio.ramfee") + get_balance("eosio.stake") + get_balance("eosio.ram") + get_balance("eosio.fees") );
+      BOOST_REQUIRE_EQUAL( core_sym::from_string("1000000000.0000"), get_balance("eosio")  + get_balance("eosio.ramfee") + get_balance("eosio.stake") + get_balance("eosio.ram") + get_balance("flon.fees") );
    }
 
    enum class setup_level {
