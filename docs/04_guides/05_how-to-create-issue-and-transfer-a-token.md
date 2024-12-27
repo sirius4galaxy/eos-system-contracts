@@ -27,13 +27,13 @@ cd eos-system-contracts/contracts/flon.token
 | You may have to unlock your wallet first!
 
 ```shell
-cleos create account eosio flon.token EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
+cleos create account flon flon.token EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
 ```
 
 ## Step 3: Compile the Contract
 
 ```shell
-eosio-cpp -I include -o flon.token.wasm src/flon.token.cpp --abigen
+flon-cpp -I include -o flon.token.wasm src/flon.token.cpp --abigen
 ```
 
 ## Step 4: Deploy the Token Contract
@@ -49,8 +49,8 @@ Result should look similar to the one below:
 Reading WASM from ...
 Publishing contract...
 executed transaction: 69c68b1bd5d61a0cc146b11e89e11f02527f24e4b240731c4003ad1dc0c87c2c  9696 bytes  6290 us
-#         eosio <= eosio::setcode               {"account":"flon.token","vmtype":0,"vmversion":0,"code":"0061736d0100000001aa011c60037f7e7f0060047f...
-#         eosio <= eosio::setabi                {"account":"flon.token","abi":"0e656f73696f3a3a6162692f312e30000605636c6f73650002056f776e6572046e61...
+#         flon <= flon::setcode               {"account":"flon.token","vmtype":0,"vmversion":0,"code":"0061736d0100000001aa011c60037f7e7f0060047f...
+#         flon <= flon::setabi                {"account":"flon.token","abi":"0e656f73696f3a3a6162692f312e30000605636c6f73650002056f776e6572046e61...
 warning: transaction executed locally, but may not be confirmed by the network yet         ]
 ```
 
@@ -87,7 +87,7 @@ This command created a new token `NEWT` with a precision of 4 decimals and a max
 The issuer can issue new tokens to the issuer account in our case `flon`.
 
 ```sh
-cleos push action flon.token issue '[ "flon", "100.0000 NEWT", "memo" ]' -p eosio@active
+cleos push action flon.token issue '[ "flon", "100.0000 NEWT", "memo" ]' -p flon@active
 ```
 
 Result should look similar to the one below:
@@ -103,7 +103,7 @@ warning: transaction executed locally, but may not be confirmed by the network y
 Now that account `flon` has been issued tokens, transfer some of them to account `bob`.
 
 ```shell
-cleos push action flon.token transfer '[ "flon", "bob", "25.0000 NEWT", "m" ]' -p eosio@active
+cleos push action flon.token transfer '[ "flon", "bob", "25.0000 NEWT", "m" ]' -p flon@active
 ```
 
 Result should look similar to the one below:
@@ -111,7 +111,7 @@ Result should look similar to the one below:
 ```console
 executed transaction: 60d334850151cb95c35fe31ce2e8b536b51441c5fd4c3f2fea98edcc6d69f39d  128 bytes  497 us
 #   flon.token <= flon.token::transfer        {"from":"flon","to":"bob","quantity":"25.0000 NEWT","memo":"m"}
-#         eosio <= flon.token::transfer        {"from":"flon","to":"bob","quantity":"25.0000 NEWT","memo":"m"}
+#         flon <= flon.token::transfer        {"from":"flon","to":"bob","quantity":"25.0000 NEWT","memo":"m"}
 #           bob <= flon.token::transfer        {"from":"flon","to":"bob","quantity":"25.0000 NEWT","memo":"m"}
 warning: transaction executed locally, but may not be confirmed by the network yet         ]
 ```
@@ -128,10 +128,10 @@ Result:
 25.00 NEWT
 ```
 
-Check "eosio's" balance, notice that tokens were deducted from the account
+Check "flon's" balance, notice that tokens were deducted from the account
 
 ```shell
-cleos get currency balance flon.token eosio NEWT
+cleos get currency balance flon.token flon NEWT
 ```
 
 Result:

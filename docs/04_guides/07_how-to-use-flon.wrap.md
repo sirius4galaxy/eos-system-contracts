@@ -7,7 +7,7 @@ link_text: How to use flon.wrap
 
 The flon.wrap contract needs to be installed on a privileged account to function. It is recommended to use the account `flon.wrap`.
 
-First, the account `flon.wrap` needs to be created. Since it has the restricted `eosio.` prefix, only a privileged account can create this account. So this guide will use the `flon` account to create the `flon.wrap` account. On typical live blockchain configurations, the `flon` account can only be controlled by a supermajority of the current active block producers. So, this guide will use the `flon.msig` contract to help coordinate the approvals of the proposed transaction that creates the `flon.wrap` account.
+First, the account `flon.wrap` needs to be created. Since it has the restricted `flon.` prefix, only a privileged account can create this account. So this guide will use the `flon` account to create the `flon.wrap` account. On typical live blockchain configurations, the `flon` account can only be controlled by a supermajority of the current active block producers. So, this guide will use the `flon.msig` contract to help coordinate the approvals of the proposed transaction that creates the `flon.wrap` account.
 
 The `flon.wrap` account also needs to have sufficient RAM to host the contract and sufficient CPU and network bandwidth to deploy the contract. This means that the creator of the account (`flon`) needs to gift sufficient RAM to the new account and delegate (preferably with transfer) sufficient bandwidth to the new account. To pull this off the `flon` account needs to have enough of the core system token (the `EOS` token will be used within this guide) in its liquid balance. So prior to continuing with the next steps of this guide, the active block producers of the chain who are coordinating this process need to ensure that a sufficient amount of core system tokens that they are authorized to spend is placed in the liquid balance of the `flon` account.
 
@@ -25,7 +25,7 @@ Three unsigned transactions will be generated using cleos and then the actions w
 
 First, generate a transaction to capture the necessary actions involved in creating a new account:
 ```sh
-cleos system newaccount -s -j -d --transfer --stake-net "1.000 EOS" --stake-cpu "1.000 EOS" --buy-ram-kbytes 50 eosio flon.wrap EOS8MMUW11TAdTDxqdSwSqJodefSoZbFhcprndomgLi9MeR2o8MT4 > generated_account_creation_trx.json
+cleos system newaccount -s -j -d --transfer --stake-net "1.000 EOS" --stake-cpu "1.000 EOS" --buy-ram-kbytes 50 flon flon.wrap EOS8MMUW11TAdTDxqdSwSqJodefSoZbFhcprndomgLi9MeR2o8MT4 > generated_account_creation_trx.json
 ```
 ```console
 726964ms thread-0   main.cpp:429                  create_action        ] result: {"binargs":"0000000000ea305500004d1a03ea305500c80000"} arg: {"code":"flon","action":"buyrambytes","args":{"payer":"flon","receiver":"flon.wrap","bytes":51200}}
@@ -79,9 +79,9 @@ cat generated_account_creation_trx.json
 ```
 
 Adjust the amount of delegated tokens and the amount of RAM bytes to gift as necessary.
-The actual public key used is not important since that data is only encoded into the `eosio::newaccount` action which will be replaced soon anyway.
+The actual public key used is not important since that data is only encoded into the `flon::newaccount` action which will be replaced soon anyway.
 
-Second, create a file (e.g. newaccount_payload.json) with the JSON payload for the real `eosio::newaccount` action. It should look like:
+Second, create a file (e.g. newaccount_payload.json) with the JSON payload for the real `flon::newaccount` action. It should look like:
 ```sh
 cat newaccount_payload.json
 ```
@@ -110,9 +110,9 @@ cat newaccount_payload.json
 }
 ```
 
-Third, generate a transaction containing the actual `eosio::newaccount` action that will be used in the final transaction:
+Third, generate a transaction containing the actual `flon::newaccount` action that will be used in the final transaction:
 ```sh
-cleos push action -s -j -d eosio newaccount newaccount_payload.json -p eosio > generated_newaccount_trx.json
+cleos push action -s -j -d flon newaccount newaccount_payload.json -p flon > generated_newaccount_trx.json
 cat generated_newaccount_trx.json
 ```
 ```json
@@ -141,9 +141,9 @@ cat generated_newaccount_trx.json
 }
 ```
 
-Fourth, generate a transaction containing the `eosio::setpriv` action which will make the `flon.wrap` account privileged:
+Fourth, generate a transaction containing the `flon::setpriv` action which will make the `flon.wrap` account privileged:
 ```sh
-cleos push action -s -j -d eosio setpriv '{"account": "flon.wrap", "is_priv": 1}' -p eosio > generated_setpriv_trx.json
+cleos push action -s -j -d flon setpriv '{"account": "flon.wrap", "is_priv": 1}' -p flon > generated_setpriv_trx.json
 cat generated_setpriv_trx.json
 ```
 ```json
@@ -406,8 +406,8 @@ cleos get account flon.wrap
 ```console
 privileged: true
 permissions:
-     owner     1:    1 eosio@active,
-        active     1:    1 eosio@active,
+     owner     1:    1 flon@active,
+        active     1:    1 flon@active,
 memory:
      quota:     49.74 KiB    used:     3.33 KiB
 
@@ -895,9 +895,9 @@ cat wrap_update_alice_owner_trx_to_review.json
 }
 ```
 
-The approvers should go through the human-readable transaction output and make sure everything looks fine. However, due to a current limitation of nodeos/cleos, the JSONification of action payload data does not occur recursively. So while both the `hex_data` and the human-readable JSON `data` of the payload of the `flon.wrap::exec` action is available in the output of the `cleos multisig review` command, only the hex data is available of the payload of the inner `eosio::updateauth` action. So it is not clear what the `updateauth` will actually do.
+The approvers should go through the human-readable transaction output and make sure everything looks fine. However, due to a current limitation of nodeos/cleos, the JSONification of action payload data does not occur recursively. So while both the `hex_data` and the human-readable JSON `data` of the payload of the `flon.wrap::exec` action is available in the output of the `cleos multisig review` command, only the hex data is available of the payload of the inner `flon::updateauth` action. So it is not clear what the `updateauth` will actually do.
 
-Furthermore, even if this usability issue was fixed in nodeos/cleos, there will still be cases where there is no sensible human-readable version of an action data payload within a transaction. An example of this is the proposed transaction in sub-section 2.2.3 which used the `eosio::setcode` action to set the contract code of the `flon.wrap` account. The best thing to do in such situations is for the reviewer to compare the proposed transaction to one generated by them through a process they trust.
+Furthermore, even if this usability issue was fixed in nodeos/cleos, there will still be cases where there is no sensible human-readable version of an action data payload within a transaction. An example of this is the proposed transaction in sub-section 2.2.3 which used the `flon::setcode` action to set the contract code of the `flon.wrap` account. The best thing to do in such situations is for the reviewer to compare the proposed transaction to one generated by them through a process they trust.
 
 Since each block producer generated a transaction in sub-section 3.1.1 (stored in the file wrap_update_alice_owner_trx.json) which should be identical to the transaction proposed by the lead block producer, they can each simply check to see if the two transactions are identical:
 ```sh
@@ -947,7 +947,7 @@ cleos get account alice
 ```
 ```console
 permissions:
-     owner     1:    1 eosio@active,
+     owner     1:    1 flon@active,
         active     1:    1 EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
 memory:
      quota:     49.74 KiB    used:     3.348 KiB

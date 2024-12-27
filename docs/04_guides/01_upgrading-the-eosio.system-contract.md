@@ -7,7 +7,7 @@ link_text: Upgrading the system contract
 
 Cleos currently provides tools to propose an action with the flon.msig contract, but it does not provide an easy interface to propose a custom transaction.
 
-So, at the moment it is difficult to propose an atomic transaction with multiple actions (for example `eosio::setcode` followed by `eosio::setabi`).
+So, at the moment it is difficult to propose an atomic transaction with multiple actions (for example `flon::setcode` followed by `flon::setabi`).
 
 The advantage of the flon.msig method is that it makes coordination much easier and does not place strict time limits (less than 9 hours) on signature collection.
 
@@ -22,7 +22,7 @@ Each of the top 21 block producers should do the following:
 1. Get current system contract for later comparison (actual hash and ABI on the main-net blockchain will be different):
 
 ```sh
-cleos get code -c original_system_contract.wast -a original_system_contract.abi eosio
+cleos get code -c original_system_contract.wast -a original_system_contract.abi flon
 ```
 ```console
 code hash: cc0ffc30150a07c487d8247a484ce1caf9c95779521d8c230040c2cb0e2a3a60
@@ -33,7 +33,7 @@ saving abi to original_system_contract.abi
 2. Generate the unsigned transaction which upgrades the system contract:
 
 ```sh
-cleos set contract -s -j -d eosio contracts/flon.system | tail -n +4 > upgrade_system_contract_trx.json
+cleos set contract -s -j -d flon contracts/flon.system | tail -n +4 > upgrade_system_contract_trx.json
 ```
 
 The first few lines of the generated file should be something similar to (except with very different numbers for `expiration`, `ref_block_num`, and `ref_block_prefix`):
@@ -204,7 +204,7 @@ That means the expiration time of the signed transaction has passed and this ent
 9. Assuming the transaction successfully executes, everyone can then verify that the new contract is in place:
 
 ```sh
-cleos get code -c new_system_contract.wast -a new_system_contract.abi eosio
+cleos get code -c new_system_contract.wast -a new_system_contract.abi flon
 ```
 ```console
 code hash: 9fd195bc5a26d3cd82ae76b70bb71d8ce83dcfeb0e5e27e4e740998fdb7b98f8
