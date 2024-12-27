@@ -2,7 +2,7 @@
 title: System contracts, system accounts, privileged accounts
 ---
 
-At the genesis of the EOS blockchain, there was only one account present, `eosio` account, which was and still is the main `system account`. During the EOS blockchain bootstrap process other `system account`s, were created by `eosio` account, which control specific actions of the `system contract`s. You can see them listed in the [About System Contract](../index.md#system-contracts-defined-in-eos-system-contracts) section.
+At the genesis of the EOS blockchain, there was only one account present, `flon` account, which was and still is the main `system account`. During the EOS blockchain bootstrap process other `system account`s, were created by `flon` account, which control specific actions of the `system contract`s. You can see them listed in the [About System Contract](../index.md#system-contracts-defined-in-eos-system-contracts) section.
 
 __Note__ the terms `system contract` and `system account`. `Privileged accounts` are accounts which can execute a transaction while skipping the standard authorization check. To ensure that this is not a security hole, the permission authority over these accounts is granted to `eosio.prods` system account.
 

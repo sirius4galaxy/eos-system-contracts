@@ -84,7 +84,7 @@ This command created a new token `NEWT` with a precision of 4 decimals and a max
 
 ## Step 6: Issue Tokens
 
-The issuer can issue new tokens to the issuer account in our case `eosio`.
+The issuer can issue new tokens to the issuer account in our case `flon`.
 
 ```sh
 cleos push action flon.token issue '[ "eosio", "100.0000 NEWT", "memo" ]' -p eosio@active
@@ -100,7 +100,7 @@ warning: transaction executed locally, but may not be confirmed by the network y
 
 ## Step 7: Transfer Tokens
 
-Now that account `eosio` has been issued tokens, transfer some of them to account `bob`.
+Now that account `flon` has been issued tokens, transfer some of them to account `bob`.
 
 ```shell
 cleos push action flon.token transfer '[ "eosio", "bob", "25.0000 NEWT", "m" ]' -p eosio@active
