@@ -19,20 +19,20 @@ using mvo = fc::mutable_variant_object;
 class eosio_msig_tester : public tester {
 public:
    eosio_msig_tester() {
-      create_accounts( { "eosio.msig"_n, "eosio.stake"_n, "eosio.ram"_n, "eosio.ramfee"_n, "eosio.fees"_n, "alice"_n, "bob"_n, "carol"_n } );
+      create_accounts( { "flon.msig"_n, "eosio.stake"_n, "eosio.ram"_n, "eosio.ramfee"_n, "eosio.fees"_n, "alice"_n, "bob"_n, "carol"_n } );
       produce_block();
 
       auto trace = base_tester::push_action(config::system_account_name, "setpriv"_n,
                                             config::system_account_name,  mutable_variant_object()
-                                            ("account", "eosio.msig")
+                                            ("account", "flon.msig")
                                             ("is_priv", 1)
       );
 
-      set_code( "eosio.msig"_n, contracts::msig_wasm() );
-      set_abi( "eosio.msig"_n, contracts::msig_abi().data() );
+      set_code( "flon.msig"_n, contracts::msig_wasm() );
+      set_abi( "flon.msig"_n, contracts::msig_abi().data() );
 
       produce_blocks();
-      const auto& accnt = control->db().get<account_object,by_name>( "eosio.msig"_n );
+      const auto& accnt = control->db().get<account_object,by_name>( "flon.msig"_n );
       abi_def abi;
       BOOST_REQUIRE_EQUAL(abi_serializer::to_abi(accnt.abi, abi), true);
       abi_ser.set_abi(abi, abi_serializer::create_yield_function(abi_serializer_max_time));
@@ -126,7 +126,7 @@ public:
       vector<account_name> accounts;
       if( auth )
          accounts.push_back( signer );
-      auto trace = base_tester::push_action( "eosio.msig"_n, name, accounts, data );
+      auto trace = base_tester::push_action( "flon.msig"_n, name, accounts, data );
       produce_block();
       BOOST_REQUIRE_EQUAL( true, chain_has_transaction(trace->id) );
       return trace;
@@ -135,7 +135,7 @@ public:
          string action_type_name = abi_ser.get_action_type(name);
 
          action act;
-         act.account = "eosio.msig"_n;
+         act.account = "flon.msig"_n;
          act.name = name;
          act.data = abi_ser.variant_to_binary( action_type_name, data, abi_serializer::create_yield_function(abi_serializer_max_time) );
          //std::cout << "test:\n" << fc::to_hex(act.data.data(), act.data.size()) << " size = " << act.data.size() << std::endl;
@@ -228,7 +228,7 @@ BOOST_FIXTURE_TEST_CASE( propose_approve_execute, eosio_msig_tester ) try {
    );
 
    check_traces( trace, {
-                        {{"receiver", "eosio.msig"_n}, {"act_name", "exec"_n}},
+                        {{"receiver", "flon.msig"_n}, {"act_name", "exec"_n}},
                         {{"receiver", config::system_account_name}, {"act_name", "reqauth"_n}}
                         } );
 } FC_LOG_AND_RETHROW()
@@ -309,7 +309,7 @@ BOOST_FIXTURE_TEST_CASE( propose_approve_by_two, eosio_msig_tester ) try {
    );
 
    check_traces( trace, {
-                     {{"receiver", "eosio.msig"_n}, {"act_name", "exec"_n}},
+                     {{"receiver", "flon.msig"_n}, {"act_name", "exec"_n}},
                      {{"receiver", config::system_account_name}, {"act_name", "reqauth"_n}}
                      } );
 } FC_LOG_AND_RETHROW()
@@ -394,7 +394,7 @@ BOOST_FIXTURE_TEST_CASE( big_transaction, eosio_msig_tester ) try {
    );
 
    check_traces( trace, {
-                        {{"receiver", "eosio.msig"_n}, {"act_name", "exec"_n}},
+                        {{"receiver", "flon.msig"_n}, {"act_name", "exec"_n}},
                         {{"receiver", config::system_account_name}, {"act_name", "setcode"_n}}
                         } );
 } FC_LOG_AND_RETHROW()
@@ -517,7 +517,7 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, eosio_msig_tester )
    );
 
    check_traces( trace, {
-                        {{"receiver", "eosio.msig"_n}, {"act_name", "exec"_n}},
+                        {{"receiver", "flon.msig"_n}, {"act_name", "exec"_n}},
                         {{"receiver", config::system_account_name}, {"act_name", "setcode"_n}}
                         } );
 
@@ -648,7 +648,7 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, eosio_msig_tester
    );
 
    check_traces( trace, {
-                        {{"receiver", "eosio.msig"_n}, {"act_name", "exec"_n}},
+                        {{"receiver", "flon.msig"_n}, {"act_name", "exec"_n}},
                         {{"receiver", config::system_account_name}, {"act_name", "setcode"_n}}
                         } );
 
@@ -741,7 +741,7 @@ BOOST_FIXTURE_TEST_CASE( propose_invalidate_approve, eosio_msig_tester ) try {
    );
 
    check_traces( trace, {
-                        {{"receiver", "eosio.msig"_n}, {"act_name", "exec"_n}},
+                        {{"receiver", "flon.msig"_n}, {"act_name", "exec"_n}},
                         {{"receiver", config::system_account_name}, {"act_name", "reqauth"_n}}
                         } );
 } FC_LOG_AND_RETHROW()
@@ -783,7 +783,7 @@ BOOST_FIXTURE_TEST_CASE( approve_with_hash, eosio_msig_tester ) try {
                                             ("executer",      "alice")
    );
    check_traces( trace, {
-                        {{"receiver", "eosio.msig"_n}, {"act_name", "exec"_n}},
+                        {{"receiver", "flon.msig"_n}, {"act_name", "exec"_n}},
                         {{"receiver", config::system_account_name}, {"act_name", "reqauth"_n}}
                         } );
 } FC_LOG_AND_RETHROW()
@@ -881,7 +881,7 @@ BOOST_FIXTURE_TEST_CASE( sendinline, eosio_msig_tester ) try {
 
    produce_blocks();
 
-   action approve_act = get_action("eosio.msig"_n, "approve"_n, {}, mvo()
+   action approve_act = get_action("flon.msig"_n, "approve"_n, {}, mvo()
                                     ("proposer", "bob")
                                     ("proposal_name", "first")
                                     ("level", permission_level{"sendinline"_n, config::active_name})
@@ -889,7 +889,7 @@ BOOST_FIXTURE_TEST_CASE( sendinline, eosio_msig_tester ) try {
 
    transaction trx = reqauth( "alice"_n, {permission_level{"alice"_n, "perm"_n}}, abi_serializer_max_time );
 
-   base_tester::push_action( "eosio.msig"_n, "propose"_n, "bob"_n, mvo()
+   base_tester::push_action( "flon.msig"_n, "propose"_n, "bob"_n, mvo()
                               ("proposer", "bob")
                               ("proposal_name", "first")
                               ("trx", trx)
@@ -898,21 +898,21 @@ BOOST_FIXTURE_TEST_CASE( sendinline, eosio_msig_tester ) try {
    produce_blocks();
 
    base_tester::push_action( "sendinline"_n, "send"_n, "bob"_n, mvo()
-                              ("contract", "eosio.msig")
+                              ("contract", "flon.msig")
                               ("action_name", "approve")
                               ("auths", std::vector<permission_level>{{"sendinline"_n, config::active_name}})
                               ("payload", approve_act.data)
    );
    produce_blocks();
 
-   trace = base_tester::push_action( "eosio.msig"_n, "exec"_n, "bob"_n, mvo()
+   trace = base_tester::push_action( "flon.msig"_n, "exec"_n, "bob"_n, mvo()
                                           ("proposer", "bob")
                                           ("proposal_name", "first")
                                           ("executer", "bob")
    );
 
    check_traces( trace, {
-                        {{"receiver", "eosio.msig"_n}, {"act_name", "exec"_n}},
+                        {{"receiver", "flon.msig"_n}, {"act_name", "exec"_n}},
                         {{"receiver", config::system_account_name}, {"act_name", "reqauth"_n}}
                         } );
 

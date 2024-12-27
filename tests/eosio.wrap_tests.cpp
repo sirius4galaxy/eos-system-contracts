@@ -18,18 +18,18 @@ class eosio_wrap_tester : public tester {
 public:
 
    eosio_wrap_tester() {
-      create_accounts( { "eosio.msig"_n, "prod1"_n, "prod2"_n, "prod3"_n, "prod4"_n, "prod5"_n, "alice"_n, "bob"_n, "carol"_n } );
+      create_accounts( { "flon.msig"_n, "prod1"_n, "prod2"_n, "prod3"_n, "prod4"_n, "prod5"_n, "alice"_n, "bob"_n, "carol"_n } );
       produce_block();
 
 
       base_tester::push_action(config::system_account_name, "setpriv"_n,
                                  config::system_account_name,  mutable_variant_object()
-                                 ("account", "eosio.msig")
+                                 ("account", "flon.msig")
                                  ("is_priv", 1)
       );
 
-      set_code( "eosio.msig"_n, contracts::msig_wasm() );
-      set_abi( "eosio.msig"_n, contracts::msig_abi().data() );
+      set_code( "flon.msig"_n, contracts::msig_wasm() );
+      set_abi( "flon.msig"_n, contracts::msig_abi().data() );
 
       produce_blocks();
 
@@ -71,14 +71,14 @@ public:
       set_producers( {"prod1"_n, "prod2"_n, "prod3"_n, "prod4"_n, "prod5"_n} );
 
       produce_blocks();
-      
+
       while( control->pending_block_producer().to_string() == "eosio" ) {
          produce_block();
       }
    }
 
    void propose( name proposer, name proposal_name, vector<permission_level> requested_permissions, const transaction& trx ) {
-      push_action( "eosio.msig"_n, "propose"_n, proposer, mvo()
+      push_action( "flon.msig"_n, "propose"_n, proposer, mvo()
                      ("proposer",      proposer)
                      ("proposal_name", proposal_name)
                      ("requested",     requested_permissions)
@@ -87,7 +87,7 @@ public:
    }
 
    void approve( name proposer, name proposal_name, name approver ) {
-      push_action( "eosio.msig"_n, "approve"_n, approver, mvo()
+      push_action( "flon.msig"_n, "approve"_n, approver, mvo()
                      ("proposer",      proposer)
                      ("proposal_name", proposal_name)
                      ("level",         permission_level{approver, config::active_name} )
@@ -95,7 +95,7 @@ public:
    }
 
    void unapprove( name proposer, name proposal_name, name unapprover ) {
-      push_action( "eosio.msig"_n, "unapprove"_n, unapprover, mvo()
+      push_action( "flon.msig"_n, "unapprove"_n, unapprover, mvo()
                      ("proposer",      proposer)
                      ("proposal_name", proposal_name)
                      ("level",         permission_level{unapprover, config::active_name})
@@ -154,7 +154,7 @@ transaction eosio_wrap_tester::reqauth( account_name from, const vector<permissi
 }
 
 void eosio_wrap_tester::check_traces(transaction_trace_ptr trace, std::vector<std::map<std::string, name>> res) {
-   
+
    BOOST_REQUIRE( bool(trace) );
    BOOST_REQUIRE_EQUAL( transaction_receipt::executed, trace->receipt->status );
    BOOST_REQUIRE_EQUAL( res.size(), trace->action_traces.size() );
@@ -179,7 +179,7 @@ BOOST_FIXTURE_TEST_CASE( wrap_exec_direct, eosio_wrap_tester ) try {
    transaction_trace_ptr trace = push_transaction( wrap_trx );
 
    check_traces( trace, {
-                           {{"receiver", "eosio.wrap"_n}, {"act_name", "exec"_n}}, 
+                           {{"receiver", "eosio.wrap"_n}, {"act_name", "exec"_n}},
                            {{"receiver", config::system_account_name}, {"act_name", "reqauth"_n}}
                          } );
 } FC_LOG_AND_RETHROW()
@@ -202,14 +202,14 @@ BOOST_FIXTURE_TEST_CASE( wrap_with_msig, eosio_wrap_tester ) try {
    approve( "carol"_n, "first"_n, "prod4"_n );
 
    // Now the proposal should be ready to execute
-   transaction_trace_ptr trace = push_action( "eosio.msig"_n, "exec"_n, "alice"_n, mvo()
+   transaction_trace_ptr trace = push_action( "flon.msig"_n, "exec"_n, "alice"_n, mvo()
                                                 ("proposer",      "carol")
                                                 ("proposal_name", "first")
                                                 ("executer",      "alice")
    );
 
    check_traces( trace, {
-                        {{"receiver", "eosio.msig"_n}, {"act_name", "exec"_n}}, 
+                        {{"receiver", "flon.msig"_n}, {"act_name", "exec"_n}},
                         {{"receiver", "eosio.wrap"_n}, {"act_name", "exec"_n}},
                         {{"receiver", config::system_account_name}, {"act_name", "reqauth"_n}}
                         } );
@@ -241,7 +241,7 @@ BOOST_FIXTURE_TEST_CASE( wrap_with_msig_unapprove, eosio_wrap_tester ) try {
    produce_block();
 
    // The proposal should not have sufficient approvals to pass the authorization checks of eosio.wrap::exec.
-   BOOST_REQUIRE_EXCEPTION( push_action( "eosio.msig"_n, "exec"_n, "alice"_n, mvo()
+   BOOST_REQUIRE_EXCEPTION( push_action( "flon.msig"_n, "exec"_n, "alice"_n, mvo()
                                           ("proposer",      "carol")
                                           ("proposal_name", "first")
                                           ("executer",      "alice")
@@ -283,7 +283,7 @@ BOOST_FIXTURE_TEST_CASE( wrap_with_msig_producers_change, eosio_wrap_tester ) tr
    produce_block();
 
    // The proposal has four of the five requested approvals but they are not sufficient to satisfy the authorization checks of eosio.wrap::exec.
-   BOOST_REQUIRE_EXCEPTION( push_action( "eosio.msig"_n, "exec"_n, "alice"_n, mvo()
+   BOOST_REQUIRE_EXCEPTION( push_action( "flon.msig"_n, "exec"_n, "alice"_n, mvo()
                                           ("proposer",      "carol")
                                           ("proposal_name", "first")
                                           ("executer",      "alice")
@@ -301,7 +301,7 @@ BOOST_FIXTURE_TEST_CASE( wrap_with_msig_producers_change, eosio_wrap_tester ) tr
    approve( "carol"_n, "first"_n, "prod5"_n );
 
    // Now the proposal should be ready to execute
-   transaction_trace_ptr trace = push_action( "eosio.msig"_n, "exec"_n, "alice"_n, mvo()
+   transaction_trace_ptr trace = push_action( "flon.msig"_n, "exec"_n, "alice"_n, mvo()
                                              ("proposal_name", "first")
                                              ("proposer",      "carol")
                                              ("executer",      "alice")
@@ -309,7 +309,7 @@ BOOST_FIXTURE_TEST_CASE( wrap_with_msig_producers_change, eosio_wrap_tester ) tr
 
 
    check_traces( trace, {
-                     {{"receiver", "eosio.msig"_n}, {"act_name", "exec"_n}}, 
+                     {{"receiver", "flon.msig"_n}, {"act_name", "exec"_n}},
                      {{"receiver", "eosio.wrap"_n}, {"act_name", "exec"_n}},
                      {{"receiver", config::system_account_name}, {"act_name", "reqauth"_n}}
                      } );

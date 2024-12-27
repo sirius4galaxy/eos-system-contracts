@@ -7,15 +7,15 @@
 
 namespace eosio {
    /**
-    * The `eosio.msig` system contract allows for creation of proposed transactions which require authorization from a list of accounts, approval of the proposed transactions by those accounts required to approve it, and finally, it also allows the execution of the approved transactions on the blockchain.
+    * The `flon.msig` system contract allows for creation of proposed transactions which require authorization from a list of accounts, approval of the proposed transactions by those accounts required to approve it, and finally, it also allows the execution of the approved transactions on the blockchain.
     *
     * In short, the workflow to propose, review, approve and then executed a transaction it can be described by the following:
     * - first you create a transaction json file,
-    * - then you submit this proposal to the `eosio.msig` contract, and you also insert the account permissions required to approve this proposal into the command that submits the proposal to the blockchain,
-    * - the proposal then gets stored on the blockchain by the `eosio.msig` contract, and is accessible for review and approval to those accounts required to approve it,
-    * - after each of the appointed accounts required to approve the proposed transactions reviews and approves it, you can execute the proposed transaction. The `eosio.msig` contract will execute it automatically, but not before validating that the transaction has not expired, it is not cancelled, and it has been signed by all the permissions in the initial proposal's required permission list.
+    * - then you submit this proposal to the `flon.msig` contract, and you also insert the account permissions required to approve this proposal into the command that submits the proposal to the blockchain,
+    * - the proposal then gets stored on the blockchain by the `flon.msig` contract, and is accessible for review and approval to those accounts required to approve it,
+    * - after each of the appointed accounts required to approve the proposed transactions reviews and approves it, you can execute the proposed transaction. The `flon.msig` contract will execute it automatically, but not before validating that the transaction has not expired, it is not cancelled, and it has been signed by all the permissions in the initial proposal's required permission list.
     */
-   class [[eosio::contract("eosio.msig")]] multisig : public contract {
+   class [[eosio::contract("flon.msig")]] multisig : public contract {
       public:
          using contract::contract;
 
@@ -112,7 +112,7 @@ namespace eosio {
          using exec_action = eosio::action_wrapper<"exec"_n, &multisig::exec>;
          using invalidate_action = eosio::action_wrapper<"invalidate"_n, &multisig::invalidate>;
 
-   struct [[eosio::table, eosio::contract("eosio.msig")]] proposal {
+   struct [[eosio::table, eosio::contract("flon.msig")]] proposal {
       name                                                            proposal_name;
       std::vector<char>                                               packed_transaction;
       eosio::binary_extension< std::optional<time_point> >            earliest_exec_time;
@@ -121,7 +121,7 @@ namespace eosio {
    };
    typedef eosio::multi_index< "proposal"_n, proposal > proposals;
 
-   struct [[eosio::table, eosio::contract("eosio.msig")]] old_approvals_info {
+   struct [[eosio::table, eosio::contract("flon.msig")]] old_approvals_info {
       name                            proposal_name;
       std::vector<permission_level>   requested_approvals;
       std::vector<permission_level>   provided_approvals;
@@ -133,7 +133,7 @@ namespace eosio {
       time_point       time;
    };
 
-   struct [[eosio::table, eosio::contract("eosio.msig")]] approvals_info {
+   struct [[eosio::table, eosio::contract("flon.msig")]] approvals_info {
       uint8_t                 version = 1;
       name                    proposal_name;
       //requested approval doesn't need to contain time, but we want requested approval
@@ -145,7 +145,7 @@ namespace eosio {
    };
    typedef eosio::multi_index< "approvals2"_n, approvals_info > approvals;
 
-   struct [[eosio::table, eosio::contract("eosio.msig")]] invalidation {
+   struct [[eosio::table, eosio::contract("flon.msig")]] invalidation {
          name         account;
          time_point   last_invalidation_time;
 

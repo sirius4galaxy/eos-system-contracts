@@ -7,7 +7,7 @@ link_text: How to use eosio.wrap
 
 The eosio.wrap contract needs to be installed on a privileged account to function. It is recommended to use the account `eosio.wrap`.
 
-First, the account `eosio.wrap` needs to be created. Since it has the restricted `eosio.` prefix, only a privileged account can create this account. So this guide will use the `eosio` account to create the `eosio.wrap` account. On typical live blockchain configurations, the `eosio` account can only be controlled by a supermajority of the current active block producers. So, this guide will use the `eosio.msig` contract to help coordinate the approvals of the proposed transaction that creates the `eosio.wrap` account.
+First, the account `eosio.wrap` needs to be created. Since it has the restricted `eosio.` prefix, only a privileged account can create this account. So this guide will use the `eosio` account to create the `eosio.wrap` account. On typical live blockchain configurations, the `eosio` account can only be controlled by a supermajority of the current active block producers. So, this guide will use the `flon.msig` contract to help coordinate the approvals of the proposed transaction that creates the `eosio.wrap` account.
 
 The `eosio.wrap` account also needs to have sufficient RAM to host the contract and sufficient CPU and network bandwidth to deploy the contract. This means that the creator of the account (`eosio`) needs to gift sufficient RAM to the new account and delegate (preferably with transfer) sufficient bandwidth to the new account. To pull this off the `eosio` account needs to have enough of the core system token (the `EOS` token will be used within this guide) in its liquid balance. So prior to continuing with the next steps of this guide, the active block producers of the chain who are coordinating this process need to ensure that a sufficient amount of core system tokens that they are authorized to spend is placed in the liquid balance of the `eosio` account.
 
@@ -17,11 +17,11 @@ This guide will be using cleos to carry out the process.
 
 ### 1.1.1 Generate the transaction to create the eosio.wrap account
 
-The transaction to create the `eosio.wrap` account will need to be proposed to get the necessary approvals from active block producers before executing it. This transaction needs to first be generated and stored as JSON into a file so that it can be used in the cleos command to propose the transaction to the eosio.msig contract.
+The transaction to create the `eosio.wrap` account will need to be proposed to get the necessary approvals from active block producers before executing it. This transaction needs to first be generated and stored as JSON into a file so that it can be used in the cleos command to propose the transaction to the flon.msig contract.
 
 A simple way to generate a transaction to create a new account is to use the `cleos system newaccount`. However, that sub-command currently only accepts a single public key as the owner and active authority of the new account. However, the owner and active authorities of the new account should only be satisfied by the `active` permission of `eosio`. One option is to create the new account with the some newly generated key, and then later update the authorities of the new account using `cleos set account permission`. This guide will take an alternative approach which atomically creates the new account in its proper configuration.
 
-Three unsigned transactions will be generated using cleos and then the actions within those transactions will be appropriately stitched together into a single transaction which will later be proposed using the eosio.msig contract.
+Three unsigned transactions will be generated using cleos and then the actions within those transactions will be appropriately stitched together into a single transaction which will later be proposed using the flon.msig contract.
 
 First, generate a transaction to capture the necessary actions involved in creating a new account:
 ```sh
@@ -172,7 +172,7 @@ cat generated_setpriv_trx.json
 }
 ```
 
-Next, the action JSONs of the previously generated transactions will be used to construct a unified transaction which will eventually be proposed with the eosio.msig contract. A good way to get started is to make a copy of the generated_newaccount_trx.json file (call the copied file create_wrap_account_trx.json) and edit the first three fields so it looks something like the following:
+Next, the action JSONs of the previously generated transactions will be used to construct a unified transaction which will eventually be proposed with the flon.msig contract. A good way to get started is to make a copy of the generated_newaccount_trx.json file (call the copied file create_wrap_account_trx.json) and edit the first three fields so it looks something like the following:
 ```sh
 cat create_wrap_account_trx.json
 ```
@@ -202,7 +202,7 @@ cat create_wrap_account_trx.json
 }
 ```
 
-The `ref_block_num` and `ref_block_prefix` values were set to 0. The proposed transaction does not need to have a valid TaPoS reference block because it will be reset anyway when scheduled during the `eosio.msig::exec` action. The `expiration` field, which was the only other field that was changed, will also be reset when the proposed transaction is scheduled during `eosio.msig::exec`. However, this field actually does matter during the propose-approve-exec lifecycle of the proposed transaction. If the present time passes the time in the `expiration` field of the proposed transaction, it will not be possible to execute the proposed transaction even if all necessary approvals are gathered. Therefore, it is important to set the expiration time to some point well enough in the future to give all necessary approvers enough time to review and approve the proposed transaction, but it is otherwise arbitrary. Generally, for reviewing/validation purposes it is important that all potential approvers of the transaction (i.e. the block producers) choose the exact same `expiration` time so that there is not any discrepancy in bytes of the serialized transaction if it was to later be included in payload data of some other action.
+The `ref_block_num` and `ref_block_prefix` values were set to 0. The proposed transaction does not need to have a valid TaPoS reference block because it will be reset anyway when scheduled during the `flon.msig::exec` action. The `expiration` field, which was the only other field that was changed, will also be reset when the proposed transaction is scheduled during `flon.msig::exec`. However, this field actually does matter during the propose-approve-exec lifecycle of the proposed transaction. If the present time passes the time in the `expiration` field of the proposed transaction, it will not be possible to execute the proposed transaction even if all necessary approvals are gathered. Therefore, it is important to set the expiration time to some point well enough in the future to give all necessary approvers enough time to review and approve the proposed transaction, but it is otherwise arbitrary. Generally, for reviewing/validation purposes it is important that all potential approvers of the transaction (i.e. the block producers) choose the exact same `expiration` time so that there is not any discrepancy in bytes of the serialized transaction if it was to later be included in payload data of some other action.
 
 Then, all but the first action JSON object of generated_account_creation_trx.json should be appended to the `actions` array of create_wrap_account_trx.json, and then the single action JSON object of generated_setpriv_trx.json should be appended to the `actions` array of create_wrap_account_trx.json. The final result is a create_wrap_account_trx.json file that looks like the following:
 ```sh
@@ -263,7 +263,7 @@ cat create_wrap_account_trx.json
 
 The transaction in create_wrap_account_trx.json is now ready to be proposed.
 
-It will be useful to have a JSON of the active permissions of each of the active block producers for later when proposing transactions using the eosio.msig contract.
+It will be useful to have a JSON of the active permissions of each of the active block producers for later when proposing transactions using the flon.msig contract.
 
 This guide will assume that there are 21 active block producers on the chain with account names: `blkproducera`, `blkproducerb`, ..., `blkproduceru`.
 
@@ -311,7 +311,7 @@ cleos multisig propose_trx createwrap producer_permissions.json create_wrap_acco
 ```
 ```console
 executed transaction: bf6aaa06b40e2a35491525cb11431efd2b5ac94e4a7a9c693c5bf0cfed942393  744 bytes  772 us
-#    eosio.msig <= eosio.msig::propose          {"proposer":"blkproducera","proposal_name":"createwrap","requested":[{"actor":"blkproducera","permis...
+#    flon.msig <= flon.msig::propose          {"proposer":"blkproducera","proposal_name":"createwrap","requested":[{"actor":"blkproducera","permis...
 warning: transaction executed locally, but may not be confirmed by the network yet
 ```
 
@@ -382,20 +382,20 @@ cleos multisig approve blkproducera createwrap '{"actor": "blkproducerb", "permi
 ```
 ```console
 executed transaction: 03a907e2a3192aac0cd040c73db8273c9da7696dc7960de22b1a479ae5ee9f23  128 bytes  472 us
-#    eosio.msig <= eosio.msig::approve          {"proposer":"blkproducera","proposal_name":"createwrap","level":{"actor":"blkproducerb","permission"...
+#    flon.msig <= flon.msig::approve          {"proposer":"blkproducera","proposal_name":"createwrap","level":{"actor":"blkproducerb","permission"...
 warning: transaction executed locally, but may not be confirmed by the network yet
 ```
 
 ### 1.1.4 Execute the transaction to create the eosio.wrap account
 
-When the necessary approvals are collected (in this example, with 21 block producers, at least 15 of their approvals were required), anyone can push the `eosio.msig::exec` action which executes the approved transaction. It makes a lot of sense for the lead block producer who proposed the transaction to also execute it (this will incur another temporary RAM cost for the that is generated by the eosio.msig contract).
+When the necessary approvals are collected (in this example, with 21 block producers, at least 15 of their approvals were required), anyone can push the `flon.msig::exec` action which executes the approved transaction. It makes a lot of sense for the lead block producer who proposed the transaction to also execute it (this will incur another temporary RAM cost for the that is generated by the flon.msig contract).
 
 ```sh
 cleos multisig exec blkproducera createwrap blkproducera
 ```
 ```console
 executed transaction: 7ecc183b99915cc411f96dde7c35c3fe0df6e732507f272af3a039b706482e5a  160 bytes  850 us
-#    eosio.msig <= eosio.msig::exec             {"proposer":"blkproducera","proposal_name":"createwrap","executer":"blkproducera"}
+#    flon.msig <= flon.msig::exec             {"proposer":"blkproducera","proposal_name":"createwrap","executer":"blkproducera"}
 warning: transaction executed locally, but may not be confirmed by the network yet
 ```
 
@@ -409,21 +409,21 @@ permissions:
      owner     1:    1 eosio@active,
         active     1:    1 eosio@active,
 memory:
-     quota:     49.74 KiB    used:     3.33 KiB  
+     quota:     49.74 KiB    used:     3.33 KiB
 
 net bandwidth:
      staked:          1.0000 EOS           (total stake delegated from account to self)
      delegated:       0.0000 EOS           (total staked delegated to account from others)
      used:                 0 bytes
-     available:        2.304 MiB  
-     limit:            2.304 MiB  
+     available:        2.304 MiB
+     limit:            2.304 MiB
 
 cpu bandwidth:
      staked:          1.0000 EOS           (total stake delegated from account to self)
      delegated:       0.0000 EOS           (total staked delegated to account from others)
-     used:                 0 us   
-     available:        460.8 ms   
-     limit:            460.8 ms   
+     used:                 0 us
+     available:        460.8 ms
+     limit:            460.8 ms
 
 producers:     <not voted>
 ```
@@ -432,7 +432,7 @@ producers:     <not voted>
 
 ### 1.2.1  Generate the transaction to deploy the eosio.wrap contract
 
-The transaction to deploy the contract to the `eosio.wrap` account will need to be proposed to get the necessary approvals from active block producers before executing it. This transaction needs to first be generated and stored as JSON into a file so that it can be used in the cleos command to propose the transaction to the eosio.msig contract.
+The transaction to deploy the contract to the `eosio.wrap` account will need to be proposed to get the necessary approvals from active block producers before executing it. This transaction needs to first be generated and stored as JSON into a file so that it can be used in the cleos command to propose the transaction to the flon.msig contract.
 
 The easy way to generate this transaction is using cleos:
 ```sh
@@ -513,7 +513,7 @@ cleos multisig propose_trx deploywrap producer_permissions.json deploy_wrap_cont
 ```
 ```console
 executed transaction: 9e50dd40eba25583a657ee8114986a921d413b917002c8fb2d02e2d670f720a8  4312 bytes  871 us
-#    eosio.msig <= eosio.msig::propose          {"proposer":"blkproducera","proposal_name":"deploywrap","requested":[{"actor":"blkproducera","permis...
+#    flon.msig <= flon.msig::propose          {"proposer":"blkproducera","proposal_name":"deploywrap","requested":[{"actor":"blkproducera","permis...
 warning: transaction executed locally, but may not be confirmed by the network yet
 ```
 
@@ -600,20 +600,20 @@ cleos multisig approve blkproducera deploywrap '{"actor": "blkproducerb", "permi
 ```
 ```console
 executed transaction: d1e424e05ee4d96eb079fcd5190dd0bf35eca8c27dd7231b59df8e464881abfd  128 bytes  483 us
-#    eosio.msig <= eosio.msig::approve          {"proposer":"blkproducera","proposal_name":"deploywrap","level":{"actor":"blkproducerb","permission"...
+#    flon.msig <= flon.msig::approve          {"proposer":"blkproducera","proposal_name":"deploywrap","level":{"actor":"blkproducerb","permission"...
 warning: transaction executed locally, but may not be confirmed by the network yet
 ```
 
 ### 1.2.4 Execute the transaction to create the eosio.wrap account
 
-When the necessary approvals are collected (in this example, with 21 block producers, at least 15 of their approvals were required), anyone can push the `eosio.msig::exec` action which executes the approved transaction. It makes a lot of sense for the lead block producer who proposed the transaction to also execute it (this will incur another temporary RAM cost that is generated by the eosio.msig contract).
+When the necessary approvals are collected (in this example, with 21 block producers, at least 15 of their approvals were required), anyone can push the `flon.msig::exec` action which executes the approved transaction. It makes a lot of sense for the lead block producer who proposed the transaction to also execute it (this will incur another temporary RAM cost that is generated by the flon.msig contract).
 
 ```sh
 cleos multisig exec blkproducera deploywrap blkproducera
 ```
 ```console
 executed transaction: e8da14c6f1fdc3255b5413adccfd0d89b18f832a4cc18c4324ea2beec6abd483  160 bytes  1877 us
-#    eosio.msig <= eosio.msig::exec             {"proposer":"blkproducera","proposal_name":"deploywrap","executer":"blkproducera"}
+#    flon.msig <= flon.msig::exec             {"proposer":"blkproducera","proposal_name":"deploywrap","executer":"blkproducera"}
 ```
 
 Anyone can now verify that the `eosio.wrap` contract was deployed correctly.
@@ -638,7 +638,7 @@ If the two hashes match then the local WebAssembly code is the one deployed on t
 
 ## 2.1 Example: Updating owner authority of an arbitrary account
 
-This example will demonstrate how to use the deployed eosio.wrap contract together with the eosio.msig contract to allow a greater than two-thirds supermajority of block producers of the EOS blockchain to change the owner authority of an arbitrary account. The example will use cleos: in particular, the `cleos multisig` command, the `cleos set account permission` sub-command, and the `cleos wrap exec` sub-command. However, the guide also demonstrates what to do if the `cleos wrap exec` sub-command is not available.
+This example will demonstrate how to use the deployed eosio.wrap contract together with the flon.msig contract to allow a greater than two-thirds supermajority of block producers of the EOS blockchain to change the owner authority of an arbitrary account. The example will use cleos: in particular, the `cleos multisig` command, the `cleos set account permission` sub-command, and the `cleos wrap exec` sub-command. However, the guide also demonstrates what to do if the `cleos wrap exec` sub-command is not available.
 
 This guide assumes that there are 21 active block producers on the chain with account names: `blkproducera`, `blkproducerb`, ..., `blkproduceru`. Block producer `blkproducera` will act as the lead block producer handling the proposal of the transaction.
 
@@ -682,21 +682,21 @@ permissions:
      owner     1:    1 EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
         active     1:    1 EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
 memory:
-     quota:     49.74 KiB    used:     3.365 KiB  
+     quota:     49.74 KiB    used:     3.365 KiB
 
 net bandwidth:
      staked:          1.0000 EOS           (total stake delegated from account to self)
      delegated:       0.0000 EOS           (total staked delegated to account from others)
      used:                 0 bytes
-     available:        2.304 MiB  
-     limit:            2.304 MiB  
+     available:        2.304 MiB
+     limit:            2.304 MiB
 
 cpu bandwidth:
      staked:          1.0000 EOS           (total stake delegated from account to self)
      delegated:       0.0000 EOS           (total staked delegated to account from others)
-     used:                 0 us   
-     available:        460.8 ms   
-     limit:            460.8 ms   
+     used:                 0 us
+     available:        460.8 ms
+     limit:            460.8 ms
 
 producers:     <not voted>
 ```
@@ -829,7 +829,7 @@ cleos multisig propose_trx updatealice producer_permissions.json wrap_update_ali
 ```
 ```console
 executed transaction: 10474f52c9e3fc8e729469a577cd2fc9e4330e25b3fd402fc738ddde26605c13  624 bytes  782 us
-#    eosio.msig <= eosio.msig::propose          {"proposer":"blkproducera","proposal_name":"updatealice","requested":[{"actor":"blkproducera","permi...
+#    flon.msig <= flon.msig::propose          {"proposer":"blkproducera","proposal_name":"updatealice","requested":[{"actor":"blkproducera","permi...
 warning: transaction executed locally, but may not be confirmed by the network yet
 ```
 
@@ -924,20 +924,20 @@ cleos multisig approve blkproducera updatealice '{"actor": "blkproducerb", "perm
 ```
 ```console
 executed transaction: 2bddc7747e0660ba26babf95035225895b134bfb2ede32ba0a2bb6091c7dab56  128 bytes  543 us
-#    eosio.msig <= eosio.msig::approve          {"proposer":"blkproducera","proposal_name":"updatealice","level":{"actor":"blkproducerb","permission...
+#    flon.msig <= flon.msig::approve          {"proposer":"blkproducera","proposal_name":"updatealice","level":{"actor":"blkproducerb","permission...
 warning: transaction executed locally, but may not be confirmed by the network yet
 ```
 
 ### 2.1.4 Execute the transaction to change the owner permission of an account
 
-When the necessary approvals are collected (in this example, with 21 block producers, at least 15 of their approvals were required), anyone can push the `eosio.msig::exec` action which executes the approved transaction. It makes a lot of sense for the lead block producer who proposed the transaction to also execute it (this will incur another temporary RAM cost that is generated by the eosio.msig contract).
+When the necessary approvals are collected (in this example, with 21 block producers, at least 15 of their approvals were required), anyone can push the `flon.msig::exec` action which executes the approved transaction. It makes a lot of sense for the lead block producer who proposed the transaction to also execute it (this will incur another temporary RAM cost that is generated by the flon.msig contract).
 
 ```sh
 cleos multisig exec blkproducera updatealice blkproducera
 ```
 ```console
 executed transaction: 7127a66ae307fbef6415bf60c3e91a88b79bcb46030da983c683deb2a1a8e0d0  160 bytes  820 us
-#    eosio.msig <= eosio.msig::exec             {"proposer":"blkproducera","proposal_name":"updatealice","executer":"blkproducera"}
+#    flon.msig <= flon.msig::exec             {"proposer":"blkproducera","proposal_name":"updatealice","executer":"blkproducera"}
 warning: transaction executed locally, but may not be confirmed by the network yet
 ```
 
@@ -950,21 +950,21 @@ permissions:
      owner     1:    1 eosio@active,
         active     1:    1 EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
 memory:
-     quota:     49.74 KiB    used:     3.348 KiB  
+     quota:     49.74 KiB    used:     3.348 KiB
 
 net bandwidth:
      staked:          1.0000 EOS           (total stake delegated from account to self)
      delegated:       0.0000 EOS           (total staked delegated to account from others)
      used:                 0 bytes
-     available:        2.304 MiB  
-     limit:            2.304 MiB  
+     available:        2.304 MiB
+     limit:            2.304 MiB
 
 cpu bandwidth:
      staked:          1.0000 EOS           (total stake delegated from account to self)
      delegated:       0.0000 EOS           (total staked delegated to account from others)
-     used:               413 us   
-     available:        460.4 ms   
-     limit:            460.8 ms   
+     used:               413 us
+     available:        460.4 ms
+     limit:            460.8 ms
 
 producers:     <not voted>
 

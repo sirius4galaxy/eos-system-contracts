@@ -5,7 +5,7 @@
 #include <vector>
 
 /// `eosio.code` is a virtual permission (there is no private or public
-/// key associated with it). Therefore, this test tests how `eosio.msig`
+/// key associated with it). Therefore, this test tests how `flon.msig`
 /// contract reacts to a smart contract submitting a proposal and
 /// approving/unnapproving itself.
 class [[eosio::contract]]
