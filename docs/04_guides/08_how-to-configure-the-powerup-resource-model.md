@@ -161,13 +161,13 @@ struct powerup_state {
 
 ```sh
 # call to `cfgpowerup`
-cleos push action flon cfgpowerup "[`cat ./config.json`]" -p flon
+focli push action flon cfgpowerup "[`cat ./config.json`]" -p flon
 ```
 
 #### Check state
 
 ```sh
-cleos get table flon 0 powup.state
+focli get table flon 0 powup.state
 ```
 
 ```json

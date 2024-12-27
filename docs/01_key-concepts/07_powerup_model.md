@@ -13,7 +13,7 @@ To power up an account is a technique to rent CPU and NET resources from the Pow
 * The `max_payment`, must be expressed in EOS and is the maximum amount the `payer` is willing to pay.
 
 ```sh
-dune -- cleos push action eosio powerup '[user, user, 1, 10000000000000, 10000000000000, "1000.0000 EOS"]' -p user
+dune -- focli push action eosio powerup '[user, user, 1, 10000000000000, 10000000000000, "1000.0000 EOS"]' -p user
 ```
 
 To view the received NET and CPU weight as well as the amount of the fee, check the `flon.reserv::powupresult` returned by the action, which should look similar to the one below:
@@ -38,7 +38,7 @@ Any calls to the `powerup` action does process also this queue (limited to two e
 To view the orders table `powup.order` execute the following command:
 
 ```sh
-dune -- cleos get table eosio 0 powup.order
+dune -- focli get table eosio 0 powup.order
 ```
 
 ```json
@@ -60,7 +60,7 @@ dune -- cleos get table eosio 0 powup.order
 Example `powerupexec` call:
 
 ```sh
-dune -- cleos push action eosio powerupexec '[user, 2]' -p user
+dune -- focli push action eosio powerupexec '[user, 2]' -p user
 ```
 
 ```console
