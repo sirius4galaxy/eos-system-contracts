@@ -1,4 +1,4 @@
-#include <eosio.boot/eosio.boot.hpp>
+#include <flon.boot/flon.boot.hpp>
 #include <eosio/privileged.hpp>
 
 namespace eosioboot {

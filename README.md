@@ -19,7 +19,7 @@ The system contracts in this repository provide all of the above and more by bui
 
 The collection of system contracts consists of the following individual contracts:
 
-* [boot contract](contracts/eosio.boot/include/eosio.boot/eosio.boot.hpp): A minimal contract that only serves the purpose of activating protocol features which enables other more sophisticated contracts to be deployed onto the blockchain. (Note: this contract must be deployed to the privileged `eosio` account.)
+* [boot contract](contracts/flon.boot/include/flon.boot/flon.boot.hpp): A minimal contract that only serves the purpose of activating protocol features which enables other more sophisticated contracts to be deployed onto the blockchain. (Note: this contract must be deployed to the privileged `eosio` account.)
 * [bios contract](contracts/flon.bios/include/flon.bios/flon.bios.hpp): A simple alternative to the core contract which is suitable for test chains or perhaps centralized blockchains. (Note: this contract must be deployed to the privileged `eosio` account.)
 * [token contract](contracts/flon.token/include/flon.token/flon.token.hpp): A contract enabling fungible tokens.
 * [core contract](contracts/flon.system/include/flon.system/flon.system.hpp): A monolithic contract that includes a variety of different functions which enhances a base Antelope blockchain for use as a public, decentralized blockchain in an opinionated way. (Note: This contract must be deployed to the privileged `eosio` account. Additionally, this contract requires that the token contract is deployed to the `flon.token` account and has already been used to setup the core token.) The functions contained within this monolithic contract include (non-exhaustive):
