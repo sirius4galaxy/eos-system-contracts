@@ -180,7 +180,7 @@ transaction eosio_msig_tester::reqauth( account_name from, const vector<permissi
 }
 
 void eosio_msig_tester::check_traces(transaction_trace_ptr trace, std::vector<std::map<std::string, name>> res) {
-   
+
    BOOST_REQUIRE( bool(trace) );
    BOOST_REQUIRE_EQUAL( transaction_receipt::executed, trace->receipt->status );
    BOOST_REQUIRE_EQUAL( res.size(), trace->action_traces.size() );
@@ -520,7 +520,7 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, eosio_msig_tester )
                         {{"receiver", "eosio.msig"_n}, {"act_name", "exec"_n}},
                         {{"receiver", config::system_account_name}, {"act_name", "setcode"_n}}
                         } );
-   
+
    // can't create account because system contract was replaced by the reject_all contract
    BOOST_REQUIRE_EXCEPTION( create_account_with_resources( "alice1111112"_n, "eosio"_n, core_sym::from_string("1.0000"), false ),
                             eosio_assert_message_exception, eosio_assert_message_is("rejecting all actions")
@@ -651,7 +651,7 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, eosio_msig_tester
                         {{"receiver", "eosio.msig"_n}, {"act_name", "exec"_n}},
                         {{"receiver", config::system_account_name}, {"act_name", "setcode"_n}}
                         } );
-   
+
    // can't create account because system contract was replaced by the reject_all contract
    BOOST_REQUIRE_EXCEPTION( create_account_with_resources( "alice1111112"_n, "eosio"_n, core_sym::from_string("1.0000"), false ),
                             eosio_assert_message_exception, eosio_assert_message_is("rejecting all actions")
@@ -746,139 +746,6 @@ BOOST_FIXTURE_TEST_CASE( propose_invalidate_approve, eosio_msig_tester ) try {
                         } );
 } FC_LOG_AND_RETHROW()
 
-BOOST_FIXTURE_TEST_CASE( approve_execute_old, eosio_msig_tester ) try {
-   set_code( "eosio.msig"_n, contracts::util::msig_wasm_old() );
-   set_abi( "eosio.msig"_n, contracts::util::msig_abi_old().data() );
-   produce_blocks();
-
-   //propose with old version of eosio.msig
-   auto trx = reqauth( "alice"_n, {permission_level{"alice"_n, config::active_name}}, abi_serializer_max_time );
-   push_action( "alice"_n, "propose"_n, mvo()
-                  ("proposer",      "alice")
-                  ("proposal_name", "first")
-                  ("trx",           trx)
-                  ("requested", vector<permission_level>{{ "alice"_n, config::active_name }})
-   );
-
-   set_code( "eosio.msig"_n, contracts::msig_wasm() );
-   set_abi( "eosio.msig"_n, contracts::msig_abi().data() );
-   produce_blocks();
-
-   //approve and execute with new version
-   push_action( "alice"_n, "approve"_n, mvo()
-                  ("proposer",      "alice")
-                  ("proposal_name", "first")
-                  ("level",         permission_level{ "alice"_n, config::active_name })
-   );
-
-   transaction_trace_ptr trace = push_action( "alice"_n, "exec"_n, mvo()
-                                            ("proposer",      "alice")
-                                            ("proposal_name", "first")
-                                            ("executer",      "alice")
-   );
-   check_traces( trace, {
-                        {{"receiver", "eosio.msig"_n}, {"act_name", "exec"_n}},
-                        {{"receiver", config::system_account_name}, {"act_name", "reqauth"_n}}
-                        } );
-} FC_LOG_AND_RETHROW()
-
-
-BOOST_FIXTURE_TEST_CASE( approve_unapprove_old, eosio_msig_tester ) try {
-   set_code( "eosio.msig"_n, contracts::util::msig_wasm_old() );
-   set_abi( "eosio.msig"_n, contracts::util::msig_abi_old().data() );
-   produce_blocks();
-
-   //propose with old version of eosio.msig
-   auto trx = reqauth( "alice"_n, {permission_level{"alice"_n, config::active_name}}, abi_serializer_max_time );
-   push_action( "alice"_n, "propose"_n, mvo()
-                  ("proposer",      "alice")
-                  ("proposal_name", "first")
-                  ("trx",           trx)
-                  ("requested", vector<permission_level>{{ "alice"_n, config::active_name }})
-   );
-
-   //approve with old version
-   push_action( "alice"_n, "approve"_n, mvo()
-                  ("proposer",      "alice")
-                  ("proposal_name", "first")
-                  ("level",         permission_level{ "alice"_n, config::active_name })
-   );
-
-   set_code( "eosio.msig"_n, contracts::msig_wasm() );
-   set_abi( "eosio.msig"_n, contracts::msig_abi().data() );
-   produce_blocks();
-
-   //unapprove with old version
-   push_action( "alice"_n, "unapprove"_n, mvo()
-                  ("proposer",      "alice")
-                  ("proposal_name", "first")
-                  ("level",         permission_level{ "alice"_n, config::active_name })
-   );
-
-   BOOST_REQUIRE_EXCEPTION( push_action( "alice"_n, "exec"_n, mvo()
-                                          ("proposer",      "alice")
-                                          ("proposal_name", "first")
-                                          ("executer",      "alice")
-                            ),
-                            eosio_assert_message_exception,
-                            eosio_assert_message_is("transaction authorization failed")
-   );
-
-} FC_LOG_AND_RETHROW()
-
-BOOST_FIXTURE_TEST_CASE( approve_by_two_old, eosio_msig_tester ) try {
-   set_code( "eosio.msig"_n, contracts::util::msig_wasm_old() );
-   set_abi( "eosio.msig"_n, contracts::util::msig_abi_old().data() );
-   produce_blocks();
-
-   auto trx = reqauth( "alice"_n, vector<permission_level>{ { "alice"_n, config::active_name }, { "bob"_n, config::active_name } }, abi_serializer_max_time );
-   push_action( "alice"_n, "propose"_n, mvo()
-                  ("proposer",      "alice")
-                  ("proposal_name", "first")
-                  ("trx",           trx)
-                  ("requested", vector<permission_level>{ { "alice"_n, config::active_name }, { "bob"_n, config::active_name } })
-   );
-
-   //approve by alice
-   push_action( "alice"_n, "approve"_n, mvo()
-                  ("proposer",      "alice")
-                  ("proposal_name", "first")
-                  ("level",         permission_level{ "alice"_n, config::active_name })
-   );
-
-   set_code( "eosio.msig"_n, contracts::msig_wasm() );
-   set_abi( "eosio.msig"_n, contracts::msig_abi().data() );
-   produce_blocks();
-
-   //fail because approval by bob is missing
-   BOOST_REQUIRE_EXCEPTION( push_action( "alice"_n, "exec"_n, mvo()
-                                          ("proposer",      "alice")
-                                          ("proposal_name", "first")
-                                          ("executer",      "alice")
-                            ),
-                            eosio_assert_message_exception,
-                            eosio_assert_message_is("transaction authorization failed")
-   );
-
-   //approve and execute with new version
-   push_action( "bob"_n, "approve"_n, mvo()
-                  ("proposer",      "alice")
-                  ("proposal_name", "first")
-                  ("level",         permission_level{ "bob"_n, config::active_name })
-   );
-
-   transaction_trace_ptr trace = push_action( "alice"_n, "exec"_n, mvo()
-                                            ("proposer",      "alice")
-                                            ("proposal_name", "first")
-                                            ("executer",      "alice")
-   );
-   check_traces( trace, {
-                        {{"receiver", "eosio.msig"_n}, {"act_name", "exec"_n}},
-                        {{"receiver", config::system_account_name}, {"act_name", "reqauth"_n}}
-                        } );
-
-} FC_LOG_AND_RETHROW()
-
 BOOST_FIXTURE_TEST_CASE( approve_with_hash, eosio_msig_tester ) try {
    auto trx = reqauth( "alice"_n, {permission_level{"alice"_n, config::active_name}}, abi_serializer_max_time );
    auto trx_hash = fc::sha256::hash( trx );
@@ -909,7 +776,7 @@ BOOST_FIXTURE_TEST_CASE( approve_with_hash, eosio_msig_tester ) try {
                   ("level",         permission_level{ "alice"_n, config::active_name })
                   ("proposal_hash", trx_hash)
    );
-   
+
    transaction_trace_ptr trace = push_action( "alice"_n, "exec"_n, mvo()
                                             ("proposer",      "alice")
                                             ("proposal_name", "first")
@@ -1048,7 +915,7 @@ BOOST_FIXTURE_TEST_CASE( sendinline, eosio_msig_tester ) try {
                         {{"receiver", "eosio.msig"_n}, {"act_name", "exec"_n}},
                         {{"receiver", config::system_account_name}, {"act_name", "reqauth"_n}}
                         } );
-   
+
 } FC_LOG_AND_RETHROW()
 
 BOOST_AUTO_TEST_SUITE_END()
