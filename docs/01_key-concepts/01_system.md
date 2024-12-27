@@ -17,8 +17,8 @@ As you just learned the relation between a `system account` and a `system contra
 |eosio.names|No|No|The account which is holding funds from namespace auctions.|
 |flon.bpay|No|No|The account that pays the block producers for producing blocks. It assigns 0.25% of the inflation based on the amount of blocks a block producer created in the last 24 hours.|
 |eosio.prods|No|No|The account representing the union of all current active block producers permissions.|
-|eosio.ram|No|No|The account that keeps track of the EOS balances based on users actions of buying or selling RAM.|
-|eosio.ramfee|No|No|The account that keeps track of the fees collected from users RAM trading actions: 0.5% from the value of each trade goes into this account.|
+|flon.ram|No|No|The account that keeps track of the EOS balances based on users actions of buying or selling RAM.|
+|flon.ramfee|No|No|The account that keeps track of the fees collected from users RAM trading actions: 0.5% from the value of each trade goes into this account.|
 |eosio.saving|No|No|The account which holds the 4% of network inflation.|
 |eosio.stake|No|No|The account that keeps track of all EOS tokens which have been staked for voting.|
 |eosio.vpay|No|No|The account that pays the block producers accordingly with the votes won. It assigns 0.75% of inflation based on the amount of votes a block producer won in the last 24 hours.|

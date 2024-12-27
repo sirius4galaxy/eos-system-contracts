@@ -43,11 +43,11 @@ BOOST_FIXTURE_TEST_CASE( buysell, eosio_system_tester ) try {
    auto total = get_total_stake( "alice1111111" );
    auto init_bytes =  total["ram_bytes"].as_uint64();
 
-   const asset initial_ram_balance = get_balance("eosio.ram"_n);
+   const asset initial_ram_balance = get_balance("flon.ram"_n);
    const asset initial_fees_balance = get_balance("flon.fees"_n);
    BOOST_REQUIRE_EQUAL( success(), buyram( "alice1111111", "alice1111111", core_sym::from_string("200.0000") ) );
    BOOST_REQUIRE_EQUAL( core_sym::from_string("800.0000"), get_balance( "alice1111111" ) );
-   BOOST_REQUIRE_EQUAL( initial_ram_balance + core_sym::from_string("199.0000"), get_balance("eosio.ram"_n) );
+   BOOST_REQUIRE_EQUAL( initial_ram_balance + core_sym::from_string("199.0000"), get_balance("flon.ram"_n) );
    BOOST_REQUIRE_EQUAL( initial_fees_balance + core_sym::from_string("1.0000"), get_balance("flon.fees"_n) );
 
    total = get_total_stake( "alice1111111" );
@@ -3875,7 +3875,7 @@ BOOST_FIXTURE_TEST_CASE( eosioram_ramusage, eosio_system_tester ) try {
    transfer( "eosio", "alice1111111", core_sym::from_string("1000.0000"), "eosio" );
    BOOST_REQUIRE_EQUAL( success(), stake( "eosio", "alice1111111", core_sym::from_string("200.0000"), core_sym::from_string("100.0000") ) );
 
-   const asset initial_ram_balance = get_balance("eosio.ram"_n);
+   const asset initial_ram_balance = get_balance("flon.ram"_n);
    const asset initial_fees_balance = get_balance("flon.fees"_n);
    BOOST_REQUIRE_EQUAL( success(), buyram( "alice1111111", "alice1111111", core_sym::from_string("1000.0000") ) );
 
@@ -3889,14 +3889,14 @@ BOOST_FIXTURE_TEST_CASE( eosioram_ramusage, eosio_system_tester ) try {
    BOOST_REQUIRE_EQUAL( true, get_row_by_account( "flon.token"_n, "alice1111111"_n, "accounts"_n, account_name(symbol{CORE_SYM}.to_symbol_code()) ).empty() );
 
    auto rlm = control->get_resource_limits_manager();
-   auto eosioram_ram_usage = rlm.get_account_ram_usage("eosio.ram"_n);
+   auto eosioram_ram_usage = rlm.get_account_ram_usage("flon.ram"_n);
    auto alice_ram_usage = rlm.get_account_ram_usage("alice1111111"_n);
 
    BOOST_REQUIRE_EQUAL( success(), sellram( "alice1111111", 2048 ) );
 
-   //make sure that ram was billed to alice, not to eosio.ram
+   //make sure that ram was billed to alice, not to flon.ram
    BOOST_REQUIRE_EQUAL( true, alice_ram_usage < rlm.get_account_ram_usage("alice1111111"_n) );
-   BOOST_REQUIRE_EQUAL( eosioram_ram_usage, rlm.get_account_ram_usage("eosio.ram"_n) );
+   BOOST_REQUIRE_EQUAL( eosioram_ram_usage, rlm.get_account_ram_usage("flon.ram"_n) );
 
 } FC_LOG_AND_RETHROW()
 
