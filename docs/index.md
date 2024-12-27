@@ -9,12 +9,12 @@ The EOS blockchain is unique in that the features and characteristics of the blo
 The `eos-system-contracts` repository contains the system contracts encapsulating the base functionality for the EOS blockchain.
 
 1. [eosio.bios](action-reference/eosio.bios)
-2. [eosio.system](action-reference/eosio.system)
+2. [flon.system](action-reference/flon.system)
 3. [eosio.msig](action-reference/eosio.msig)
 4. [eosio.token](action-reference/eosio.token)
 5. [eosio.wrap](action-reference/eosio.wrap)
 
-## Key Concepts Implemented by eosio.system
+## Key Concepts Implemented by flon.system
 
 1. [System](01_key-concepts/01_system.md)
 2. [System Resources](01_key-concepts/02_system_resources.md)

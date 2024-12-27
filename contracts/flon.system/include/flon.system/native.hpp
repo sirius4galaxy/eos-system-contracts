@@ -111,7 +111,7 @@ namespace eosiosystem {
     * - `owner`: the account owner of the contract's abi
     * - `hash`: is the sha256 hash of the abi/binary
     */
-   struct [[eosio::table("abihash"), eosio::contract("eosio.system")]] abi_hash {
+   struct [[eosio::table("abihash"), eosio::contract("flon.system")]] abi_hash {
       name              owner;
       checksum256       hash;
       uint64_t primary_key()const { return owner.value; }
@@ -125,7 +125,7 @@ namespace eosiosystem {
    /**
     * The EOSIO core `native` contract that governs authorization and contracts' abi.
     */
-   class [[eosio::contract("eosio.system")]] native : public eosio::contract {
+   class [[eosio::contract("flon.system")]] native : public eosio::contract {
       public:
 
          using eosio::contract::contract;

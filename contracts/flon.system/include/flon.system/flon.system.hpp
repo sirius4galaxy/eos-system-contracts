@@ -9,8 +9,8 @@
 #include <eosio/time.hpp>
 #include <eosio/instant_finality.hpp>
 
-#include <eosio.system/exchange_state.hpp>
-#include <eosio.system/native.hpp>
+#include <flon.system/exchange_state.hpp>
+#include <flon.system/native.hpp>
 
 #include <deque>
 #include <optional>
@@ -96,9 +96,9 @@ namespace eosiosystem {
 #endif
 
   /**
-   * The `eosio.system` smart contract is provided by `block.one` as a sample system contract, and it defines the structures and actions needed for blockchain's core functionality.
+   * The `flon.system` smart contract is provided by `block.one` as a sample system contract, and it defines the structures and actions needed for blockchain's core functionality.
    *
-   * Just like in the `eosio.bios` sample contract implementation, there are a few actions which are not implemented at the contract level (`newaccount`, `updateauth`, `deleteauth`, `linkauth`, `unlinkauth`, `canceldelay`, `onerror`, `setabi`, `setcode`), they are just declared in the contract so they will show in the contract's ABI and users will be able to push those actions to the chain via the account holding the `eosio.system` contract, but the implementation is at the EOSIO core level. They are referred to as EOSIO native actions.
+   * Just like in the `eosio.bios` sample contract implementation, there are a few actions which are not implemented at the contract level (`newaccount`, `updateauth`, `deleteauth`, `linkauth`, `unlinkauth`, `canceldelay`, `onerror`, `setabi`, `setcode`), they are just declared in the contract so they will show in the contract's ABI and users will be able to push those actions to the chain via the account holding the `flon.system` contract, but the implementation is at the EOSIO core level. They are referred to as EOSIO native actions.
    *
    * - Users can stake tokens for CPU and Network bandwidth, and then vote for producers or
    *    delegate their vote to a proxy.
@@ -114,7 +114,7 @@ namespace eosiosystem {
    // - a `high_bidder` account name that is the one with the highest bid so far
    // - the `high_bid` which is amount of highest bid
    // - and `last_bid_time` which is the time of the highest bid
-   struct [[eosio::table, eosio::contract("eosio.system")]] name_bid {
+   struct [[eosio::table, eosio::contract("flon.system")]] name_bid {
      name            newname;
      name            high_bidder;
      int64_t         high_bid = 0; ///< negative high_bid == closed auction waiting to be claimed
@@ -127,7 +127,7 @@ namespace eosiosystem {
    // A bid refund, which is defined by:
    // - the `bidder` account name owning the refund
    // - the `amount` to be refunded
-   struct [[eosio::table, eosio::contract("eosio.system")]] bid_refund {
+   struct [[eosio::table, eosio::contract("flon.system")]] bid_refund {
       name         bidder;
       asset        amount;
 
@@ -140,7 +140,7 @@ namespace eosiosystem {
    typedef eosio::multi_index< "bidrefunds"_n, bid_refund > bid_refund_table;
 
    // Defines new global state parameters.
-   struct [[eosio::table("global"), eosio::contract("eosio.system")]] eosio_global_state : eosio::blockchain_parameters {
+   struct [[eosio::table("global"), eosio::contract("flon.system")]] eosio_global_state : eosio::blockchain_parameters {
       uint64_t free_ram()const { return max_ram_size - total_ram_bytes_reserved; }
 
       uint64_t             max_ram_size = 64ll*1024 * 1024 * 1024;
@@ -167,7 +167,7 @@ namespace eosiosystem {
    };
 
    // Defines new global state parameters added after version 1.0
-   struct [[eosio::table("global2"), eosio::contract("eosio.system")]] eosio_global_state2 {
+   struct [[eosio::table("global2"), eosio::contract("flon.system")]] eosio_global_state2 {
       eosio_global_state2(){}
 
       uint16_t          new_ram_per_block = 0;
@@ -181,7 +181,7 @@ namespace eosiosystem {
    };
 
    // Defines new global state parameters added after version 1.3.0
-   struct [[eosio::table("global3"), eosio::contract("eosio.system")]] eosio_global_state3 {
+   struct [[eosio::table("global3"), eosio::contract("flon.system")]] eosio_global_state3 {
       eosio_global_state3() { }
       time_point        last_vpay_state_update;
       double            total_vpay_share_change_rate = 0;
@@ -190,7 +190,7 @@ namespace eosiosystem {
    };
 
    // Defines new global state parameters to store inflation rate and distribution
-   struct [[eosio::table("global4"), eosio::contract("eosio.system")]] eosio_global_state4 {
+   struct [[eosio::table("global4"), eosio::contract("flon.system")]] eosio_global_state4 {
       eosio_global_state4() { }
       double   continuous_rate;
       int64_t  inflation_pay_factor;
@@ -200,7 +200,7 @@ namespace eosiosystem {
    };
 
    // Defines the schedule for pre-determined annual rate changes.
-   struct [[eosio::table, eosio::contract("eosio.system")]] schedules_info {
+   struct [[eosio::table, eosio::contract("flon.system")]] schedules_info {
       time_point_sec start_time;
       double   continuous_rate;
 
@@ -215,7 +215,7 @@ namespace eosiosystem {
    }
 
    // Defines `producer_info` structure to be stored in `producer_info` table, added after version 1.0
-   struct [[eosio::table, eosio::contract("eosio.system")]] producer_info {
+   struct [[eosio::table, eosio::contract("flon.system")]] producer_info {
       name                                                     owner;
       double                                                   total_votes = 0;
       eosio::public_key                                        producer_key; /// a packed public key object
@@ -236,7 +236,7 @@ namespace eosiosystem {
             bool zero_threshold = std::visit( [](auto&& auth ) -> bool {
                return (auth.threshold == 0);
             }, *producer_authority );
-            // zero_threshold could be true despite the validation done in regproducer2 because the v1.9.0 eosio.system
+            // zero_threshold could be true despite the validation done in regproducer2 because the v1.9.0 flon.system
             // contract has a bug which may have modified the producer table such that the producer_authority field
             // contains a default constructed eosio::block_signing_authority (which has a 0 threshold and so is invalid).
             if( !zero_threshold ) return *producer_authority;
@@ -284,7 +284,7 @@ namespace eosiosystem {
    };
 
    // Defines new producer info structure to be stored in new producer info table, added after version 1.3.0
-   struct [[eosio::table, eosio::contract("eosio.system")]] producer_info2 {
+   struct [[eosio::table, eosio::contract("flon.system")]] producer_info2 {
       name            owner;
       double          votepay_share = 0;
       time_point      last_votepay_share_update;
@@ -296,7 +296,7 @@ namespace eosiosystem {
    };
 
    // finalizer_key_info stores information about a finalizer key.
-   struct [[eosio::table("finkeys"), eosio::contract("eosio.system")]] finalizer_key_info {
+   struct [[eosio::table("finkeys"), eosio::contract("flon.system")]] finalizer_key_info {
       uint64_t          id;                   // automatically generated ID for the key in the table
       name              finalizer_name;       // name of the finalizer owning the key
       std::string       finalizer_key;        // finalizer key in base64url format
@@ -320,7 +320,7 @@ namespace eosiosystem {
    > finalizer_keys_table;
 
    // finalizer_info stores information about a finalizer.
-   struct [[eosio::table("finalizers"), eosio::contract("eosio.system")]] finalizer_info {
+   struct [[eosio::table("finalizers"), eosio::contract("flon.system")]] finalizer_info {
       name              finalizer_name;           // finalizer's name
       uint64_t          active_key_id;            // finalizer's active finalizer key's id in finalizer_keys_table, for fast finding key information
       std::vector<char> active_key_binary;        // finalizer's active finalizer key's binary format in Affine little endian non-montgomery g1
@@ -352,7 +352,7 @@ namespace eosiosystem {
    // Should avoid  using the global singleton pattern as it unnecessarily
    // serializes data at construction/desstruction of system_contract,
    // even if the data is not used.
-   struct [[eosio::table("lastpropfins"), eosio::contract("eosio.system")]] last_prop_finalizers_info {
+   struct [[eosio::table("lastpropfins"), eosio::contract("flon.system")]] last_prop_finalizers_info {
       std::vector<finalizer_auth_info> last_proposed_finalizers; // sorted by ascending finalizer key id
 
       uint64_t primary_key()const { return 0; }
@@ -364,7 +364,7 @@ namespace eosiosystem {
 
    // A single entry storing next available finalizer key_id to make sure
    // key_id in finalizers_table will never be reused.
-   struct [[eosio::table("finkeyidgen"), eosio::contract("eosio.system")]] fin_key_id_generator_info {
+   struct [[eosio::table("finkeyidgen"), eosio::contract("flon.system")]] fin_key_id_generator_info {
       uint64_t next_finalizer_key_id = 0;
       uint64_t primary_key()const { return 0; }
 
@@ -378,7 +378,7 @@ namespace eosiosystem {
    // - `proxy` the proxy set by the voter, if any
    // - `producers` the producers approved by this voter if no proxy set
    // - `staked` the amount staked
-   struct [[eosio::table, eosio::contract("eosio.system")]] voter_info {
+   struct [[eosio::table, eosio::contract("flon.system")]] voter_info {
       name                owner;     /// the voter
       name                proxy;     /// the proxy set by the voter, if any
       std::vector<name>   producers; /// the producers approved by this voter if no proxy set
@@ -430,7 +430,7 @@ namespace eosiosystem {
 
    typedef eosio::singleton< "global4"_n, eosio_global_state4 > global_state4_singleton;
 
-   struct [[eosio::table, eosio::contract("eosio.system")]] user_resources {
+   struct [[eosio::table, eosio::contract("flon.system")]] user_resources {
       name          owner;
       asset         net_weight;
       asset         cpu_weight;
@@ -444,7 +444,7 @@ namespace eosiosystem {
    };
 
    // Every user 'from' has a scope/table that uses every recipient 'to' as the primary key.
-   struct [[eosio::table, eosio::contract("eosio.system")]] delegated_bandwidth {
+   struct [[eosio::table, eosio::contract("flon.system")]] delegated_bandwidth {
       name          from;
       name          to;
       asset         net_weight;
@@ -458,7 +458,7 @@ namespace eosiosystem {
 
    };
 
-   struct [[eosio::table, eosio::contract("eosio.system")]] refund_request {
+   struct [[eosio::table, eosio::contract("flon.system")]] refund_request {
       name            owner;
       time_point_sec  request_time;
       eosio::asset    net_amount;
@@ -485,7 +485,7 @@ namespace eosiosystem {
    // - `total_rex` total number of REX shares allocated to contributors to total_lendable,
    // - `namebid_proceeds` the amount of CORE_SYMBOL to be transferred from namebids to REX pool,
    // - `loan_num` increments with each new loan
-   struct [[eosio::table,eosio::contract("eosio.system")]] rex_pool {
+   struct [[eosio::table,eosio::contract("flon.system")]] rex_pool {
       uint8_t    version = 0;
       asset      total_lent;
       asset      total_unlent;
@@ -508,7 +508,7 @@ namespace eosiosystem {
    // - `pending_bucket_proceeds` proceeds in the pending 12-hour return bucket,
    // - `current_rate_of_increase` the current rate per dist_interval at which proceeds are added to the rex pool,
    // - `proceeds` the maximum amount of proceeds that can be added to the rex pool at any given time
-   struct [[eosio::table,eosio::contract("eosio.system")]] rex_return_pool {
+   struct [[eosio::table,eosio::contract("flon.system")]] rex_return_pool {
       uint8_t        version = 0;
       time_point_sec last_dist_time;
       time_point_sec pending_bucket_time      = time_point_sec::maximum();
@@ -537,7 +537,7 @@ namespace eosiosystem {
    // `rex_return_buckets` structure underlying the rex return buckets table. A rex return buckets table is defined by:
    // - `version` defaulted to zero,
    // - `return_buckets` buckets of proceeds accumulated in 12-hour intervals
-   struct [[eosio::table,eosio::contract("eosio.system")]] rex_return_buckets {
+   struct [[eosio::table,eosio::contract("flon.system")]] rex_return_buckets {
       uint8_t                                version = 0;
       std::vector<pair_time_point_sec_int64> return_buckets;  // sorted by first field
 
@@ -550,7 +550,7 @@ namespace eosiosystem {
    // - `version` defaulted to zero,
    // - `owner` the owner of the rex fund,
    // - `balance` the balance of the fund.
-   struct [[eosio::table,eosio::contract("eosio.system")]] rex_fund {
+   struct [[eosio::table,eosio::contract("flon.system")]] rex_fund {
       uint8_t version = 0;
       name    owner;
       asset   balance;
@@ -566,7 +566,7 @@ namespace eosiosystem {
    // - `vote_stake` the amount of CORE_SYMBOL currently included in owner's vote,
    // - `rex_balance` the amount of REX owned by owner,
    // - `matured_rex` matured REX available for selling
-   struct [[eosio::table,eosio::contract("eosio.system")]] rex_balance {
+   struct [[eosio::table,eosio::contract("flon.system")]] rex_balance {
       uint8_t version = 0;
       name    owner;
       asset   vote_stake;
@@ -589,7 +589,7 @@ namespace eosiosystem {
    // - `loan_num` loan number/id,
    // - `expiration` the expiration time when loan will be either closed or renewed
    //       If payment <= balance, the loan is renewed, and closed otherwise.
-   struct [[eosio::table,eosio::contract("eosio.system")]] rex_loan {
+   struct [[eosio::table,eosio::contract("flon.system")]] rex_loan {
       uint8_t             version = 0;
       name                from;
       name                receiver;
@@ -614,7 +614,7 @@ namespace eosiosystem {
                                indexed_by<"byowner"_n, const_mem_fun<rex_loan, uint64_t, &rex_loan::by_owner>>
                              > rex_net_loan_table;
 
-   struct [[eosio::table,eosio::contract("eosio.system")]] rex_order {
+   struct [[eosio::table,eosio::contract("flon.system")]] rex_order {
       uint8_t             version = 0;
       name                owner;
       asset               rex_requested;
@@ -631,7 +631,7 @@ namespace eosiosystem {
    typedef eosio::multi_index< "rexqueue"_n, rex_order,
                                indexed_by<"bytime"_n, const_mem_fun<rex_order, uint64_t, &rex_order::by_time>>> rex_order_table;
 
-   struct [[eosio::table("rexmaturity"),eosio::contract("eosio.system")]] rex_maturity {
+   struct [[eosio::table("rexmaturity"),eosio::contract("flon.system")]] rex_maturity {
       uint32_t num_of_maturity_buckets = 5;
       bool sell_matured_rex = false;
       bool buy_rex_to_savings = false;
@@ -755,7 +755,7 @@ namespace eosiosystem {
       time_point_sec utilization_timestamp   = {};                 // When adjusted_utilization was last updated
    };
 
-   struct [[eosio::table("powup.state"),eosio::contract("eosio.system")]] powerup_state {
+   struct [[eosio::table("powup.state"),eosio::contract("flon.system")]] powerup_state {
       static constexpr uint32_t default_powerup_days = 30; // 30 day resource powerup
 
       uint8_t                    version           = 0;
@@ -769,7 +769,7 @@ namespace eosiosystem {
 
    typedef eosio::singleton<"powup.state"_n, powerup_state> powerup_state_singleton;
 
-   struct [[eosio::table("powup.order"),eosio::contract("eosio.system")]] powerup_order {
+   struct [[eosio::table("powup.order"),eosio::contract("flon.system")]] powerup_order {
       uint8_t              version = 0;
       uint64_t             id;
       name                 owner;
@@ -788,9 +788,9 @@ namespace eosiosystem {
                                > powerup_order_table;
 
    /**
-    * The `eosio.system` smart contract is provided by `block.one` as a sample system contract, and it defines the structures and actions needed for blockchain's core functionality.
+    * The `flon.system` smart contract is provided by `block.one` as a sample system contract, and it defines the structures and actions needed for blockchain's core functionality.
     *
-    * Just like in the `eosio.bios` sample contract implementation, there are a few actions which are not implemented at the contract level (`newaccount`, `updateauth`, `deleteauth`, `linkauth`, `unlinkauth`, `canceldelay`, `onerror`, `setabi`, `setcode`), they are just declared in the contract so they will show in the contract's ABI and users will be able to push those actions to the chain via the account holding the `eosio.system` contract, but the implementation is at the EOSIO core level. They are referred to as EOSIO native actions.
+    * Just like in the `eosio.bios` sample contract implementation, there are a few actions which are not implemented at the contract level (`newaccount`, `updateauth`, `deleteauth`, `linkauth`, `unlinkauth`, `canceldelay`, `onerror`, `setabi`, `setcode`), they are just declared in the contract so they will show in the contract's ABI and users will be able to push those actions to the chain via the account holding the `flon.system` contract, but the implementation is at the EOSIO core level. They are referred to as EOSIO native actions.
     *
     * - Users can stake tokens for CPU and Network bandwidth, and then vote for producers or
     *    delegate their vote to a proxy.
@@ -801,7 +801,7 @@ namespace eosiosystem {
     *    and users to rent CPU and Network resources in return for a market-determined fee.
     * - A resource market separate from REX: `power`.
     */
-   class [[eosio::contract("eosio.system")]] system_contract : public native {
+   class [[eosio::contract("flon.system")]] system_contract : public native {
 
       private:
          voters_table             _voters;
@@ -1811,7 +1811,7 @@ namespace eosiosystem {
          using delschedule_action = eosio::action_wrapper<"delschedule"_n, &system_contract::delschedule>;
 
       private:
-         //defined in eosio.system.cpp
+         //defined in flon.system.cpp
          static eosio_global_state get_default_parameters();
          static eosio_global_state4 get_default_inflation_parameters();
          symbol core_symbol()const;

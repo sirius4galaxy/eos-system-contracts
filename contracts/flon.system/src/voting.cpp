@@ -7,7 +7,7 @@
 #include <eosio/serialize.hpp>
 #include <eosio/singleton.hpp>
 
-#include <eosio.system/eosio.system.hpp>
+#include <flon.system/flon.system.hpp>
 #include <eosio.token/eosio.token.hpp>
 
 #include <type_traits>

@@ -15,7 +15,7 @@ The PowerUp Resource Model creates a new NET and CPU marketplace which renders o
 void cfgpowerup( powerup_config& args );
 
 struct powerup_config_resource {
-    std::optional<int64_t>        current_weight_ratio;   // Immediately set weight_ratio to this amount. 1x = 10^15. 0.01x = 10^13.                                                
+    std::optional<int64_t>        current_weight_ratio;   // Immediately set weight_ratio to this amount. 1x = 10^15. 0.01x = 10^13.
                                                           //    Do not specify to preserve the existing setting or use the default;
                                                           //    this avoids sudden price jumps. For new chains which don't need
                                                           //    to gradually phase out staking and REX, 0.01x (10^13) is a good
@@ -119,9 +119,9 @@ struct powerup_state {
 ### Preparation for Upgrade
 
 1. Build [eos-system-contracts](https://github.com/eosnetworkfoundation/eos-system-contracts) with `powerup` code.
-2. Deploy eosio.system contract to `eosio`.
+2. Deploy flon.system contract to `eosio`.
 3. Create account `eosio.reserv` and ensure the account has enough RAM, at least 4 KiB.
-4. Deploy `powup.results.abi` to `eosio.reserv` account using `setabi`. The ABI can be found in the `build/contracts/eosio.system/.powerup/` directory.
+4. Deploy `powup.results.abi` to `eosio.reserv` account using `setabi`. The ABI can be found in the `build/contracts/flon.system/.powerup/` directory.
 5. Enable the REX system (if not enabled).
 
 #### Configure PowerUp

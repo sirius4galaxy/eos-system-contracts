@@ -9,7 +9,7 @@
 #include <fc/log/logger.hpp>
 #include <eosio/chain/exceptions.hpp>
 
-#include "eosio.system_tester.hpp"
+#include "flon.system_tester.hpp"
 struct _abi_hash {
    name owner;
    fc::sha256 hash;

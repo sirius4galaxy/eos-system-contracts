@@ -1,7 +1,7 @@
 #pragma once
 
 #include <eosio/eosio.hpp>
-#include <eosio.system/eosio.system.hpp>
+#include <flon.system/flon.system.hpp>
 #include <eosio.token/eosio.token.hpp>
 
 using namespace std;

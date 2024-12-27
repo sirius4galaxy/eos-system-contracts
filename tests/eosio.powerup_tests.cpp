@@ -9,7 +9,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "eosio.system_tester.hpp"
+#include "flon.system_tester.hpp"
 
 inline constexpr int64_t powerup_frac  = 1'000'000'000'000'000ll; // 1.0 = 10^15
 inline constexpr int64_t stake_weight = 100'000'000'0000ll; // 10^12

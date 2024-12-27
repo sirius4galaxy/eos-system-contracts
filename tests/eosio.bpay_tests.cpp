@@ -1,4 +1,4 @@
-#include "eosio.system_tester.hpp"
+#include "flon.system_tester.hpp"
 
 using namespace eosio_system;
 
@@ -14,15 +14,15 @@ BOOST_FIXTURE_TEST_CASE( bpay_test, eosio_system_tester ) try {
 
 
    // Transferring some tokens to the fees account
-   // since tokens from eosio will not be directly accepted as contributions to 
+   // since tokens from eosio will not be directly accepted as contributions to
    // the bpay contract
    transfer( config::system_account_name, fees, core_sym::from_string("100000.0000"), config::system_account_name );
 
-   
+
    // Setting up the producers, standby and inactive producers, and voting them in
    setup_producer_accounts({standby, inactive});
    auto producer_names = active_and_vote_producers();
-   
+
    BOOST_REQUIRE_EQUAL( success(), regproducer(standby) );
    BOOST_REQUIRE_EQUAL( success(), regproducer(inactive) );
    vector<name> top_producers_and_inactive = {inactive};
@@ -36,13 +36,13 @@ BOOST_FIXTURE_TEST_CASE( bpay_test, eosio_system_tester ) try {
    BOOST_REQUIRE_EQUAL( get_producer_info( producer_names[0] )["unpaid_blocks"].as<uint32_t>() > 0, true );
 
    // TODO: Check nothing happened here, no rewards since it comes from system account
-   
+
    asset rewards_sent = core_sym::from_string("1000.0000");
    transfer( fees, bpay, rewards_sent, fees);
 
    // rewards / 21
-   asset balance_per_producer = core_sym::from_string("47.6190"); 
-   
+   asset balance_per_producer = core_sym::from_string("47.6190");
+
    auto rewards = get_bpay_rewards(producer_names[0]);
 
    // bp.inactive is still active, so should be included in the rewards
@@ -65,7 +65,7 @@ BOOST_FIXTURE_TEST_CASE( bpay_test, eosio_system_tester ) try {
       BOOST_REQUIRE_EQUAL( core_sym::from_string("0.0000"), get_balance( prod ) );
       BOOST_REQUIRE_EQUAL( success(), bpay_claimrewards( prod ) );
       BOOST_REQUIRE_EQUAL( core_sym::from_string("95.2380"), get_balance( prod ) );
-      BOOST_REQUIRE_EQUAL( true, get_bpay_rewards(prod).is_null() );   
+      BOOST_REQUIRE_EQUAL( true, get_bpay_rewards(prod).is_null() );
 
       // should still have rewards for another producer
       BOOST_REQUIRE_EQUAL( get_bpay_rewards(producer_names[10])["quantity"].as<asset>(), core_sym::from_string("95.2380") );
@@ -76,7 +76,7 @@ BOOST_FIXTURE_TEST_CASE( bpay_test, eosio_system_tester ) try {
       BOOST_REQUIRE_EQUAL( core_sym::from_string("0.0000"), get_balance( inactive ) );
       BOOST_REQUIRE_EQUAL( success(), bpay_claimrewards( inactive ) );
       BOOST_REQUIRE_EQUAL( core_sym::from_string("47.6190"), get_balance( inactive ) );
-      BOOST_REQUIRE_EQUAL( true, get_bpay_rewards(inactive).is_null() );   
+      BOOST_REQUIRE_EQUAL( true, get_bpay_rewards(inactive).is_null() );
    }
 
    // Should not have rewards for a producer that was never active
@@ -93,7 +93,7 @@ BOOST_FIXTURE_TEST_CASE( bpay_test, eosio_system_tester ) try {
       BOOST_REQUIRE_EQUAL( get_bpay_rewards(producer_names[10])["quantity"].as<asset>(), core_sym::from_string("95.2380") );
    }
 
-   
+
 
 } FC_LOG_AND_RETHROW()
 

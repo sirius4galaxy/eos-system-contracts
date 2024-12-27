@@ -11,7 +11,7 @@
 #include <fc/log/logger.hpp>
 #include <fc/time.hpp>
 
-#include "eosio.system_tester.hpp"
+#include "flon.system_tester.hpp"
 
 #define TEST_INCLUDE
 

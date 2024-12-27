@@ -1,4 +1,4 @@
-#include <eosio.system/eosio.system.hpp>
+#include <flon.system/flon.system.hpp>
 #include <eosio.token/eosio.token.hpp>
 
 #include <eosio/crypto.hpp>
@@ -587,4 +587,4 @@ namespace eosiosystem {
       open_act.send( rex_account, core, get_self() );
    }
 
-} /// eosio.system
+} /// flon.system

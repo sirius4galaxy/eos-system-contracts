@@ -2,7 +2,7 @@ add_contract(eosio.fees eosio.fees ${CMAKE_CURRENT_SOURCE_DIR}/src/eosio.fees.cp
 
 target_include_directories(eosio.fees PUBLIC
    ${CMAKE_CURRENT_SOURCE_DIR}/include
-   ${CMAKE_CURRENT_SOURCE_DIR}/../eosio.system/include)
+   ${CMAKE_CURRENT_SOURCE_DIR}/../flon.system/include)
 
 set_target_properties(eosio.fees
    PROPERTIES

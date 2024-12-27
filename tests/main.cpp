@@ -9,7 +9,7 @@
 #include <fc/log/logger.hpp>
 #include <eosio/chain/exceptions.hpp>
 
-#include "eosio.system_tester.hpp"
+#include "flon.system_tester.hpp"
 
 using namespace eosio_system;
 #define BOOST_TEST_STATIC_LINK
@@ -30,7 +30,7 @@ boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
          break;
       }
    }
-   
+
    if(is_verbose) {
       fc::logger::get(DEFAULT_LOGGER).set_log_level(fc::log_level::debug);
    } else {

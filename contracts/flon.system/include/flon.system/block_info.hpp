@@ -20,7 +20,7 @@ static constexpr uint32_t rolling_window_size = 10;
  * records for blocks going back a particular block height difference backward from the most recent block.
  * Currently that block height difference is hardcoded to 10.
  */
-struct [[eosio::table, eosio::contract("eosio.system")]] block_info_record
+struct [[eosio::table, eosio::contract("flon.system")]] block_info_record
 {
    uint8_t           version = 0;
    uint32_t          block_height;

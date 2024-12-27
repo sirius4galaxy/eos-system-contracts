@@ -9,7 +9,7 @@
 #include <fc/log/logger.hpp>
 #include <eosio/chain/exceptions.hpp>
 
-#include "eosio.system_tester.hpp"
+#include "flon.system_tester.hpp"
 
 using namespace eosio_system;
 
