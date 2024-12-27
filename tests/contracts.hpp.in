@@ -13,8 +13,8 @@ struct contracts {
    static std::vector<char>    msig_abi() { return read_abi("${CMAKE_BINARY_DIR}/contracts/eosio.msig/eosio.msig.abi"); }
    static std::vector<uint8_t> wrap_wasm() { return read_wasm("${CMAKE_BINARY_DIR}/contracts/eosio.wrap/eosio.wrap.wasm"); }
    static std::vector<char>    wrap_abi() { return read_abi("${CMAKE_BINARY_DIR}/contracts/eosio.wrap/eosio.wrap.abi"); }
-   static std::vector<uint8_t> bios_wasm() { return read_wasm("${CMAKE_BINARY_DIR}/contracts/eosio.bios/eosio.bios.wasm"); }
-   static std::vector<char>    bios_abi() { return read_abi("${CMAKE_BINARY_DIR}/contracts/eosio.bios/eosio.bios.abi"); }
+   static std::vector<uint8_t> bios_wasm() { return read_wasm("${CMAKE_BINARY_DIR}/contracts/flon.bios/flon.bios.wasm"); }
+   static std::vector<char>    bios_abi() { return read_abi("${CMAKE_BINARY_DIR}/contracts/flon.bios/flon.bios.abi"); }
    static std::vector<uint8_t> bpay_wasm() { return read_wasm("${CMAKE_BINARY_DIR}/contracts/eosio.bpay/eosio.bpay.wasm"); }
    static std::vector<char>    bpay_abi() { return read_abi("${CMAKE_BINARY_DIR}/contracts/eosio.bpay/eosio.bpay.abi"); }
 
