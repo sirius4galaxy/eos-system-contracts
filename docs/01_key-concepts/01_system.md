@@ -14,7 +14,7 @@ As you just learned the relation between a `system account` and a `system contra
 |flon.msig|Yes|It contains the `flon.msig` contract|Allows the signing of a multi-sig transaction proposal for later execution if all required parties sign the proposal before the expiration time.|
 |flon.wrap|Yes|It contains the `flon.wrap` contract.|Simplifies block producer superuser actions by making them more readable and easier to audit.|
 |flon.token|No|It contains the `flon.token` contract.|Defines the structures and actions allowing users to create, issue, and manage tokens on the EOS blockchain.|
-|eosio.names|No|No|The account which is holding funds from namespace auctions.|
+|flon.names|No|No|The account which is holding funds from namespace auctions.|
 |flon.bpay|No|No|The account that pays the block producers for producing blocks. It assigns 0.25% of the inflation based on the amount of blocks a block producer created in the last 24 hours.|
 |eosio.prods|No|No|The account representing the union of all current active block producers permissions.|
 |flon.ram|No|No|The account that keeps track of the EOS balances based on users actions of buying or selling RAM.|

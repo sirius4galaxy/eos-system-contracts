@@ -3394,14 +3394,14 @@ BOOST_FIXTURE_TEST_CASE( multiple_namebids, eosio_system_tester ) try {
 
    // alice outbids bob on prefb
    {
-      const asset initial_names_balance = get_balance("eosio.names"_n);
+      const asset initial_names_balance = get_balance("flon.names"_n);
       BOOST_REQUIRE_EQUAL( success(),
                            bidname( "alice", "prefb", core_sym::from_string("1.1001") ) );
       // refund bob's failed bid on prefb
       BOOST_REQUIRE_EQUAL( success(), push_action( "bob"_n, "bidrefund"_n, mvo()("bidder","bob")("newname", "prefb") ) );
       BOOST_REQUIRE_EQUAL( core_sym::from_string( "9997.9997" ), get_balance("bob") );
       BOOST_REQUIRE_EQUAL( core_sym::from_string( "9998.8999" ), get_balance("alice") );
-      BOOST_REQUIRE_EQUAL( initial_names_balance + core_sym::from_string("0.1001"), get_balance("eosio.names"_n) );
+      BOOST_REQUIRE_EQUAL( initial_names_balance + core_sym::from_string("0.1001"), get_balance("flon.names"_n) );
    }
 
    // david outbids carl on prefd
@@ -4824,11 +4824,11 @@ BOOST_FIXTURE_TEST_CASE( ramfee_namebid_to_rex, eosio_system_tester ) try {
 
    cur_rex_balance = get_balance( "eosio.rex"_n );
    BOOST_REQUIRE_EQUAL( success(),                        bidname( carol, "rndmbid"_n, core_sym::from_string("23.7000") ) );
-   BOOST_REQUIRE_EQUAL( core_sym::from_string("23.7000"), get_balance( "eosio.names"_n ) );
+   BOOST_REQUIRE_EQUAL( core_sym::from_string("23.7000"), get_balance( "flon.names"_n ) );
    BOOST_REQUIRE_EQUAL( success(),                        bidname( alice, "rndmbid"_n, core_sym::from_string("29.3500") ) );
    // refund carol, the losing bid
    BOOST_REQUIRE_EQUAL( success(), push_action( carol, "bidrefund"_n, mvo()("bidder","carolaccount")("newname", "rndmbid") ) );
-   BOOST_REQUIRE_EQUAL( core_sym::from_string("29.3500"), get_balance( "eosio.names"_n ));
+   BOOST_REQUIRE_EQUAL( core_sym::from_string("29.3500"), get_balance( "flon.names"_n ));
 
    produce_block( fc::hours(24) );
    produce_blocks( 2 );
@@ -4837,7 +4837,7 @@ BOOST_FIXTURE_TEST_CASE( ramfee_namebid_to_rex, eosio_system_tester ) try {
    BOOST_REQUIRE_EQUAL( success(),                        deposit( frank, core_sym::from_string("5.0000") ) );
    BOOST_REQUIRE_EQUAL( success(),                        buyrex( frank, core_sym::from_string("5.0000") ) );
    BOOST_REQUIRE_EQUAL( get_balance( "eosio.rex"_n ),      cur_rex_balance + core_sym::from_string("34.3500") );
-   BOOST_REQUIRE_EQUAL( 0,                                get_balance( "eosio.names"_n ).get_amount() );
+   BOOST_REQUIRE_EQUAL( 0,                                get_balance( "flon.names"_n ).get_amount() );
 
    cur_rex_balance = get_balance( "eosio.rex"_n );
    produce_block( fc::hours(30*24 + 13) );

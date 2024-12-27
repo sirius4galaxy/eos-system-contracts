@@ -24,7 +24,7 @@ public:
       produce_block();
 
       create_accounts({ "flon.token"_n, "flon.ram"_n, "flon.ramfee"_n, "flon.stake"_n,
-               "flon.bpay"_n, "flon.vpay"_n, "eosio.saving"_n, "eosio.names"_n, "eosio.rex"_n, "flon.fees"_n });
+               "flon.bpay"_n, "flon.vpay"_n, "eosio.saving"_n, "flon.names"_n, "eosio.rex"_n, "flon.fees"_n });
 
 
       produce_blocks( 100 );
