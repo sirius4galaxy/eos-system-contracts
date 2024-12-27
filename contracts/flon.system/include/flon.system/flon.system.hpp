@@ -839,7 +839,7 @@ namespace eosiosystem {
          static constexpr eosio::name bpay_account{"flon.bpay"_n};
          static constexpr eosio::name vpay_account{"flon.vpay"_n};
          static constexpr eosio::name names_account{"flon.names"_n};
-         static constexpr eosio::name saving_account{"eosio.saving"_n};
+         static constexpr eosio::name saving_account{"flon.saving"_n};
          static constexpr eosio::name rex_account{"eosio.rex"_n};
          static constexpr eosio::name fees_account{"flon.fees"_n};
          static constexpr eosio::name powerup_account{"eosio.powup"_n};
@@ -1644,7 +1644,7 @@ namespace eosiosystem {
           *     (eg. For 5% Annual inflation => annual_rate=500
           *          For 1.5% Annual inflation => annual_rate=150
           * @param inflation_pay_factor - Inverse of the fraction of the inflation used to reward block producers.
-          *     The remaining inflation will be sent to the `eosio.saving` account.
+          *     The remaining inflation will be sent to the `flon.saving` account.
           *     (eg. For 20% of inflation going to block producer rewards   => inflation_pay_factor = 50000
           *          For 100% of inflation going to block producer rewards  => inflation_pay_factor = 10000).
           * @param votepay_factor - Inverse of the fraction of the block producer rewards to be distributed proportional to blocks produced.
@@ -1659,7 +1659,7 @@ namespace eosiosystem {
           * Change how inflated or vested tokens will be distributed based on the following structure.
           *
           * @param inflation_pay_factor - Inverse of the fraction of the inflation used to reward block producers.
-          *     The remaining inflation will be sent to the `eosio.saving` account.
+          *     The remaining inflation will be sent to the `flon.saving` account.
           *     (eg. For 20% of inflation going to block producer rewards   => inflation_pay_factor = 50000
           *          For 100% of inflation going to block producer rewards  => inflation_pay_factor = 10000).
           * @param votepay_factor - Inverse of the fraction of the block producer rewards to be distributed proportional to blocks produced.
