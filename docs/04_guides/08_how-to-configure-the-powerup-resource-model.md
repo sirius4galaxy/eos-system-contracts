@@ -120,8 +120,8 @@ struct powerup_state {
 
 1. Build [eos-system-contracts](https://github.com/eosnetworkfoundation/eos-system-contracts) with `powerup` code.
 2. Deploy flon.system contract to `eosio`.
-3. Create account `eosio.reserv` and ensure the account has enough RAM, at least 4 KiB.
-4. Deploy `powup.results.abi` to `eosio.reserv` account using `setabi`. The ABI can be found in the `build/contracts/flon.system/.powerup/` directory.
+3. Create account `flon.reserv` and ensure the account has enough RAM, at least 4 KiB.
+4. Deploy `powup.results.abi` to `flon.reserv` account using `setabi`. The ABI can be found in the `build/contracts/flon.system/.powerup/` directory.
 5. Enable the REX system (if not enabled).
 
 #### Configure PowerUp

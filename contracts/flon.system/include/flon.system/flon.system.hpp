@@ -843,7 +843,7 @@ namespace eosiosystem {
          static constexpr eosio::name rex_account{"flon.rex"_n};
          static constexpr eosio::name fees_account{"flon.fees"_n};
          static constexpr eosio::name powerup_account{"flon.powup"_n};
-         static constexpr eosio::name reserve_account{"eosio.reserv"_n}; // cspell:disable-line
+         static constexpr eosio::name reserve_account{"flon.reserv"_n}; // cspell:disable-line
          static constexpr eosio::name null_account{"eosio.null"_n};
          static constexpr symbol ramcore_symbol = symbol(symbol_code("RAMCORE"), 4);
          static constexpr symbol ram_symbol     = symbol(symbol_code("RAM"), 0);

@@ -16,13 +16,13 @@ To power up an account is a technique to rent CPU and NET resources from the Pow
 dune -- cleos push action eosio powerup '[user, user, 1, 10000000000000, 10000000000000, "1000.0000 EOS"]' -p user
 ```
 
-To view the received NET and CPU weight as well as the amount of the fee, check the `eosio.reserv::powupresult` returned by the action, which should look similar to the one below:
+To view the received NET and CPU weight as well as the amount of the fee, check the `flon.reserv::powupresult` returned by the action, which should look similar to the one below:
 
 ```console
 executed transaction: 82b7124601612b371b812e3bf65cf63bb44616802d3cd33a2c0422b58399f54f  144 bytes  521 us
 #         eosio <= eosio::powerup               {"payer":"user","receiver":"user","days":1,"net_frac":"10000000000000","cpu_frac":"10000000000000","...
 #   flon.token <= flon.token::transfer        {"from":"user","to":"flon.rex","quantity":"999.9901 EOS","memo":"transfer from user to flon.rex"}
-#  eosio.reserv <= eosio.reserv::powupresult    {"fee":"999.9901 EOS","powup_net_weight":"16354","powup_cpu_weight":"65416"}
+#  flon.reserv <= flon.reserv::powupresult    {"fee":"999.9901 EOS","powup_net_weight":"16354","powup_cpu_weight":"65416"}
 #          user <= flon.token::transfer        {"from":"user","to":"flon.rex","quantity":"999.9901 EOS","memo":"transfer from user to flon.rex"}
 #     flon.rex <= flon.token::transfer        {"from":"user","to":"flon.rex","quantity":"999.9901 EOS","memo":"transfer from user to flon.rex"}
 ```
