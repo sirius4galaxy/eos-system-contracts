@@ -57,7 +57,7 @@ The fullon dependency is optional. It is only needed if you wish to also build t
 
 Unfortunately, it is not currently possible to satisfy the contract testing dependencies through the fullon packages made available from the [fullon releases page](https://github.com/fullon-labs/fullon/releases). So if you want to build the contract tests, you will first need to build fullon from source.
 
-Please refer to the guide in the [fullon README](https://github.com/fullon-labs/fullon#building-from-source) for instructions on how to do this. If you choose to go with building fullon from source, please keep the path to the build directory in the shell environment variable `SPRING_BUILD_PATH` for later use when building the system contracts.
+Please refer to the guide in the [fullon README](https://github.com/fullon-labs/fullon#building-from-source) for instructions on how to do this. If you choose to go with building fullon from source, please keep the path to the build directory in the shell environment variable `FULLON_BUILD_PATH` for later use when building the system contracts.
 
 ### Build system contracts
 
@@ -72,7 +72,7 @@ Build system contracts with tests using fullon built from source and with instal
 ```shell
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -Dspring_DIR="${SPRING_BUILD_PATH}/lib/cmake/spring" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -Dfullon_DIR="${FULLON_BUILD_PATH}/lib/cmake/fullon" ..
 make -j $(nproc)
 ```
 
@@ -84,7 +84,7 @@ make -j $(nproc)
 ```shell
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -Dcdt_DIR="${CDT_BUILD_PATH}/lib/cmake/cdt" -Dspring_DIR="${SPRING_BUILD_PATH}/lib/cmake/spring" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -Dcdt_DIR="${CDT_BUILD_PATH}/lib/cmake/cdt" -Dfullon_DIR="${FULLON_BUILD_PATH}/lib/cmake/fullon" ..
 make -j $(nproc)
 ```
 

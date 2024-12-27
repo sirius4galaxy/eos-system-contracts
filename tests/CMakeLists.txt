@@ -4,24 +4,24 @@ set(EOSIO_VERSION_MIN "1.0")
 set(EOSIO_VERSION_SOFT_MAX "1.0")
 # set(EOSIO_VERSION_HARD_MAX "")
 
-find_package(spring)
+find_package(fullon)
 
-# Check the version of Spring
-if(SYSTEM_ENABLE_SPRING_VERSION_CHECK)
+# Check the version of fullon
+if(SYSTEM_ENABLE_FULLON_VERSION_CHECK)
   set(VERSION_MATCH_ERROR_MSG "")
   eosio_check_version(VERSION_OUTPUT "${EOSIO_VERSION}" "${EOSIO_VERSION_MIN}" "${EOSIO_VERSION_SOFT_MAX}"
                       "${EOSIO_VERSION_HARD_MAX}" VERSION_MATCH_ERROR_MSG)
   if(VERSION_OUTPUT STREQUAL "MATCH")
-    message(STATUS "Using Spring version ${EOSIO_VERSION}")
+    message(STATUS "Using fullon version ${EOSIO_VERSION}")
   elseif(VERSION_OUTPUT STREQUAL "WARN")
     message(
       WARNING
-        "Using Spring version ${EOSIO_VERSION} even though it exceeds the maximum supported version of ${EOSIO_VERSION_SOFT_MAX}; continuing with configuration, however build may fail.\nIt is recommended to use Spring version ${EOSIO_VERSION_SOFT_MAX}.x"
+        "Using fullon version ${EOSIO_VERSION} even though it exceeds the maximum supported version of ${EOSIO_VERSION_SOFT_MAX}; continuing with configuration, however build may fail.\nIt is recommended to use fullon version ${EOSIO_VERSION_SOFT_MAX}.x"
     )
   else() # INVALID OR MISMATCH
     message(
       FATAL_ERROR
-        "Found Spring version ${EOSIO_VERSION} but it does not satisfy version requirements: ${VERSION_MATCH_ERROR_MSG}\nPlease use Spring version ${EOSIO_VERSION_SOFT_MAX}.x"
+        "Found fullon version ${EOSIO_VERSION} but it does not satisfy version requirements: ${VERSION_MATCH_ERROR_MSG}\nPlease use fullon version ${EOSIO_VERSION_SOFT_MAX}.x"
     )
   endif(VERSION_OUTPUT STREQUAL "MATCH")
 endif()
