@@ -1212,9 +1212,9 @@ namespace eosiosystem {
           *
           * @param num_of_maturity_buckets - used to calculate maturity time of purchase REX tokens from end of the day UTC.
           * @param sell_matured_rex - if true, matured REX is sold immediately.
-          *                           https://github.com/eosnetworkfoundation/eos-system-contracts/issues/134
+          *                           https://github.com/fullon-labs/flon.contracts/issues/134
           * @param buy_rex_to_savings - if true, buying REX is moved immediately to REX savings.
-          *                             https://github.com/eosnetworkfoundation/eos-system-contracts/issues/135
+          *                             https://github.com/fullon-labs/flon.contracts/issues/135
           */
          [[eosio::action]]
          void setrexmature(const std::optional<uint32_t> num_of_maturity_buckets, const std::optional<bool> sell_matured_rex, const std::optional<bool> buy_rex_to_savings );

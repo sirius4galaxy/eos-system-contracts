@@ -32,12 +32,12 @@ The collection of system contracts consists of the following individual contract
 
 ## Repository organization
 
-The `main` branch contains the latest state of development; do not use this for production. Refer to the [releases page](https://github.com/eosnetworkfoundation/eos-system-contracts/releases) for current information on releases, pre-releases, and obsolete releases as well as the corresponding tags for those releases.
+The `main` branch contains the latest state of development; do not use this for production. Refer to the [releases page](https://github.com/fullon-labs/flon.contracts/releases) for current information on releases, pre-releases, and obsolete releases as well as the corresponding tags for those releases.
 ## Supported Operating Systems
 
-[CDT](https://github.com/AntelopeIO/cdt) is required to build contracts. Any operating systems supported by CDT is sufficient to build the system contracts.
+[CDT](https://github.com/fullon-labs/flon.cdt) is required to build contracts. Any operating systems supported by CDT is sufficient to build the system contracts.
 
-To build and run the tests as well, [Spring](https://github.com/AntelopeIO/spring) is also required as a dependency, which may have its further restrictions on supported operating systems.
+To build and run the tests as well, [fullon](https://github.com/fullon-labs/fullon) is also required as a dependency, which may have its further restrictions on supported operating systems.
 
 ## Building
 
@@ -45,29 +45,29 @@ The build guide below will assume you are running Ubuntu 22.04. However, as ment
 
 ### Build or install CDT dependency
 
-The CDT dependency is required. This release of the system contracts requires at least version 4.1.0 of CDT, and nodeos version Spring v1.0.0 or later.
+The CDT dependency is required. This release of the system contracts requires at least version 4.1.0 of CDT, and nodeos version fullon v1.0.0 or later.
 
-The easiest way to satisfy this dependency is to install CDT on your system through a package. Find the release of a compatible version of CDT from its [releases page](https://github.com/AntelopeIO/cdt/releases), download the package file appropriate for your OS from the attached assets, and install the package.
+The easiest way to satisfy this dependency is to install CDT on your system through a package. Find the release of a compatible version of CDT from its [releases page](https://github.com/fullon-labs/flon.cdt/releases), download the package file appropriate for your OS from the attached assets, and install the package.
 
-Alternatively, you can build CDT from source. Please refer to the guide in the [CDT README](https://github.com/AntelopeIO/cdt#building-from-source) for instructions on how to do this. If you choose to go with building CDT from source, please keep the path to the build directory in the shell environment variable `CDT_BUILD_PATH` for later use when building the system contracts.
+Alternatively, you can build CDT from source. Please refer to the guide in the [CDT README](https://github.com/fullon-labs/flon.cdt#building-from-source) for instructions on how to do this. If you choose to go with building CDT from source, please keep the path to the build directory in the shell environment variable `CDT_BUILD_PATH` for later use when building the system contracts.
 
-### Optionally build Spring dependency
+### Optionally build fullon dependency
 
-The Spring dependency is optional. It is only needed if you wish to also build the tests using the `BUILD_TESTS` CMake flag.
+The fullon dependency is optional. It is only needed if you wish to also build the tests using the `BUILD_TESTS` CMake flag.
 
-Unfortunately, it is not currently possible to satisfy the contract testing dependencies through the Spring packages made available from the [Spring releases page](https://github.com/AntelopeIO/spring/releases). So if you want to build the contract tests, you will first need to build Spring from source.
+Unfortunately, it is not currently possible to satisfy the contract testing dependencies through the fullon packages made available from the [fullon releases page](https://github.com/fullon-labs/fullon/releases). So if you want to build the contract tests, you will first need to build fullon from source.
 
-Please refer to the guide in the [Spring README](https://github.com/AntelopeIO/spring#building-from-source) for instructions on how to do this. If you choose to go with building Spring from source, please keep the path to the build directory in the shell environment variable `SPRING_BUILD_PATH` for later use when building the system contracts.
+Please refer to the guide in the [fullon README](https://github.com/fullon-labs/fullon#building-from-source) for instructions on how to do this. If you choose to go with building fullon from source, please keep the path to the build directory in the shell environment variable `SPRING_BUILD_PATH` for later use when building the system contracts.
 
 ### Build system contracts
 
-Beyond CDT and optionally Spring (if also building the tests), no additional dependencies are required to build the system contracts.
+Beyond CDT and optionally fullon (if also building the tests), no additional dependencies are required to build the system contracts.
 
-The instructions below assume you are building the system contracts with tests, have already built Spring from source, and have the CDT dependency installed on your system. For some other configurations, expand the hidden panels placed lower within this section.
+The instructions below assume you are building the system contracts with tests, have already built fullon from source, and have the CDT dependency installed on your system. For some other configurations, expand the hidden panels placed lower within this section.
 
 For all configurations, you should first `cd` into the directory containing cloned system contracts repository.
 
-Build system contracts with tests using Spring built from source and with installed CDT package:
+Build system contracts with tests using fullon built from source and with installed CDT package:
 
 ```shell
 mkdir build
@@ -79,7 +79,7 @@ make -j $(nproc)
 **Note:** `CMAKE_BUILD_TYPE` has no impact on the WASM files generated for the contracts. It only impacts how the test binaries are built. Use `-DCMAKE_BUILD_TYPE=Debug` if you want to create test binaries that you can debug.
 
 <details>
-<summary>Build system contracts with tests using Spring and CDT both built from source</summary>
+<summary>Build system contracts with tests using fullon and CDT both built from source</summary>
 
 ```shell
 mkdir build

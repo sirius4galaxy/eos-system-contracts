@@ -17,6 +17,6 @@ As a developer if you want to estimate how much CPU and NET a transaction requir
 
 * Use the `--dry-run` option for the `dune -- focli push transaction` command.
 * Use any tool that can pack a transaction and send it to the blockchain and specify the `--dry-run` option.
-* Use the chain API endpoint [`compute_transaction`](https://github.com/AntelopeIO/spring/blob/7254bab917a17bcc0d82d23d03f4173176150239/plugins/chain_plugin/include/eosio/chain_plugin/chain_plugin.hpp#L557).
+* Use the chain API endpoint [`compute_transaction`](https://github.com/fullon-labs/fullon/blob/main/plugins/chain_plugin/include/eosio/chain_plugin/chain_plugin.hpp#L557).
 
 In all cases, when the transaction is processed, the blockchain node simulates the execution of the transaction and, as a consequence, the state of the blockchain is changed speculatively, which allows for the CPU and NET measurements to be done. However, the transaction is not sent to the blockchain and the caller receives the estimated CPU and NET costs in return.

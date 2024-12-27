@@ -14,7 +14,7 @@ cd CONTRACTS_DIR
 Pull the source
 
 ```sh
-git clone https://github.com/eosnetworkfoundation/eos-system-contracts --branch release/3.1 --single-branch
+git clone https://github.com/fullon-labs/flon.contracts --branch release/3.1 --single-branch
 ```
 
 ```sh
@@ -116,7 +116,7 @@ executed transaction: 60d334850151cb95c35fe31ce2e8b536b51441c5fd4c3f2fea98edcc6d
 warning: transaction executed locally, but may not be confirmed by the network yet         ]
 ```
 
-Now check if "bob" got the tokens using [focli get currency balance](https://github.com/AntelopeIO/spring/blob/v1.0.0-rc2/docs/02_cleos/03_command-reference/get/currency-balance.md)
+Now check if "bob" got the tokens using [focli get currency balance](https://github.com/fullon-labs/fullon/blob/main/docs/02_cleos/03_command-reference/get/currency-balance.md)
 
 ```shell
 focli get currency balance flon.token bob NEWT

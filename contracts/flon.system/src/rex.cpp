@@ -975,7 +975,7 @@ namespace eosiosystem {
 
    /**
     * @brief Sells matured REX tokens
-    *        https://github.com/eosnetworkfoundation/eos-system-contracts/issues/134
+    *        https://github.com/fullon-labs/flon.contracts/issues/134
     *
     * @param owner - owner account name
     */
@@ -992,7 +992,7 @@ namespace eosiosystem {
 
    /**
     * @brief Move new REX tokens to savings
-    *        https://github.com/eosnetworkfoundation/eos-system-contracts/issues/135
+    *        https://github.com/fullon-labs/flon.contracts/issues/135
     *
     * @param owner - owner account name
     * @param rex - amount of REX tokens to be moved to savings

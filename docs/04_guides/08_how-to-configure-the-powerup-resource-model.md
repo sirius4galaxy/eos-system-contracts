@@ -118,7 +118,7 @@ struct powerup_state {
 
 ### Preparation for Upgrade
 
-1. Build [eos-system-contracts](https://github.com/eosnetworkfoundation/eos-system-contracts) with `powerup` code.
+1. Build [eos-system-contracts](https://github.com/fullon-labs/flon.contracts) with `powerup` code.
 2. Deploy flon.system contract to `flon`.
 3. Create account `flon.reserv` and ensure the account has enough RAM, at least 4 KiB.
 4. Deploy `powup.results.abi` to `flon.reserv` account using `setabi`. The ABI can be found in the `build/contracts/flon.system/.powerup/` directory.

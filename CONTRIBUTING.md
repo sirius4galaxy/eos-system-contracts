@@ -34,12 +34,12 @@ Guidelines for bug reports:
    reported.
 
 1. **Check if the issue has been fixed** &mdash; look for [closed issues in the
-   current milestone](https://github.com/eosnetworkfoundation/eos-system-contracts/issues?q=is%3Aissue+is%3Aclosed) or try to reproduce it
+   current milestone](https://github.com/fullon-labs/flon.contracts/issues?q=is%3Aissue+is%3Aclosed) or try to reproduce it
    using the latest `main` branch.
 
 A good bug report shouldn't leave others needing to chase you up for more information. Be sure to include the details of your environment and relevant tests that demonstrate the failure.
 
-[Report a bug](https://github.com/eosnetworkfoundation/eos-system-contracts/issues/new?title=Bug%3A)
+[Report a bug](https://github.com/fullon-labs/flon.contracts/issues/new?title=Bug%3A)
 
 ### Feature Requests
 
@@ -59,7 +59,7 @@ Change requests cover both architectural and functional changes to how eos-syste
 
 ## Working on eos-system-contracts
 
-Code contributions are welcome and encouraged! If you are looking for a good place to start, check out the [good first issue](https://github.com/eosnetworkfoundation/eos-system-contracts/labels/good%20first%20issue) label in GitHub issues.
+Code contributions are welcome and encouraged! If you are looking for a good place to start, check out the [good first issue](https://github.com/fullon-labs/flon.contracts/labels/good%20first%20issue) label in GitHub issues.
 
 Also, please follow these guidelines when submitting code:
 
@@ -67,7 +67,7 @@ Also, please follow these guidelines when submitting code:
 
 To get it out of the way:
 
-- **[main](https://github.com/eosnetworkfoundation/eos-system-contracts/tree/main)** is the development branch. All work on the next release happens here so you should generally branch off `main`. Do **NOT** use this branch for a production site.
+- **[main](https://github.com/fullon-labs/flon.contracts/tree/main)** is the development branch. All work on the next release happens here so you should generally branch off `main`. Do **NOT** use this branch for a production site.
 - **release/** branches contain stable releases of eos-system-contracts. Some of these branches may be obsolete, a prerelease (release candidate), or designated as stable and ready for use in production. Generally do **NOT** use these branches to work on eos-system-contracts' source unless you are working on a defect or change that would apply to a current stable release or release candidate. If in doubt, branch off of `main` and an eos-system-contracts maintainer will chime in if you should switch to a release branch.
 
 ### Submitting Pull Requests
