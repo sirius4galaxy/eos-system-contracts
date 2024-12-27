@@ -9,3 +9,11 @@ set_target_properties(flon.fees
    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}")
 
 target_compile_options( flon.fees PUBLIC )
+
+install(
+   FILES
+      ${CMAKE_CURRENT_BINARY_DIR}/fullon.fees.wasm
+      ${CMAKE_CURRENT_BINARY_DIR}/fullon.fees.abi
+   DESTINATION
+      ${CMAKE_INSTALL_PREFIX}/contracts/fullon.fees
+)

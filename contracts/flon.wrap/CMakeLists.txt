@@ -11,3 +11,11 @@ set_target_properties(flon.wrap
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/ricardian/flon.wrap.contracts.md.in ${CMAKE_CURRENT_BINARY_DIR}/ricardian/flon.wrap.contracts.md @ONLY )
 
 target_compile_options( flon.wrap PUBLIC -R${CMAKE_CURRENT_SOURCE_DIR}/ricardian -R${CMAKE_CURRENT_BINARY_DIR}/ricardian )
+
+install(
+   FILES
+      ${CMAKE_CURRENT_BINARY_DIR}/fullon.wrap.wasm
+      ${CMAKE_CURRENT_BINARY_DIR}/fullon.wrap.abi
+   DESTINATION
+      ${CMAKE_INSTALL_PREFIX}/contracts/fullon.wrap
+)
