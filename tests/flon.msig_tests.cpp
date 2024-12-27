@@ -403,11 +403,11 @@ BOOST_FIXTURE_TEST_CASE( big_transaction, eosio_msig_tester ) try {
 
 BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, eosio_msig_tester ) try {
 
-   // required to set up the link between (eosio active) and (eosio.prods active)
+   // required to set up the link between (eosio active) and (flon.prods active)
    //
    //                  eosio active
    //                       |
-   //             eosio.prods active (2/3 threshold)
+   //             flon.prods active (2/3 threshold)
    //             /         |        \             <--- implicitly updated in onblock action
    // alice active     bob active   carol active
 
@@ -416,7 +416,7 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, eosio_msig_tester )
       config::active_name,
       authority( 1,
                  vector<key_weight>{{get_private_key(config::system_account_name, "active").get_public_key(), 1}},
-                 vector<permission_level_weight>{{{"eosio.prods"_n, config::active_name}, 1}}
+                 vector<permission_level_weight>{{{"flon.prods"_n, config::active_name}, 1}}
       ),
       config::owner_name,
       {{config::system_account_name, config::active_name}},
@@ -530,13 +530,13 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, eosio_msig_tester )
 
 BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, eosio_msig_tester ) try {
 
-   // set up the link between (eosio active) and (eosio.prods active)
+   // set up the link between (eosio active) and (flon.prods active)
    set_authority(
       config::system_account_name,
       config::active_name,
       authority( 1,
                  vector<key_weight>{{get_private_key(config::system_account_name, "active").get_public_key(), 1}},
-                 vector<permission_level_weight>{{{"eosio.prods"_n, config::active_name}, 1}}
+                 vector<permission_level_weight>{{{"flon.prods"_n, config::active_name}, 1}}
       ),
       config::owner_name,
       {{config::system_account_name, config::active_name}},
