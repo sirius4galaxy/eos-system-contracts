@@ -21,10 +21,10 @@ To view the received NET and CPU weight as well as the amount of the fee, check 
 ```console
 executed transaction: 82b7124601612b371b812e3bf65cf63bb44616802d3cd33a2c0422b58399f54f  144 bytes  521 us
 #         eosio <= eosio::powerup               {"payer":"user","receiver":"user","days":1,"net_frac":"10000000000000","cpu_frac":"10000000000000","...
-#   flon.token <= flon.token::transfer        {"from":"user","to":"eosio.rex","quantity":"999.9901 EOS","memo":"transfer from user to eosio.rex"}
+#   flon.token <= flon.token::transfer        {"from":"user","to":"flon.rex","quantity":"999.9901 EOS","memo":"transfer from user to flon.rex"}
 #  eosio.reserv <= eosio.reserv::powupresult    {"fee":"999.9901 EOS","powup_net_weight":"16354","powup_cpu_weight":"65416"}
-#          user <= flon.token::transfer        {"from":"user","to":"eosio.rex","quantity":"999.9901 EOS","memo":"transfer from user to eosio.rex"}
-#     eosio.rex <= flon.token::transfer        {"from":"user","to":"eosio.rex","quantity":"999.9901 EOS","memo":"transfer from user to eosio.rex"}
+#          user <= flon.token::transfer        {"from":"user","to":"flon.rex","quantity":"999.9901 EOS","memo":"transfer from user to flon.rex"}
+#     flon.rex <= flon.token::transfer        {"from":"user","to":"flon.rex","quantity":"999.9901 EOS","memo":"transfer from user to flon.rex"}
 ```
 
 The PowerUp resource model on the EOS blockchain is initialized with `"powerup_days": 1,`. This setting permits the maximum period to rent CPU and NET for 24 hours. If you do not use the resources within the 24 hour interval, the rented CPU and NET expires.

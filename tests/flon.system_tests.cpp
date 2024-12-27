@@ -4243,7 +4243,7 @@ BOOST_FIXTURE_TEST_CASE( unstake_buy_rex, eosio_system_tester, * boost::unit_tes
       BOOST_REQUIRE_EQUAL( get_net_limit( alice ),                  init_net_limit );
       BOOST_REQUIRE_EQUAL( ratio * tot_stake.get_amount(),          get_rex_balance( alice ).get_amount() );
       BOOST_REQUIRE_EQUAL( tot_stake,                               get_rex_balance_obj( alice )["vote_stake"].as<asset>() );
-      BOOST_REQUIRE_EQUAL( tot_stake,                               get_balance( "eosio.rex"_n ) );
+      BOOST_REQUIRE_EQUAL( tot_stake,                               get_balance( "flon.rex"_n ) );
       BOOST_REQUIRE_EQUAL( tot_stake,                               init_eosio_stake_balance - get_balance( "flon.stake"_n ) );
       auto current_voter_info = get_voter_info( alice );
       auto current_prod_info  = get_producer_info( producer_names[0] );
@@ -4796,13 +4796,13 @@ BOOST_FIXTURE_TEST_CASE( ramfee_namebid_to_rex, eosio_system_tester ) try {
    BOOST_REQUIRE_EQUAL( success(),                      deposit( alice, core_sym::from_string("350.0000") ) );
    BOOST_REQUIRE_EQUAL( success(),                      buyrex( alice, core_sym::from_string("350.0000") ) );
    cur_fees_balance = get_balance( "flon.fees"_n );
-   asset cur_rex_balance = get_balance( "eosio.rex"_n );
+   asset cur_rex_balance = get_balance( "flon.rex"_n );
    BOOST_REQUIRE_EQUAL( core_sym::from_string("350.0000"), cur_rex_balance );
    BOOST_REQUIRE_EQUAL( success(),                         buyram( bob, carol, core_sym::from_string("70.0000") ) );
    BOOST_REQUIRE_EQUAL( cur_fees_balance,                get_balance( "flon.fees"_n ) );
-   BOOST_REQUIRE_EQUAL( get_balance( "eosio.rex"_n ),       cur_rex_balance + core_sym::from_string("0.3500") );
+   BOOST_REQUIRE_EQUAL( get_balance( "flon.rex"_n ),       cur_rex_balance + core_sym::from_string("0.3500") );
 
-   cur_rex_balance = get_balance( "eosio.rex"_n );
+   cur_rex_balance = get_balance( "flon.rex"_n );
 
    produce_blocks( 1 );
    produce_block( fc::hours(30*24 + 12) );
@@ -4822,7 +4822,7 @@ BOOST_FIXTURE_TEST_CASE( ramfee_namebid_to_rex, eosio_system_tester ) try {
    cross_15_percent_threshold();
    produce_block( fc::days(14) );
 
-   cur_rex_balance = get_balance( "eosio.rex"_n );
+   cur_rex_balance = get_balance( "flon.rex"_n );
    BOOST_REQUIRE_EQUAL( success(),                        bidname( carol, "rndmbid"_n, core_sym::from_string("23.7000") ) );
    BOOST_REQUIRE_EQUAL( core_sym::from_string("23.7000"), get_balance( "flon.names"_n ) );
    BOOST_REQUIRE_EQUAL( success(),                        bidname( alice, "rndmbid"_n, core_sym::from_string("29.3500") ) );
@@ -4836,10 +4836,10 @@ BOOST_FIXTURE_TEST_CASE( ramfee_namebid_to_rex, eosio_system_tester ) try {
    BOOST_REQUIRE_EQUAL( core_sym::from_string("0.0000"), get_rex_pool()["namebid_proceeds"].as<asset>() );
    BOOST_REQUIRE_EQUAL( success(),                        deposit( frank, core_sym::from_string("5.0000") ) );
    BOOST_REQUIRE_EQUAL( success(),                        buyrex( frank, core_sym::from_string("5.0000") ) );
-   BOOST_REQUIRE_EQUAL( get_balance( "eosio.rex"_n ),      cur_rex_balance + core_sym::from_string("34.3500") );
+   BOOST_REQUIRE_EQUAL( get_balance( "flon.rex"_n ),      cur_rex_balance + core_sym::from_string("34.3500") );
    BOOST_REQUIRE_EQUAL( 0,                                get_balance( "flon.names"_n ).get_amount() );
 
-   cur_rex_balance = get_balance( "eosio.rex"_n );
+   cur_rex_balance = get_balance( "flon.rex"_n );
    produce_block( fc::hours(30*24 + 13) );
    produce_blocks( 1 );
 
@@ -5525,10 +5525,10 @@ BOOST_FIXTURE_TEST_CASE( donate_to_rex, eosio_system_tester ) try {
 
 
    for (int i = 0; i < 4; ++i) {
-      const asset rex_balance = get_balance("eosio.rex"_n);
+      const asset rex_balance = get_balance("flon.rex"_n);
       const int64_t rex_proceeds = get_rex_return_pool()["proceeds"].as<int64_t>();
       BOOST_REQUIRE_EQUAL( success(), donatetorex( bob, core_sym::from_string("100.0000"), "") );
-      BOOST_REQUIRE_EQUAL( rex_balance + core_sym::from_string("100.0000"), get_balance("eosio.rex"_n) );
+      BOOST_REQUIRE_EQUAL( rex_balance + core_sym::from_string("100.0000"), get_balance("flon.rex"_n) );
       BOOST_REQUIRE_EQUAL( rex_proceeds + 1000000, get_rex_return_pool()["proceeds"].as<int64_t>() );
    }
 } FC_LOG_AND_RETHROW()

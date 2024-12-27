@@ -377,7 +377,7 @@ namespace eosiosystem {
    }
 
    /**
-    * @brief Updates REX pool and deposits token to eosio.rex
+    * @brief Updates REX pool and deposits token to flon.rex
     *
     * @param payer - the payer of donated funds.
     * @param quantity - the quantity of tokens to donated to REX with.

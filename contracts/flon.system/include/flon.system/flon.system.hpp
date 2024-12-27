@@ -840,7 +840,7 @@ namespace eosiosystem {
          static constexpr eosio::name vpay_account{"flon.vpay"_n};
          static constexpr eosio::name names_account{"flon.names"_n};
          static constexpr eosio::name saving_account{"flon.saving"_n};
-         static constexpr eosio::name rex_account{"eosio.rex"_n};
+         static constexpr eosio::name rex_account{"flon.rex"_n};
          static constexpr eosio::name fees_account{"flon.fees"_n};
          static constexpr eosio::name powerup_account{"eosio.powup"_n};
          static constexpr eosio::name reserve_account{"eosio.reserv"_n}; // cspell:disable-line
