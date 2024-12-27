@@ -24,7 +24,7 @@ public:
       produce_block();
 
       create_accounts({ "flon.token"_n, "eosio.ram"_n, "eosio.ramfee"_n, "eosio.stake"_n,
-               "eosio.bpay"_n, "eosio.vpay"_n, "eosio.saving"_n, "eosio.names"_n, "eosio.rex"_n, "eosio.fees"_n });
+               "flon.bpay"_n, "eosio.vpay"_n, "eosio.saving"_n, "eosio.names"_n, "eosio.rex"_n, "eosio.fees"_n });
 
 
       produce_blocks( 100 );
@@ -40,10 +40,10 @@ public:
 
       set_code( "eosio.fees"_n, contracts::fees_wasm());
 
-      set_code( "eosio.bpay"_n, contracts::bpay_wasm());
-      set_abi( "eosio.bpay"_n, contracts::bpay_abi().data() );
+      set_code( "flon.bpay"_n, contracts::bpay_wasm());
+      set_abi( "flon.bpay"_n, contracts::bpay_abi().data() );
       {
-         const auto& accnt = control->db().get<account_object,by_name>( "eosio.bpay"_n );
+         const auto& accnt = control->db().get<account_object,by_name>( "flon.bpay"_n );
          abi_def abi;
          BOOST_REQUIRE_EQUAL(abi_serializer::to_abi(accnt.abi, abi), true);
          bpay_abi_ser.set_abi(abi, abi_serializer::create_yield_function(abi_serializer_max_time));
@@ -1516,7 +1516,7 @@ public:
 
    action_result bpay_claimrewards( const account_name owner ) {
       action act;
-      act.account = "eosio.bpay"_n;
+      act.account = "flon.bpay"_n;
       act.name = "claimrewards"_n;
       act.data = abi_ser.variant_to_binary( bpay_abi_ser.get_action_type("claimrewards"_n), mvo()("owner", owner), abi_serializer::create_yield_function(abi_serializer_max_time) );
 
@@ -1524,7 +1524,7 @@ public:
    }
 
    fc::variant get_bpay_rewards( account_name producer ) {
-      vector<char> data = get_row_by_account( "eosio.bpay"_n, "eosio.bpay"_n, "rewards"_n, producer );
+      vector<char> data = get_row_by_account( "flon.bpay"_n, "flon.bpay"_n, "rewards"_n, producer );
       return data.empty() ? fc::variant() : bpay_abi_ser.binary_to_variant( "rewards_row", data, abi_serializer::create_yield_function(abi_serializer_max_time) );
    }
 

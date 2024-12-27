@@ -1,4 +1,4 @@
-#include <eosio.bpay/eosio.bpay.hpp>
+#include <flon.bpay/flon.bpay.hpp>
 
 namespace eosio {
 
@@ -20,7 +20,7 @@ void bpay::on_transfer( const name from, const name to, const asset quantity, co
         return;
     }
 
-    // ignore eosio system incoming transfers (caused by bpay income transfers eosio => eosio.bpay => producer)
+    // ignore eosio system incoming transfers (caused by bpay income transfers eosio => flon.bpay => producer)
     if ( from == "eosio"_n) return;
 
     symbol system_symbol = eosiosystem::system_contract::get_core_symbol();

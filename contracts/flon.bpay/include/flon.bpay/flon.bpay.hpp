@@ -8,9 +8,9 @@ using namespace std;
 
 namespace eosio {
     /**
-     * The `eosio.bpay` contract handles system bpay distribution.
+     * The `flon.bpay` contract handles system bpay distribution.
      */
-    class [[eosio::contract("eosio.bpay")]] bpay : public contract {
+    class [[eosio::contract("flon.bpay")]] bpay : public contract {
     public:
         using contract::contract;
 

@@ -52,6 +52,6 @@ add_subdirectory(flon.system)
 add_subdirectory(flon.token)
 add_subdirectory(flon.wrap)
 # add_subdirectory(eosio.fees)
-# add_subdirectory(eosio.bpay)
+# add_subdirectory(flon.bpay)
 
 add_subdirectory(test_contracts)
