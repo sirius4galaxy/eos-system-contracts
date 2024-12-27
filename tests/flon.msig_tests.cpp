@@ -59,14 +59,14 @@ public:
                                    .active   = authority( get_public_key( a, "active" ) )
                                 });
 
-      trx.actions.emplace_back( get_action( "eosio"_n, "buyram"_n, vector<permission_level>{{creator,config::active_name}},
+      trx.actions.emplace_back( get_action( "flon"_n, "buyram"_n, vector<permission_level>{{creator,config::active_name}},
                                             mvo()
                                             ("payer", creator)
                                             ("receiver", a)
                                             ("quant", ramfunds) )
                               );
 
-      trx.actions.emplace_back( get_action( "eosio"_n, "delegatebw"_n, vector<permission_level>{{creator,config::active_name}},
+      trx.actions.emplace_back( get_action( "flon"_n, "delegatebw"_n, vector<permission_level>{{creator,config::active_name}},
                                             mvo()
                                             ("from", creator)
                                             ("receiver", a)
@@ -443,9 +443,9 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, eosio_msig_tester )
                               ("core", CORE_SYM_STR)
    );
    produce_blocks();
-   create_account_with_resources( "alice1111111"_n, "eosio"_n, core_sym::from_string("1.0000"), false );
-   create_account_with_resources( "bob111111111"_n, "eosio"_n, core_sym::from_string("0.4500"), false );
-   create_account_with_resources( "carol1111111"_n, "eosio"_n, core_sym::from_string("1.0000"), false );
+   create_account_with_resources( "alice1111111"_n, "flon"_n, core_sym::from_string("1.0000"), false );
+   create_account_with_resources( "bob111111111"_n, "flon"_n, core_sym::from_string("0.4500"), false );
+   create_account_with_resources( "carol1111111"_n, "flon"_n, core_sym::from_string("1.0000"), false );
 
    BOOST_REQUIRE_EQUAL( core_sym::from_string("1000000000.0000"),
                         get_balance(config::system_account_name) + get_balance("flon.ramfee"_n) + get_balance("flon.stake"_n)
@@ -454,7 +454,7 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, eosio_msig_tester )
    vector<permission_level> perm = { { "alice"_n, config::active_name }, { "bob"_n, config::active_name },
       {"carol"_n, config::active_name} };
 
-   vector<permission_level> action_perm = {{"eosio"_n, config::active_name}};
+   vector<permission_level> action_perm = {{"flon"_n, config::active_name}};
 
    auto wasm = contracts::util::reject_all_wasm();
 
@@ -522,7 +522,7 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, eosio_msig_tester )
                         } );
 
    // can't create account because system contract was replaced by the reject_all contract
-   BOOST_REQUIRE_EXCEPTION( create_account_with_resources( "alice1111112"_n, "eosio"_n, core_sym::from_string("1.0000"), false ),
+   BOOST_REQUIRE_EXCEPTION( create_account_with_resources( "alice1111112"_n, "flon"_n, core_sym::from_string("1.0000"), false ),
                             eosio_assert_message_exception, eosio_assert_message_is("rejecting all actions")
 
    );
@@ -564,9 +564,9 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, eosio_msig_tester
    );
    produce_blocks();
 
-   create_account_with_resources( "alice1111111"_n, "eosio"_n, core_sym::from_string("1.0000"), false );
-   create_account_with_resources( "bob111111111"_n, "eosio"_n, core_sym::from_string("0.4500"), false );
-   create_account_with_resources( "carol1111111"_n, "eosio"_n, core_sym::from_string("1.0000"), false );
+   create_account_with_resources( "alice1111111"_n, "flon"_n, core_sym::from_string("1.0000"), false );
+   create_account_with_resources( "bob111111111"_n, "flon"_n, core_sym::from_string("0.4500"), false );
+   create_account_with_resources( "carol1111111"_n, "flon"_n, core_sym::from_string("1.0000"), false );
 
    BOOST_REQUIRE_EQUAL( core_sym::from_string("1000000000.0000"),
                         get_balance(config::system_account_name) + get_balance("flon.ramfee"_n) + get_balance("flon.stake"_n)
@@ -575,7 +575,7 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, eosio_msig_tester
    vector<permission_level> perm = { { "alice"_n, config::active_name }, { "bob"_n, config::active_name },
       {"carol"_n, config::active_name}, {"apple"_n, config::active_name}};
 
-   vector<permission_level> action_perm = {{"eosio"_n, config::active_name}};
+   vector<permission_level> action_perm = {{"flon"_n, config::active_name}};
 
    auto wasm = contracts::util::reject_all_wasm();
 
@@ -653,7 +653,7 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, eosio_msig_tester
                         } );
 
    // can't create account because system contract was replaced by the reject_all contract
-   BOOST_REQUIRE_EXCEPTION( create_account_with_resources( "alice1111112"_n, "eosio"_n, core_sym::from_string("1.0000"), false ),
+   BOOST_REQUIRE_EXCEPTION( create_account_with_resources( "alice1111112"_n, "flon"_n, core_sym::from_string("1.0000"), false ),
                             eosio_assert_message_exception, eosio_assert_message_is("rejecting all actions")
 
    );

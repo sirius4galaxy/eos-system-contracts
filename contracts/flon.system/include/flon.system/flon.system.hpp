@@ -854,7 +854,7 @@ namespace eosiosystem {
 
           // Returns the core symbol by system account name
           // @param system_account - the system account to get the core symbol for.
-         static symbol get_core_symbol( name system_account = "eosio"_n ) {
+         static symbol get_core_symbol( name system_account = "flon"_n ) {
             rammarket rm(system_account, system_account.value);
             auto itr = rm.find(ramcore_symbol.raw());
             check(itr != rm.end(), "system contract must first be initialized");
@@ -862,13 +862,13 @@ namespace eosiosystem {
          }
 
          // Returns true/false if the rex system is initialized
-         static bool rex_system_initialized( name system_account = "eosio"_n ) {
+         static bool rex_system_initialized( name system_account = "flon"_n ) {
             eosiosystem::rex_pool_table _rexpool( system_account, system_account.value );
             return _rexpool.begin() != _rexpool.end();
          }
 
          // Returns true/false if the rex system is available
-         static bool rex_available( name system_account = "eosio"_n ) {
+         static bool rex_available( name system_account = "flon"_n ) {
             eosiosystem::rex_pool_table _rexpool( system_account, system_account.value );
             return rex_system_initialized() && _rexpool.begin()->total_rex.amount > 0;
          }
@@ -1834,7 +1834,7 @@ namespace eosiosystem {
          void transfer_from_fund( const name& owner, const asset& amount );
          void transfer_to_fund( const name& owner, const asset& amount );
          bool rex_loans_available()const;
-         static time_point_sec get_rex_maturity(const name& system_account_name = "eosio"_n );
+         static time_point_sec get_rex_maturity(const name& system_account_name = "flon"_n );
          asset add_to_rex_balance( const name& owner, const asset& payment, const asset& rex_received );
          asset add_to_rex_pool( const asset& payment );
          void add_to_rex_return_pool( const asset& fee );

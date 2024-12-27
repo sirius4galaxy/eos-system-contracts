@@ -5802,9 +5802,9 @@ BOOST_FIXTURE_TEST_CASE( setabi, eosio_system_tester ) try {
 BOOST_FIXTURE_TEST_CASE( change_limited_account_back_to_unlimited, eosio_system_tester ) try {
    BOOST_REQUIRE( get_total_stake( "eosio" ).is_null() );
 
-   transfer( "eosio"_n, "alice1111111"_n, core_sym::from_string("1.0000") );
+   transfer( "flon"_n, "alice1111111"_n, core_sym::from_string("1.0000") );
 
-   auto error_msg = stake( "alice1111111"_n, "eosio"_n, core_sym::from_string("0.0000"), core_sym::from_string("1.0000") );
+   auto error_msg = stake( "alice1111111"_n, "flon"_n, core_sym::from_string("0.0000"), core_sym::from_string("1.0000") );
    auto semicolon_pos = error_msg.find(';');
 
    BOOST_REQUIRE_EQUAL( error("account eosio has insufficient ram"),
@@ -5818,14 +5818,14 @@ BOOST_FIXTURE_TEST_CASE( change_limited_account_back_to_unlimited, eosio_system_
       ram_bytes_needed += 256; // enough room to cover total_resources_table
    }
 
-   push_action( "eosio"_n, "setalimits"_n, mvo()
+   push_action( "flon"_n, "setalimits"_n, mvo()
                                           ("account", "eosio")
                                           ("ram_bytes", ram_bytes_needed)
                                           ("net_weight", -1)
                                           ("cpu_weight", -1)
               );
 
-   stake( "alice1111111"_n, "eosio"_n, core_sym::from_string("0.0000"), core_sym::from_string("1.0000") );
+   stake( "alice1111111"_n, "flon"_n, core_sym::from_string("0.0000"), core_sym::from_string("1.0000") );
 
    REQUIRE_MATCHING_OBJECT( get_total_stake( "eosio" ), mvo()
       ("owner", "eosio")
@@ -5835,7 +5835,7 @@ BOOST_FIXTURE_TEST_CASE( change_limited_account_back_to_unlimited, eosio_system_
    );
 
    BOOST_REQUIRE_EQUAL( wasm_assert_msg( "only supports unlimited accounts" ),
-                        push_action( "eosio"_n, "setalimits"_n, mvo()
+                        push_action( "flon"_n, "setalimits"_n, mvo()
                                           ("account", "eosio")
                                           ("ram_bytes", ram_bytes_needed)
                                           ("net_weight", -1)
@@ -5844,7 +5844,7 @@ BOOST_FIXTURE_TEST_CASE( change_limited_account_back_to_unlimited, eosio_system_
    );
 
    BOOST_REQUIRE_EQUAL( error( "transaction net usage is too high: 128 > 0" ),
-                        push_action( "eosio"_n, "setalimits"_n, mvo()
+                        push_action( "flon"_n, "setalimits"_n, mvo()
                            ("account", "flon.saving")
                            ("ram_bytes", -1)
                            ("net_weight", -1)
@@ -5853,14 +5853,14 @@ BOOST_FIXTURE_TEST_CASE( change_limited_account_back_to_unlimited, eosio_system_
    );
 
    BOOST_REQUIRE_EQUAL( success(),
-                        push_action( "eosio"_n, "setacctnet"_n, mvo()
+                        push_action( "flon"_n, "setacctnet"_n, mvo()
                            ("account", "eosio")
                            ("net_weight", -1)
                         )
    );
 
    BOOST_REQUIRE_EQUAL( success(),
-                        push_action( "eosio"_n, "setacctcpu"_n, mvo()
+                        push_action( "flon"_n, "setacctcpu"_n, mvo()
                            ("account", "eosio")
                            ("cpu_weight", -1)
 
@@ -5868,7 +5868,7 @@ BOOST_FIXTURE_TEST_CASE( change_limited_account_back_to_unlimited, eosio_system_
    );
 
    BOOST_REQUIRE_EQUAL( success(),
-                        push_action( "eosio"_n, "setalimits"_n, mvo()
+                        push_action( "flon"_n, "setalimits"_n, mvo()
                                           ("account", "flon.saving")
                                           ("ram_bytes", ram_bytes_needed)
                                           ("net_weight", -1)
@@ -5881,9 +5881,9 @@ BOOST_FIXTURE_TEST_CASE( change_limited_account_back_to_unlimited, eosio_system_
 BOOST_FIXTURE_TEST_CASE( buy_pin_sell_ram, eosio_system_tester ) try {
    BOOST_REQUIRE( get_total_stake( "eosio" ).is_null() );
 
-   transfer( "eosio"_n, "alice1111111"_n, core_sym::from_string("1020.0000") );
+   transfer( "flon"_n, "alice1111111"_n, core_sym::from_string("1020.0000") );
 
-   auto error_msg = stake( "alice1111111"_n, "eosio"_n, core_sym::from_string("10.0000"), core_sym::from_string("10.0000") );
+   auto error_msg = stake( "alice1111111"_n, "flon"_n, core_sym::from_string("10.0000"), core_sym::from_string("10.0000") );
    auto semicolon_pos = error_msg.find(';');
 
    BOOST_REQUIRE_EQUAL( error("account eosio has insufficient ram"),
@@ -5899,7 +5899,7 @@ BOOST_FIXTURE_TEST_CASE( buy_pin_sell_ram, eosio_system_tester ) try {
 
    auto alice_original_balance = get_balance( "alice1111111"_n );
 
-   BOOST_REQUIRE_EQUAL( success(), buyrambytes( "alice1111111"_n, "eosio"_n, static_cast<uint32_t>(ram_bytes_needed) ) );
+   BOOST_REQUIRE_EQUAL( success(), buyrambytes( "alice1111111"_n, "flon"_n, static_cast<uint32_t>(ram_bytes_needed) ) );
 
    auto tokens_paid_for_ram = alice_original_balance - get_balance( "alice1111111"_n );
 
@@ -5913,7 +5913,7 @@ BOOST_FIXTURE_TEST_CASE( buy_pin_sell_ram, eosio_system_tester ) try {
    );
 
    BOOST_REQUIRE_EQUAL( wasm_assert_msg( "only supports unlimited accounts" ),
-                        push_action( "eosio"_n, "setalimits"_n, mvo()
+                        push_action( "flon"_n, "setalimits"_n, mvo()
                                           ("account", "eosio")
                                           ("ram_bytes", ram_bytes_needed)
                                           ("net_weight", -1)
@@ -5922,17 +5922,17 @@ BOOST_FIXTURE_TEST_CASE( buy_pin_sell_ram, eosio_system_tester ) try {
    );
 
    BOOST_REQUIRE_EQUAL( success(),
-                        push_action( "eosio"_n, "setacctram"_n, mvo()
+                        push_action( "flon"_n, "setacctram"_n, mvo()
                            ("account", "eosio")
                            ("ram_bytes", total_res["ram_bytes"].as_int64() )
                         )
    );
 
-   auto eosio_original_balance = get_balance( "eosio"_n );
+   auto eosio_original_balance = get_balance( "flon"_n );
 
-   BOOST_REQUIRE_EQUAL( success(), sellram( "eosio"_n, total_res["ram_bytes"].as_int64() ) );
+   BOOST_REQUIRE_EQUAL( success(), sellram( "flon"_n, total_res["ram_bytes"].as_int64() ) );
 
-   auto tokens_received_by_selling_ram = get_balance( "eosio"_n ) - eosio_original_balance;
+   auto tokens_received_by_selling_ram = get_balance( "flon"_n ) - eosio_original_balance;
 
    BOOST_REQUIRE( double(tokens_paid_for_ram.get_amount() - tokens_received_by_selling_ram.get_amount()) / tokens_paid_for_ram.get_amount() < 0.01 );
 

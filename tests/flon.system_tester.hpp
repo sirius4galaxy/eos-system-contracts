@@ -919,7 +919,7 @@ public:
    }
 
    action_result setrexmature(const std::optional<uint32_t> num_of_maturity_buckets, const std::optional<bool> sell_matured_rex, const std::optional<bool> buy_rex_to_savings ) {
-      return push_action( "eosio"_n, "setrexmature"_n, mvo()("num_of_maturity_buckets", num_of_maturity_buckets)("sell_matured_rex", sell_matured_rex)("buy_rex_to_savings", buy_rex_to_savings) );
+      return push_action( "flon"_n, "setrexmature"_n, mvo()("num_of_maturity_buckets", num_of_maturity_buckets)("sell_matured_rex", sell_matured_rex)("buy_rex_to_savings", buy_rex_to_savings) );
    }
 
    action_result donatetorex( const account_name& payer, const asset& quantity, const std::string& memo ) {
@@ -1356,7 +1356,7 @@ public:
       abi_serializer msig_abi_ser;
       {
          create_account_with_resources( "flon.msig"_n, config::system_account_name );
-         BOOST_REQUIRE_EQUAL( success(), buyram( "eosio"_n, "flon.msig"_n, core_sym::from_string("5000.0000") ) );
+         BOOST_REQUIRE_EQUAL( success(), buyram( "flon"_n, "flon.msig"_n, core_sym::from_string("5000.0000") ) );
          produce_block();
 
          auto trace = base_tester::push_action(config::system_account_name, "setpriv"_n,
@@ -1379,7 +1379,7 @@ public:
 
    vector<name> active_and_vote_producers(uint32_t num_producers = 21) {
       //stake more than 15% of total EOS supply to activate chain
-      transfer( "eosio"_n, "alice1111111"_n, core_sym::from_string("650000000.0000"), config::system_account_name );
+      transfer( "flon"_n, "alice1111111"_n, core_sym::from_string("650000000.0000"), config::system_account_name );
       BOOST_REQUIRE_EQUAL( success(), stake( "alice1111111"_n, "alice1111111"_n, core_sym::from_string("300000000.0000"), core_sym::from_string("300000000.0000") ) );
 
       // create accounts {defproducera, defproducerb, ..., defproducerz} and register as producers
@@ -1476,7 +1476,7 @@ public:
    }
 
    action_result setinflation( int64_t annual_rate, int64_t inflation_pay_factor, int64_t votepay_factor ) {
-      return push_action( "eosio"_n, "setinflation"_n, mvo()
+      return push_action( "flon"_n, "setinflation"_n, mvo()
                ("annual_rate",     annual_rate)
                ("inflation_pay_factor", inflation_pay_factor)
                ("votepay_factor", votepay_factor)
@@ -1484,21 +1484,21 @@ public:
    }
 
    action_result setpayfactor( int64_t inflation_pay_factor, int64_t votepay_factor ) {
-      return push_action( "eosio"_n, "setpayfactor"_n, mvo()
+      return push_action( "flon"_n, "setpayfactor"_n, mvo()
                ("inflation_pay_factor", inflation_pay_factor)
                ("votepay_factor", votepay_factor)
       );
    }
 
    action_result setschedule( const time_point_sec start_time, double continuous_rate ) {
-      return push_action( "eosio"_n, "setschedule"_n, mvo()
+      return push_action( "flon"_n, "setschedule"_n, mvo()
                ("start_time", start_time)
                ("continuous_rate",     continuous_rate)
       );
    }
 
    action_result delschedule( const time_point_sec start_time ) {
-      return push_action( "eosio"_n, "delschedule"_n, mvo()
+      return push_action( "flon"_n, "delschedule"_n, mvo()
                ("start_time", start_time)
       );
    }
@@ -1508,7 +1508,7 @@ public:
    }
 
    fc::variant get_vesting_schedule( uint64_t time ) {
-      vector<char> data = get_row_by_account( "eosio"_n, "eosio"_n, "schedules"_n, account_name(time) );
+      vector<char> data = get_row_by_account( "flon"_n, "flon"_n, "schedules"_n, account_name(time) );
       return data.empty() ? fc::variant() : abi_ser.binary_to_variant( "schedules_info", data, abi_serializer::create_yield_function(abi_serializer_max_time) );
    }
 
