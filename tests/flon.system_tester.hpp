@@ -23,7 +23,7 @@ public:
    void basic_setup() {
       produce_block();
 
-      create_accounts({ "flon.token"_n, "flon.ram"_n, "flon.ramfee"_n, "eosio.stake"_n,
+      create_accounts({ "flon.token"_n, "flon.ram"_n, "flon.ramfee"_n, "flon.stake"_n,
                "flon.bpay"_n, "eosio.vpay"_n, "eosio.saving"_n, "eosio.names"_n, "eosio.rex"_n, "flon.fees"_n });
 
 
@@ -84,7 +84,7 @@ public:
       create_account_with_resources( "bob111111111"_n, config::system_account_name, core_sym::from_string("0.4500"), false );
       create_account_with_resources( "carol1111111"_n, config::system_account_name, core_sym::from_string("1.0000"), false );
 
-      BOOST_REQUIRE_EQUAL( core_sym::from_string("1000000000.0000"), get_balance("eosio")  + get_balance("flon.ramfee") + get_balance("eosio.stake") + get_balance("flon.ram") + get_balance("flon.fees") );
+      BOOST_REQUIRE_EQUAL( core_sym::from_string("1000000000.0000"), get_balance("eosio")  + get_balance("flon.ramfee") + get_balance("flon.stake") + get_balance("flon.ram") + get_balance("flon.fees") );
    }
 
    enum class setup_level {

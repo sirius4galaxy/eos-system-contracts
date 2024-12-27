@@ -193,10 +193,10 @@ BOOST_FIXTURE_TEST_CASE( stake_unstake, eosio_system_tester ) try {
    BOOST_REQUIRE_EQUAL( core_sym::from_string("210.0000"), total["net_weight"].as<asset>());
    BOOST_REQUIRE_EQUAL( core_sym::from_string("110.0000"), total["cpu_weight"].as<asset>());
 
-   const auto init_eosio_stake_balance = get_balance( "eosio.stake"_n );
+   const auto init_eosio_stake_balance = get_balance( "flon.stake"_n );
    BOOST_REQUIRE_EQUAL( success(), stake( "alice1111111", "alice1111111", core_sym::from_string("200.0000"), core_sym::from_string("100.0000") ) );
    BOOST_REQUIRE_EQUAL( core_sym::from_string("700.0000"), get_balance( "alice1111111" ) );
-   BOOST_REQUIRE_EQUAL( init_eosio_stake_balance + core_sym::from_string("300.0000"), get_balance( "eosio.stake"_n ) );
+   BOOST_REQUIRE_EQUAL( init_eosio_stake_balance + core_sym::from_string("300.0000"), get_balance( "flon.stake"_n ) );
    BOOST_REQUIRE_EQUAL( success(), unstake( "alice1111111", "alice1111111", core_sym::from_string("200.0000"), core_sym::from_string("100.0000") ) );
    BOOST_REQUIRE_EQUAL( core_sym::from_string("700.0000"), get_balance( "alice1111111" ) );
 
@@ -204,7 +204,7 @@ BOOST_FIXTURE_TEST_CASE( stake_unstake, eosio_system_tester ) try {
    produce_blocks(1);
    // testing balance still the same
    BOOST_REQUIRE_EQUAL( core_sym::from_string("700.0000"), get_balance( "alice1111111" ) );
-   BOOST_REQUIRE_EQUAL( init_eosio_stake_balance + core_sym::from_string("300.0000"), get_balance( "eosio.stake"_n ) );
+   BOOST_REQUIRE_EQUAL( init_eosio_stake_balance + core_sym::from_string("300.0000"), get_balance( "flon.stake"_n ) );
    // call refund expected to fail too early
    BOOST_REQUIRE_EQUAL( wasm_assert_msg("refund is not available yet"),
                        push_action( "alice1111111"_n, "refund"_n, mvo()("owner", "alice1111111") ) );
@@ -215,7 +215,7 @@ BOOST_FIXTURE_TEST_CASE( stake_unstake, eosio_system_tester ) try {
    // now we can do the refund
    BOOST_REQUIRE_EQUAL( success(), push_action( "alice1111111"_n, "refund"_n, mvo()("owner", "alice1111111") ) );
    BOOST_REQUIRE_EQUAL( core_sym::from_string("1000.0000"), get_balance( "alice1111111" ) );
-   BOOST_REQUIRE_EQUAL( init_eosio_stake_balance, get_balance( "eosio.stake"_n ) );
+   BOOST_REQUIRE_EQUAL( init_eosio_stake_balance, get_balance( "flon.stake"_n ) );
 
    BOOST_REQUIRE_EQUAL( success(), stake( "alice1111111", "bob111111111", core_sym::from_string("200.0000"), core_sym::from_string("100.0000") ) );
    BOOST_REQUIRE_EQUAL( core_sym::from_string("700.0000"), get_balance( "alice1111111" ) );
@@ -4232,7 +4232,7 @@ BOOST_FIXTURE_TEST_CASE( unstake_buy_rex, eosio_system_tester, * boost::unit_tes
                            vote( alice, std::vector<account_name>(producer_names.begin(), producer_names.begin() + 20) ) );
       BOOST_REQUIRE_EQUAL( success(),
                            vote( alice, std::vector<account_name>(producer_names.begin(), producer_names.begin() + 21) ) );
-      const asset init_eosio_stake_balance = get_balance( "eosio.stake"_n );
+      const asset init_eosio_stake_balance = get_balance( "flon.stake"_n );
       const auto init_voter_info = get_voter_info( alice );
       const auto init_prod_info  = get_producer_info( producer_names[0] );
       BOOST_TEST_REQUIRE( init_prod_info["total_votes"].as_double() ==
@@ -4244,7 +4244,7 @@ BOOST_FIXTURE_TEST_CASE( unstake_buy_rex, eosio_system_tester, * boost::unit_tes
       BOOST_REQUIRE_EQUAL( ratio * tot_stake.get_amount(),          get_rex_balance( alice ).get_amount() );
       BOOST_REQUIRE_EQUAL( tot_stake,                               get_rex_balance_obj( alice )["vote_stake"].as<asset>() );
       BOOST_REQUIRE_EQUAL( tot_stake,                               get_balance( "eosio.rex"_n ) );
-      BOOST_REQUIRE_EQUAL( tot_stake,                               init_eosio_stake_balance - get_balance( "eosio.stake"_n ) );
+      BOOST_REQUIRE_EQUAL( tot_stake,                               init_eosio_stake_balance - get_balance( "flon.stake"_n ) );
       auto current_voter_info = get_voter_info( alice );
       auto current_prod_info  = get_producer_info( producer_names[0] );
       BOOST_REQUIRE_EQUAL( init_voter_info["staked"].as<int64_t>(), current_voter_info["staked"].as<int64_t>() );
