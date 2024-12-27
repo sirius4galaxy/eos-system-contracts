@@ -1798,7 +1798,7 @@ BOOST_AUTO_TEST_CASE(extreme_inflation) try {
    // empty system balance
    // claimrewards operates by either `issue` new tokens or using the existing system balance
    const asset system_balance = t.get_balance(config::system_account_name);
-   t.transfer( config::system_account_name, "eosio.null"_n, system_balance, config::system_account_name);
+   t.transfer( config::system_account_name, "flon.null"_n, system_balance, config::system_account_name);
    BOOST_REQUIRE_EQUAL(t.get_balance(config::system_account_name).get_amount(), 0);
    BOOST_REQUIRE_EQUAL(t.get_token_supply().get_amount() - max_supply.get_amount(), 0);
 

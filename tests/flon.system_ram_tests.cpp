@@ -122,7 +122,7 @@ BOOST_FIXTURE_TEST_CASE( ram_burn, eosio_system_tester ) try {
    create_accounts_with_resources( accounts );
    const account_name alice = accounts[0];
    const account_name bob = accounts[1];
-   const account_name null_account = "eosio.null"_n;
+   const account_name null_account = "flon.null"_n;
 
    transfer( config::system_account_name, alice, core_sym::from_string("100.0000"), config::system_account_name );
    transfer( config::system_account_name, bob, core_sym::from_string("100.0000"), config::system_account_name );
@@ -155,7 +155,7 @@ BOOST_FIXTURE_TEST_CASE( ram_burn, eosio_system_tester ) try {
    const char* expected_ramburn_return_data = R"=====(
 {
    "from": "bob",
-   "to": "eosio.null",
+   "to": "flon.null",
    "bytes": 1,
    "from_ram_bytes": 691738,
    "to_ram_bytes": 12992,
@@ -171,7 +171,7 @@ BOOST_FIXTURE_TEST_CASE( ram_burn, eosio_system_tester ) try {
 BOOST_FIXTURE_TEST_CASE( buy_ram_burn, eosio_system_tester ) try {
    const std::vector<account_name> accounts = { "alice"_n };
    const account_name alice = accounts[0];
-   const account_name null_account = "eosio.null"_n;
+   const account_name null_account = "flon.null"_n;
 
    const char* expected_buyramburn_return_data = R"=====(
 {
