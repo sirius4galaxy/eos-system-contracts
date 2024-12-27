@@ -6,14 +6,14 @@ link_text: How to sign a multisig transaction with eosio.msig
 ### eosio.msig
 
 ### Prerequisites:
-   - eosio.token contract installed to eosio.token account, eosio.msig contract installed on eosio.msig account which is a priviliged account.
+   - flon.token contract installed to flon.token account, eosio.msig contract installed on eosio.msig account which is a priviliged account.
    - account 'treasury' is the issuer of EOS token.
    - account 'tester' exists.
    - keys to accounts 'treasury' and 'tester' imported into local wallet, the wallet is unlocked.
 
 ### One user creates a proposal:
 ```sh
-cleos multisig propose test '[{"actor": "treasury", "permission": "active"}]' '[{"actor": "treasury", "permission": "active"}]' eosio.token issue '{"to": "tester", "quantity": "1000.0000 EOS", "memo": ""}' -p tester
+cleos multisig propose test '[{"actor": "treasury", "permission": "active"}]' '[{"actor": "treasury", "permission": "active"}]' flon.token issue '{"to": "tester", "quantity": "1000.0000 EOS", "memo": ""}' -p tester
 ```
 ```console
 executed transaction: e26f3a3a7cba524a7b15a0b6c77c7daa73d3ba9bf84e83f9c2cdf27fcb183d61  336 bytes  107520 cycles
@@ -44,7 +44,7 @@ cleos multisig review tester test
     "delay_sec": 0,
     "context_free_actions": [],
     "actions": [{
-        "account": "eosio.token",
+        "account": "flon.token",
         "name": "issue",
         "authorization": [{
             "actor": "treasury",
@@ -85,14 +85,14 @@ executed transaction: 64e5eaceb77362694055f572ae35876111e87b637a55250de315b1b55e
 ## Cleos usage example for transferring tokens.
 
 ### Prerequisites:
-   - eosio.token contract installed to eosio.token account, eosio.msig contract installed on eosio.msig account which is a priviliged account.
+   - flon.token contract installed to flon.token account, eosio.msig contract installed on eosio.msig account which is a priviliged account.
    - account 'treasury' has at least 1.1000 EOS token balance.
    - account 'tester' exists.
    - keys to accounts 'treasury' and 'tester' imported into local wallet, the wallet is unlocked.
 
 ### One user creates a proposal:
 ```sh
-cleos multisig propose test '[{"actor": "treasury", "permission": "active"}]' '[{"actor": "treasury", "permission": "active"}]' eosio.token transfer '{"from": "treasury", "to": "tester", "quantity": "1.0000 EOS", "memo": ""}' -p tester
+cleos multisig propose test '[{"actor": "treasury", "permission": "active"}]' '[{"actor": "treasury", "permission": "active"}]' flon.token transfer '{"from": "treasury", "to": "tester", "quantity": "1.0000 EOS", "memo": ""}' -p tester
 ```
 ```console
 executed transaction: e26f3a3a7cba524a7b15a0b6c77c7daa73d3ba9bf84e83f9c2cdf27fcb183d61  336 bytes  107520 cycles
@@ -123,7 +123,7 @@ cleos multisig review tester test
     "delay_sec": 0,
     "context_free_actions": [],
     "actions": [{
-        "account": "eosio.token",
+        "account": "flon.token",
         "name": "transfer",
         "authorization": [{
             "actor": "treasury",

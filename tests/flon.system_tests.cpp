@@ -1778,7 +1778,7 @@ BOOST_AUTO_TEST_CASE(extreme_inflation) try {
    eosio_system_tester t(eosio_system_tester::setup_level::minimal);
    symbol core_symbol{CORE_SYM};
    const asset max_supply = asset((1ll << 62) - 1, core_symbol);
-   t.create_currency( "eosio.token"_n, config::system_account_name, max_supply );
+   t.create_currency( "flon.token"_n, config::system_account_name, max_supply );
    t.issue( asset(10000000000000, core_symbol) );
    t.deploy_contract();
    t.produce_block();
@@ -3879,14 +3879,14 @@ BOOST_FIXTURE_TEST_CASE( eosioram_ramusage, eosio_system_tester ) try {
    const asset initial_fees_balance = get_balance("eosio.fees"_n);
    BOOST_REQUIRE_EQUAL( success(), buyram( "alice1111111", "alice1111111", core_sym::from_string("1000.0000") ) );
 
-   BOOST_REQUIRE_EQUAL( false, get_row_by_account( "eosio.token"_n, "alice1111111"_n, "accounts"_n, account_name(symbol{CORE_SYM}.to_symbol_code()) ).empty() );
+   BOOST_REQUIRE_EQUAL( false, get_row_by_account( "flon.token"_n, "alice1111111"_n, "accounts"_n, account_name(symbol{CORE_SYM}.to_symbol_code()) ).empty() );
 
    //remove row
-   base_tester::push_action( "eosio.token"_n, "close"_n, "alice1111111"_n, mvo()
+   base_tester::push_action( "flon.token"_n, "close"_n, "alice1111111"_n, mvo()
                              ( "owner", "alice1111111" )
                              ( "symbol", symbol{CORE_SYM} )
    );
-   BOOST_REQUIRE_EQUAL( true, get_row_by_account( "eosio.token"_n, "alice1111111"_n, "accounts"_n, account_name(symbol{CORE_SYM}.to_symbol_code()) ).empty() );
+   BOOST_REQUIRE_EQUAL( true, get_row_by_account( "flon.token"_n, "alice1111111"_n, "accounts"_n, account_name(symbol{CORE_SYM}.to_symbol_code()) ).empty() );
 
    auto rlm = control->get_resource_limits_manager();
    auto eosioram_ram_usage = rlm.get_account_ram_usage("eosio.ram"_n);
@@ -5746,10 +5746,10 @@ BOOST_AUTO_TEST_CASE( setabi_bios ) try {
    abi_serializer abi_ser(fc::json::from_string( (const char*)contracts::bios_abi().data()).template as<abi_def>(), abi_serializer::create_yield_function(base_tester::abi_serializer_max_time));
    t.set_code( config::system_account_name, contracts::bios_wasm() );
    t.set_abi( config::system_account_name, contracts::bios_abi().data() );
-   t.create_account("eosio.token"_n);
-   t.set_abi( "eosio.token"_n, contracts::token_abi().data() );
+   t.create_account("flon.token"_n);
+   t.set_abi( "flon.token"_n, contracts::token_abi().data() );
    {
-      auto res = t.get_row_by_account( config::system_account_name, config::system_account_name, "abihash"_n, "eosio.token"_n );
+      auto res = t.get_row_by_account( config::system_account_name, config::system_account_name, "abihash"_n, "flon.token"_n );
       _abi_hash abi_hash;
       auto abi_hash_var = abi_ser.binary_to_variant( "abi_hash", res, abi_serializer::create_yield_function(base_tester::abi_serializer_max_time) );
       abi_serializer::from_variant( abi_hash_var, abi_hash, t.get_resolver(), abi_serializer::create_yield_function(base_tester::abi_serializer_max_time));
@@ -5759,9 +5759,9 @@ BOOST_AUTO_TEST_CASE( setabi_bios ) try {
       BOOST_REQUIRE( abi_hash.hash == result );
    }
 
-   t.set_abi( "eosio.token"_n, contracts::system_abi().data() );
+   t.set_abi( "flon.token"_n, contracts::system_abi().data() );
    {
-      auto res = t.get_row_by_account( config::system_account_name, config::system_account_name, "abihash"_n, "eosio.token"_n );
+      auto res = t.get_row_by_account( config::system_account_name, config::system_account_name, "abihash"_n, "flon.token"_n );
       _abi_hash abi_hash;
       auto abi_hash_var = abi_ser.binary_to_variant( "abi_hash", res, abi_serializer::create_yield_function(base_tester::abi_serializer_max_time) );
       abi_serializer::from_variant( abi_hash_var, abi_hash, t.get_resolver(), abi_serializer::create_yield_function(base_tester::abi_serializer_max_time));
@@ -5773,9 +5773,9 @@ BOOST_AUTO_TEST_CASE( setabi_bios ) try {
 } FC_LOG_AND_RETHROW()
 
 BOOST_FIXTURE_TEST_CASE( setabi, eosio_system_tester ) try {
-   set_abi( "eosio.token"_n, contracts::token_abi().data() );
+   set_abi( "flon.token"_n, contracts::token_abi().data() );
    {
-      auto res = get_row_by_account( config::system_account_name, config::system_account_name, "abihash"_n, "eosio.token"_n );
+      auto res = get_row_by_account( config::system_account_name, config::system_account_name, "abihash"_n, "flon.token"_n );
       _abi_hash abi_hash;
       auto abi_hash_var = abi_ser.binary_to_variant( "abi_hash", res, abi_serializer::create_yield_function(abi_serializer_max_time) );
       abi_serializer::from_variant( abi_hash_var, abi_hash, get_resolver(), abi_serializer::create_yield_function(abi_serializer_max_time));
@@ -5785,9 +5785,9 @@ BOOST_FIXTURE_TEST_CASE( setabi, eosio_system_tester ) try {
       BOOST_REQUIRE( abi_hash.hash == result );
    }
 
-   set_abi( "eosio.token"_n, contracts::system_abi().data() );
+   set_abi( "flon.token"_n, contracts::system_abi().data() );
    {
-      auto res = get_row_by_account( config::system_account_name, config::system_account_name, "abihash"_n, "eosio.token"_n );
+      auto res = get_row_by_account( config::system_account_name, config::system_account_name, "abihash"_n, "flon.token"_n );
       _abi_hash abi_hash;
       auto abi_hash_var = abi_ser.binary_to_variant( "abi_hash", res, abi_serializer::create_yield_function(abi_serializer_max_time) );
       abi_serializer::from_variant( abi_hash_var, abi_hash, get_resolver(), abi_serializer::create_yield_function(abi_serializer_max_time));

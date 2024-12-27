@@ -1,5 +1,5 @@
 #include <flon.system/flon.system.hpp>
-#include <eosio.token/eosio.token.hpp>
+#include <flon.token/flon.token.hpp>
 #include <flon.system/rex.results.hpp>
 
 namespace eosiosystem {

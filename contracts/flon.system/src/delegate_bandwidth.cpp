@@ -6,7 +6,7 @@
 #include <eosio/transaction.hpp>
 
 #include <flon.system/flon.system.hpp>
-#include <eosio.token/eosio.token.hpp>
+#include <flon.token/flon.token.hpp>
 
 namespace eosiosystem {
 

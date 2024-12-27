@@ -3,7 +3,7 @@ add_contract(eosio.bpay eosio.bpay ${CMAKE_CURRENT_SOURCE_DIR}/src/eosio.bpay.cp
 target_include_directories(eosio.bpay PUBLIC
    ${CMAKE_CURRENT_SOURCE_DIR}/include
    ${CMAKE_CURRENT_SOURCE_DIR}/../flon.system/include
-   ${CMAKE_CURRENT_SOURCE_DIR}/../eosio.token/include)
+   ${CMAKE_CURRENT_SOURCE_DIR}/../flon.token/include)
 
 set_target_properties(eosio.bpay
    PROPERTIES

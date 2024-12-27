@@ -11,7 +11,7 @@ The `eos-system-contracts` repository contains the system contracts encapsulatin
 1. [eosio.bios](action-reference/eosio.bios)
 2. [flon.system](action-reference/flon.system)
 3. [eosio.msig](action-reference/eosio.msig)
-4. [eosio.token](action-reference/eosio.token)
+4. [flon.token](action-reference/flon.token)
 5. [eosio.wrap](action-reference/eosio.wrap)
 
 ## Key Concepts Implemented by flon.system

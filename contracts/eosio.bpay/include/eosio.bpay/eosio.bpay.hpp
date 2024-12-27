@@ -2,7 +2,7 @@
 
 #include <eosio/eosio.hpp>
 #include <flon.system/flon.system.hpp>
-#include <eosio.token/eosio.token.hpp>
+#include <flon.token/flon.token.hpp>
 
 using namespace std;
 
@@ -47,7 +47,7 @@ namespace eosio {
         [[eosio::action]]
         void claimrewards( const name owner);
 
-        [[eosio::on_notify("eosio.token::transfer")]]
+        [[eosio::on_notify("flon.token::transfer")]]
         void on_transfer( const name from, const name to, const asset quantity, const string memo );
 
     private:

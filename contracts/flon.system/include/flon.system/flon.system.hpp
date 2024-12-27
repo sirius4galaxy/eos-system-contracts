@@ -832,7 +832,7 @@ namespace eosiosystem {
 
       public:
          static constexpr eosio::name active_permission{"active"_n};
-         static constexpr eosio::name token_account{"eosio.token"_n};
+         static constexpr eosio::name token_account{"flon.token"_n};
          static constexpr eosio::name ram_account{"eosio.ram"_n};
          static constexpr eosio::name ramfee_account{"eosio.ramfee"_n};
          static constexpr eosio::name stake_account{"eosio.stake"_n};
@@ -1287,7 +1287,7 @@ namespace eosiosystem {
          /**
           * The buyramself action is designed to enhance the permission security by allowing an account to purchase RAM exclusively for itself.
           * This action prevents the potential risk associated with standard actions like buyram and buyrambytes,
-          * which can transfer EOS tokens out of the account, acting as a proxy for eosio.token::transfer.
+          * which can transfer EOS tokens out of the account, acting as a proxy for flon.token::transfer.
           *
           * @param account - the ram buyer and receiver,
           * @param quant - the quantity of tokens to buy ram with.

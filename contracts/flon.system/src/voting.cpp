@@ -8,7 +8,7 @@
 #include <eosio/singleton.hpp>
 
 #include <flon.system/flon.system.hpp>
-#include <eosio.token/eosio.token.hpp>
+#include <flon.token/flon.token.hpp>
 
 #include <type_traits>
 #include <limits>

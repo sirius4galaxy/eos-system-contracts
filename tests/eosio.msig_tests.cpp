@@ -88,14 +88,14 @@ public:
       base_tester::push_action(contract, "create"_n, contract, act );
    }
    void issue( name to, const asset& amount, name manager = config::system_account_name ) {
-      base_tester::push_action( "eosio.token"_n, "issue"_n, manager, mutable_variant_object()
+      base_tester::push_action( "flon.token"_n, "issue"_n, manager, mutable_variant_object()
                                 ("to",      to )
                                 ("quantity", amount )
                                 ("memo", "")
                                 );
    }
    void transfer( name from, name to, const string& amount, name manager = config::system_account_name ) {
-      base_tester::push_action( "eosio.token"_n, "transfer"_n, manager, mutable_variant_object()
+      base_tester::push_action( "flon.token"_n, "transfer"_n, manager, mutable_variant_object()
                                 ("from",    from)
                                 ("to",      to )
                                 ("quantity", asset::from_string(amount) )
@@ -107,7 +107,7 @@ public:
       //temporary code. current get_currency_balancy uses table name "accounts"_n from currency.h
       //generic_currency table name is "account"_n.
       const auto& db  = control->db();
-      const auto* tbl = db.find<table_id_object, by_code_scope_table>(boost::make_tuple("eosio.token"_n, act, "accounts"_n));
+      const auto* tbl = db.find<table_id_object, by_code_scope_table>(boost::make_tuple("flon.token"_n, act, "accounts"_n));
       share_type result = 0;
 
       // the balance is implied to be 0 if either the table or row does not exist
@@ -426,11 +426,11 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, eosio_msig_tester )
    set_producers( {"alice"_n,"bob"_n,"carol"_n} );
    produce_blocks(50);
 
-   create_accounts( { "eosio.token"_n, "eosio.rex"_n } );
-   set_code( "eosio.token"_n, contracts::token_wasm() );
-   set_abi( "eosio.token"_n, contracts::token_abi().data() );
+   create_accounts( { "flon.token"_n, "eosio.rex"_n } );
+   set_code( "flon.token"_n, contracts::token_wasm() );
+   set_abi( "flon.token"_n, contracts::token_abi().data() );
 
-   create_currency( "eosio.token"_n, config::system_account_name, core_sym::from_string("10000000000.0000") );
+   create_currency( "flon.token"_n, config::system_account_name, core_sym::from_string("10000000000.0000") );
    issue(config::system_account_name, core_sym::from_string("1000000000.0000"));
    BOOST_REQUIRE_EQUAL( core_sym::from_string("1000000000.0000"),
                         get_balance(config::system_account_name) + get_balance("eosio.ramfee"_n) + get_balance("eosio.stake"_n) + get_balance("eosio.ram"_n) );
@@ -547,11 +547,11 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, eosio_msig_tester
    set_producers( {"alice"_n,"bob"_n,"carol"_n, "apple"_n} );
    produce_blocks(50);
 
-   create_accounts( { "eosio.token"_n, "eosio.rex"_n } );
-   set_code( "eosio.token"_n, contracts::token_wasm() );
-   set_abi( "eosio.token"_n, contracts::token_abi().data() );
+   create_accounts( { "flon.token"_n, "eosio.rex"_n } );
+   set_code( "flon.token"_n, contracts::token_wasm() );
+   set_abi( "flon.token"_n, contracts::token_abi().data() );
 
-   create_currency( "eosio.token"_n, config::system_account_name, core_sym::from_string("10000000000.0000") );
+   create_currency( "flon.token"_n, config::system_account_name, core_sym::from_string("10000000000.0000") );
    issue(config::system_account_name, core_sym::from_string("1000000000.0000"));
    BOOST_REQUIRE_EQUAL( core_sym::from_string("1000000000.0000"), get_balance( config::system_account_name ) );
 

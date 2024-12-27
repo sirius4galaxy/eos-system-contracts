@@ -25,7 +25,7 @@ namespace eosio {
       public:
          using contract::contract;
 
-         [[eosio::on_notify("eosio.token::transfer")]]
+         [[eosio::on_notify("flon.token::transfer")]]
          void on_transfer( const name from, const name to, const asset quantity, const string memo );
 
          [[eosio::action]]

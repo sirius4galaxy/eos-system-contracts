@@ -9,7 +9,7 @@ void bpay::claimrewards( const name owner ) {
 
     const auto& row = _rewards.get( owner.value, "no rewards to claim" );
 
-    eosio::token::transfer_action transfer( "eosio.token"_n, { get_self(), "active"_n });
+    eosio::token::transfer_action transfer( "flon.token"_n, { get_self(), "active"_n });
     transfer.send( get_self(), owner, row.quantity, "producer block pay" );
 
     _rewards.erase(row);
@@ -44,11 +44,11 @@ void bpay::on_transfer( const name from, const name to, const asset quantity, co
     while (true) {
         if (prod == idx.end()) break;
         if (prod->is_active == false) continue;
-        
+
         top_producers.push_back(prod->owner);
 
         if (top_producers.size() == producer_count) break;
-        
+
         prod++;
     }
 
