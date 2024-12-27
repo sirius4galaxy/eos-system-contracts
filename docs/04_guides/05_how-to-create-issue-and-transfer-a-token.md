@@ -57,27 +57,27 @@ warning: transaction executed locally, but may not be confirmed by the network y
 ## Step 5: Create the Token
 
 ```shell
-cleos push action flon.token create '[ "eosio", "1000000000.0000 NEWT"]' -p flon.token@active
+cleos push action flon.token create '[ "flon", "1000000000.0000 NEWT"]' -p flon.token@active
 ```
 
 Result should look similar to the one below:
 
 ```console
 executed transaction: 0e49a421f6e75f4c5e09dd738a02d3f51bd18a0cf31894f68d335cd70d9c0e12  120 bytes  1000 cycles
-#   flon.token <= flon.token::create          {"issuer":"eosio","maximum_supply":"1000000000.0000 NEWT"}
+#   flon.token <= flon.token::create          {"issuer":"flon","maximum_supply":"1000000000.0000 NEWT"}
 ```
 
 An alternate approach uses named arguments:
 
 ```shell
-cleos push action flon.token create '{"issuer":"eosio", "maximum_supply":"1000000000.0000 NEWT"}' -p flon.token@active
+cleos push action flon.token create '{"issuer":"flon", "maximum_supply":"1000000000.0000 NEWT"}' -p flon.token@active
 ```
 
 Result should look similar to the one below:
 
 ```console
 executed transaction: 0e49a421f6e75f4c5e09dd738a02d3f51bd18a0cf31894f68d335cd70d9c0e12  120 bytes  1000 cycles
-#   flon.token <= flon.token::create          {"issuer":"eosio","maximum_supply":"1000000000.0000 NEWT"}
+#   flon.token <= flon.token::create          {"issuer":"flon","maximum_supply":"1000000000.0000 NEWT"}
 ```
 
 This command created a new token `NEWT` with a precision of 4 decimals and a maximum supply of 1000000000.0000 NEWT.  To create this token requires the permission of the `flon.token` contract. For this reason, `-p flon.token@active` was passed to authorize the request.
@@ -87,14 +87,14 @@ This command created a new token `NEWT` with a precision of 4 decimals and a max
 The issuer can issue new tokens to the issuer account in our case `flon`.
 
 ```sh
-cleos push action flon.token issue '[ "eosio", "100.0000 NEWT", "memo" ]' -p eosio@active
+cleos push action flon.token issue '[ "flon", "100.0000 NEWT", "memo" ]' -p eosio@active
 ```
 
 Result should look similar to the one below:
 
 ```console
 executed transaction: a26b29d66044ad95edf0fc04bad3073e99718bc26d27f3c006589adedb717936  128 bytes  337 us
-#   flon.token <= flon.token::issue           {"to":"eosio","quantity":"100.0000 NEWT","memo":"memo"}
+#   flon.token <= flon.token::issue           {"to":"flon","quantity":"100.0000 NEWT","memo":"memo"}
 warning: transaction executed locally, but may not be confirmed by the network yet         ]
 ```
 
@@ -103,16 +103,16 @@ warning: transaction executed locally, but may not be confirmed by the network y
 Now that account `flon` has been issued tokens, transfer some of them to account `bob`.
 
 ```shell
-cleos push action flon.token transfer '[ "eosio", "bob", "25.0000 NEWT", "m" ]' -p eosio@active
+cleos push action flon.token transfer '[ "flon", "bob", "25.0000 NEWT", "m" ]' -p eosio@active
 ```
 
 Result should look similar to the one below:
 
 ```console
 executed transaction: 60d334850151cb95c35fe31ce2e8b536b51441c5fd4c3f2fea98edcc6d69f39d  128 bytes  497 us
-#   flon.token <= flon.token::transfer        {"from":"eosio","to":"bob","quantity":"25.0000 NEWT","memo":"m"}
-#         eosio <= flon.token::transfer        {"from":"eosio","to":"bob","quantity":"25.0000 NEWT","memo":"m"}
-#           bob <= flon.token::transfer        {"from":"eosio","to":"bob","quantity":"25.0000 NEWT","memo":"m"}
+#   flon.token <= flon.token::transfer        {"from":"flon","to":"bob","quantity":"25.0000 NEWT","memo":"m"}
+#         eosio <= flon.token::transfer        {"from":"flon","to":"bob","quantity":"25.0000 NEWT","memo":"m"}
+#           bob <= flon.token::transfer        {"from":"flon","to":"bob","quantity":"25.0000 NEWT","memo":"m"}
 warning: transaction executed locally, but may not be confirmed by the network yet         ]
 ```
 

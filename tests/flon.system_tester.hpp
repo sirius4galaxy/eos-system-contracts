@@ -54,7 +54,7 @@ public:
       FC_ASSERT( core_symbol.decimals() == 4, "create_core_token assumes core token has 4 digits of precision" );
       create_currency( "flon.token"_n, config::system_account_name, asset(100000000000000, core_symbol) );
       issue( asset(10000000000000, core_symbol) );
-      BOOST_REQUIRE_EQUAL( asset(10000000000000, core_symbol), get_balance( "eosio", core_symbol ) );
+      BOOST_REQUIRE_EQUAL( asset(10000000000000, core_symbol), get_balance( "flon", core_symbol ) );
    }
 
    void deploy_contract( bool call_init = true ) {
@@ -84,7 +84,7 @@ public:
       create_account_with_resources( "bob111111111"_n, config::system_account_name, core_sym::from_string("0.4500"), false );
       create_account_with_resources( "carol1111111"_n, config::system_account_name, core_sym::from_string("1.0000"), false );
 
-      BOOST_REQUIRE_EQUAL( core_sym::from_string("1000000000.0000"), get_balance("eosio")  + get_balance("flon.ramfee") + get_balance("flon.stake") + get_balance("flon.ram") + get_balance("flon.fees") );
+      BOOST_REQUIRE_EQUAL( core_sym::from_string("1000000000.0000"), get_balance("flon")  + get_balance("flon.ramfee") + get_balance("flon.stake") + get_balance("flon.ram") + get_balance("flon.fees") );
    }
 
    enum class setup_level {

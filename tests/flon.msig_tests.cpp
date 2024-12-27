@@ -843,7 +843,7 @@ BOOST_FIXTURE_TEST_CASE( sendinline, eosio_msig_tester ) try {
    action act = get_action( config::system_account_name, "reqauth"_n, {}, mvo()("from", "alice"));
 
    BOOST_REQUIRE_EXCEPTION( base_tester::push_action( "sendinline"_n, "send"_n, "bob"_n, mvo()
-                                                       ("contract", "eosio")
+                                                       ("contract", "flon")
                                                        ("action_name", "reqauth")
                                                        ("auths", std::vector<permission_level>{ {"alice"_n, config::active_name} })
                                                        ("payload", act.data)
@@ -862,14 +862,14 @@ BOOST_FIXTURE_TEST_CASE( sendinline, eosio_msig_tester ) try {
 
    base_tester::push_action( config::system_account_name, "linkauth"_n, "alice"_n, mvo()
                               ("account", "alice")
-                              ("code", "eosio")
+                              ("code", "flon")
                               ("type", "reqauth")
                               ("requirement", "perm")
    );
    produce_blocks();
 
    transaction_trace_ptr trace = base_tester::push_action( "sendinline"_n, "send"_n, "bob"_n, mvo()
-                                                            ("contract", "eosio")
+                                                            ("contract", "flon")
                                                             ("action_name", "reqauth")
                                                             ("auths", std::vector<permission_level>{ {"alice"_n, "perm"_n} })
                                                             ("payload", act.data)

@@ -48,10 +48,10 @@ The first few lines of the generated file should be something similar to (except
    "delay_sec": 0,
    "context_free_actions": [],
    "actions": [{
-      "account": "eosio",
+      "account": "flon",
       "name": "setcode",
       "authorization": [{
-          "actor": "eosio",
+          "actor": "flon",
           "permission": "active"
         }
       ],

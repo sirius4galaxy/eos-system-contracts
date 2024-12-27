@@ -72,7 +72,7 @@ public:
 
       produce_blocks();
 
-      while( control->pending_block_producer().to_string() == "eosio" ) {
+      while( control->pending_block_producer().to_string() == "flon" ) {
          produce_block();
       }
    }
