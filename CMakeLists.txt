@@ -31,6 +31,8 @@ option(SYSTEM_ENABLE_FULLON_VERSION_CHECK
 option(SYSTEM_ENABLE_CDT_VERSION_CHECK
       "Enables a configure-time check that the version of CDT is compatible with this project's contracts" ON)
 
+option(BUILD_TESTS "Build unit tests" OFF)
+
 ExternalProject_Add(
   contracts_project
   SOURCE_DIR ${CMAKE_SOURCE_DIR}/contracts
@@ -39,6 +41,7 @@ ExternalProject_Add(
              -DCMAKE_TOOLCHAIN_FILE=${CDT_ROOT}/lib/cmake/cdt/CDTWasmToolchain.cmake
              -DSYSTEM_CONFIGURABLE_WASM_LIMITS=${SYSTEM_CONFIGURABLE_WASM_LIMITS}
              -DSYSTEM_BLOCKCHAIN_PARAMETERS=${SYSTEM_BLOCKCHAIN_PARAMETERS}
+             -DBUILD_TESTS=${BUILD_TESTS}
   UPDATE_COMMAND ""
   PATCH_COMMAND ""
   TEST_COMMAND ""

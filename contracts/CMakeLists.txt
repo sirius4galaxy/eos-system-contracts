@@ -53,5 +53,6 @@ add_subdirectory(flon.token)
 add_subdirectory(flon.wrap)
 # add_subdirectory(flon.fees)
 # add_subdirectory(flon.bpay)
-
-add_subdirectory(test_contracts)
+if(BUILD_TESTS)
+  add_subdirectory(test_contracts)
+endif()

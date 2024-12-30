@@ -4,7 +4,7 @@ set -eo pipefail
 function usage() {
   printf "Usage: $0 OPTION...
   -c DIR      Path to CDT installation/build directory. (Optional if using CDT installled at standard system location.)
-  -l DIR      Path to fullon build directory. Optional, but must be specified to build tests.
+  -f DIR      Path to fullon build directory. Optional, but must be specified to build tests.
   -h          Print this help menu.
   \\n" "$0" 1>&2
   exit 1
@@ -13,12 +13,12 @@ function usage() {
 BUILD_TESTS=OFF
 
 if [ $# -ne 0 ]; then
-  while getopts "c:l:h" opt; do
+  while getopts "c:f:h" opt; do
     case "${opt}" in
       c )
         CDT_INSTALL_DIR=$(realpath $OPTARG)
       ;;
-      l )
+      f )
         FULLON_BUILD_DIR=$(realpath $OPTARG)
         BUILD_TESTS=ON
       ;;
