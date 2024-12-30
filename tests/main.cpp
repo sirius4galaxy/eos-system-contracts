@@ -12,7 +12,9 @@
 #include "flon.system_tester.hpp"
 
 using namespace eosio_system;
+#ifndef BOOST_TEST_STATIC_LINK
 #define BOOST_TEST_STATIC_LINK
+#endif
 
 void translate_fc_exception(const fc::exception &e) {
    std::cerr << "\033[33m" <<  e.to_detail_string() << "\033[0m" << std::endl;

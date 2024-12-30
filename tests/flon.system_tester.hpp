@@ -1161,7 +1161,7 @@ public:
    }
 
    uint32_t last_block_time() const {
-      return time_point_sec( control->head_block_time() ).sec_since_epoch();
+      return time_point_sec( control->head().block_time() ).sec_since_epoch();
    }
 
    asset get_balance( const account_name& act, symbol balance_symbol = symbol{CORE_SYM} ) {
@@ -1377,7 +1377,7 @@ public:
       return msig_abi_ser;
    }
 
-   vector<name> active_and_vote_producers(uint32_t num_producers = 21) {
+   vector<name> active_and_vote_producers(int32_t num_producers = 21) {
       //stake more than 15% of total EOS supply to activate chain
       transfer( "flon"_n, "alice1111111"_n, core_sym::from_string("650000000.0000"), config::system_account_name );
       BOOST_REQUIRE_EQUAL( success(), stake( "alice1111111"_n, "alice1111111"_n, core_sym::from_string("300000000.0000"), core_sym::from_string("300000000.0000") ) );
@@ -1426,7 +1426,7 @@ public:
       produce_blocks( 2 * 21 ); // This is minimum number of blocks required by ram_gift in system_tests
 
       auto producer_schedule = control->active_producers();
-      BOOST_REQUIRE_EQUAL( 21, producer_schedule.producers.size() );
+      BOOST_REQUIRE_EQUAL( 21u, producer_schedule.producers.size() );
       BOOST_REQUIRE_EQUAL( name("defproducera"), producer_schedule.producers[0].producer_name );
 
       return producer_names;

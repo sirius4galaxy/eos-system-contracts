@@ -32,7 +32,7 @@ BOOST_FIXTURE_TEST_CASE( bpay_test, eosio_system_tester ) try {
    produce_blocks( 250 );
 
 
-   BOOST_REQUIRE_EQUAL( 0, get_producer_info( standby )["unpaid_blocks"].as<uint32_t>() );
+   BOOST_REQUIRE_EQUAL( 0u, get_producer_info( standby )["unpaid_blocks"].as<uint32_t>() );
    BOOST_REQUIRE_EQUAL( get_producer_info( producer_names[0] )["unpaid_blocks"].as<uint32_t>() > 0, true );
 
    // TODO: Check nothing happened here, no rewards since it comes from system account

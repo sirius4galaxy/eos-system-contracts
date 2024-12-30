@@ -111,7 +111,7 @@ struct finalizer_key_tester : eosio_system_tester {
    // Verify finalizers_table and last_prop_fins_table match
    void verify_last_proposed_finalizers(const std::vector<name>& producer_names) {
       auto last_finalizers = get_last_prop_finalizers_info();
-      BOOST_REQUIRE_EQUAL( 21, last_finalizers.size() );
+      BOOST_REQUIRE_EQUAL( 21u, last_finalizers.size() );
       for( auto& p : producer_names ) {
          auto finalizer_info = get_finalizer_info(p);
          uint64_t active_key_id = finalizer_info["active_key_id"].as_uint64();
@@ -228,7 +228,7 @@ BOOST_FIXTURE_TEST_CASE(register_finalizer_key_by_same_finalizer_tests, finalize
    // Make sure binary format is correct, which is important
    auto alice_info = get_finalizer_info(alice);
    BOOST_REQUIRE_EQUAL( "alice1111111", alice_info["finalizer_name"].as_string() );
-   BOOST_REQUIRE_EQUAL( 1, alice_info["finalizer_key_count"].as_uint64() );
+   BOOST_REQUIRE_EQUAL( 1u, alice_info["finalizer_key_count"].as_int64() );
    BOOST_REQUIRE_EQUAL( finalizer_key_binary_1, alice_info["active_key_binary"].as_string() );
 
    // Cross check finalizer keys table
@@ -241,7 +241,7 @@ BOOST_FIXTURE_TEST_CASE(register_finalizer_key_by_same_finalizer_tests, finalize
    BOOST_REQUIRE_EQUAL( success(), register_finalizer_key(alice, finalizer_key_2, pop_2 ));
 
    alice_info = get_finalizer_info(alice);
-   BOOST_REQUIRE_EQUAL( 2, alice_info["finalizer_key_count"].as_uint64() ); // count incremented by 1
+   BOOST_REQUIRE_EQUAL( 2, alice_info["finalizer_key_count"].as_int64() ); // count incremented by 1
    BOOST_REQUIRE_EQUAL( active_key_id, alice_info["active_key_id"].as_uint64() ); // active key should not change
 }
 FC_LOG_AND_RETHROW() // register_finalizer_key_by_same_finalizer_tests
@@ -254,7 +254,7 @@ BOOST_FIXTURE_TEST_CASE(register_finalizer_key_duplicate_key_tests, finalizer_ke
 
    auto alice_info = get_finalizer_info(alice);
    BOOST_REQUIRE_EQUAL( "alice1111111", alice_info["finalizer_name"].as_string() );
-   BOOST_REQUIRE_EQUAL( 1, alice_info["finalizer_key_count"].as_uint64() );
+   BOOST_REQUIRE_EQUAL( 1, alice_info["finalizer_key_count"].as_int64() );
 
    // Tries to register the same finalizer key
    BOOST_REQUIRE_EQUAL( wasm_assert_msg( "duplicate finalizer key: " + finalizer_key_1 ),
@@ -262,7 +262,7 @@ BOOST_FIXTURE_TEST_CASE(register_finalizer_key_duplicate_key_tests, finalizer_ke
 
    // finalizer key count still 1
    alice_info = get_finalizer_info(alice);
-   BOOST_REQUIRE_EQUAL( 1, alice_info["finalizer_key_count"].as_uint64() );
+   BOOST_REQUIRE_EQUAL( 1, alice_info["finalizer_key_count"].as_int64() );
 }
 FC_LOG_AND_RETHROW() // register_finalizer_key_duplicate_key_tests
 
@@ -278,14 +278,14 @@ BOOST_FIXTURE_TEST_CASE(register_finalizer_key_by_different_finalizers_tests, fi
    auto alice_info = get_finalizer_info(alice);
    BOOST_REQUIRE_EQUAL( "alice1111111", alice_info["finalizer_name"].as_string() );
    BOOST_REQUIRE_EQUAL( finalizer_key_binary_1, alice_info["active_key_binary"].as_string() );
-   BOOST_REQUIRE_EQUAL( 2, alice_info["finalizer_key_count"].as_uint64() );
+   BOOST_REQUIRE_EQUAL( 2, alice_info["finalizer_key_count"].as_int64() );
 
    // bob111111111 registers another finalizer key
    BOOST_REQUIRE_EQUAL( success(), register_finalizer_key(bob, finalizer_key_3, pop_3) );
    BOOST_REQUIRE_EQUAL( success(), register_finalizer_key(bob, finalizer_key_4, pop_4) );
 
    auto bob_info = get_finalizer_info(bob);
-   BOOST_REQUIRE_EQUAL( 2, bob_info["finalizer_key_count"].as_uint64() );
+   BOOST_REQUIRE_EQUAL( 2, bob_info["finalizer_key_count"].as_int64() );
    BOOST_REQUIRE_EQUAL( finalizer_key_binary_3, bob_info["active_key_binary"].as_string() );
 }
 FC_LOG_AND_RETHROW() // register_finalizer_key_by_different_finalizers_tests
@@ -300,7 +300,7 @@ BOOST_FIXTURE_TEST_CASE(register_duplicate_key_from_different_finalizers_tests, 
 
    auto fin_info = get_finalizer_info(alice);
    BOOST_REQUIRE_EQUAL( "alice1111111", fin_info["finalizer_name"].as_string() );
-   BOOST_REQUIRE_EQUAL( 1, fin_info["finalizer_key_count"].as_uint64() );
+   BOOST_REQUIRE_EQUAL( 1, fin_info["finalizer_key_count"].as_int64() );
 
    // bob111111111 tries to register the same finalizer key as the first one
    BOOST_REQUIRE_EQUAL( wasm_assert_msg( "duplicate finalizer key: " + finalizer_key_1 ),
@@ -407,7 +407,7 @@ BOOST_FIXTURE_TEST_CASE(delete_finalizer_key_failure_tests, finalizer_key_tester
    uint64_t active_key_id = bob_info["active_key_id"].as_uint64();
    auto finalizer_key_info = get_finalizer_key_info(active_key_id);
    BOOST_REQUIRE_EQUAL( finalizer_key_2, finalizer_key_info["finalizer_key"].as_string() );
-   BOOST_REQUIRE_EQUAL( 2, bob_info["finalizer_key_count"].as_uint64() );
+   BOOST_REQUIRE_EQUAL( 2, bob_info["finalizer_key_count"].as_int64() );
 
    // Bob tries to delete his active finalizer key but he has 2 keys
    BOOST_REQUIRE_EQUAL( wasm_assert_msg( "cannot delete an active key unless it is the last registered finalizer key, has 2 keys" ),
@@ -513,7 +513,7 @@ BOOST_FIXTURE_TEST_CASE(multi_activation_tests, finalizer_key_tester) try {
    auto producera_info = get_finalizer_info(producera);
    auto active_key_id_before = producera_info["active_key_id"].as_uint64();
    auto last_prop_fin_ids_before = get_last_prop_fin_ids();
-   BOOST_REQUIRE_EQUAL( 21, last_prop_fin_ids_before.size() );
+   BOOST_REQUIRE_EQUAL( 21u, last_prop_fin_ids_before.size() );
 
    // Activate finalizer_key_1
    BOOST_REQUIRE_EQUAL( success(), activate_finalizer_key(producera, finalizer_key_1) );
@@ -523,7 +523,7 @@ BOOST_FIXTURE_TEST_CASE(multi_activation_tests, finalizer_key_tester) try {
    producera_info = get_finalizer_info(producera);
    auto active_key_id_after = producera_info["active_key_id"].as_uint64();
    auto last_prop_fin_ids_after = get_last_prop_fin_ids();
-   BOOST_REQUIRE_EQUAL( 21, last_prop_fin_ids_after.size() );
+   BOOST_REQUIRE_EQUAL( 21u, last_prop_fin_ids_after.size() );
 
    last_prop_fin_ids_before.erase(active_key_id_before);
    last_prop_fin_ids_before.insert(active_key_id_after);
@@ -540,7 +540,7 @@ BOOST_FIXTURE_TEST_CASE(multi_activation_tests, finalizer_key_tester) try {
    producera_info = get_finalizer_info(producera);
    active_key_id_after = producera_info["active_key_id"].as_uint64();
    last_prop_fin_ids_after = get_last_prop_fin_ids();
-   BOOST_REQUIRE_EQUAL( 21, last_prop_fin_ids_after.size() );
+   BOOST_REQUIRE_EQUAL( 21u, last_prop_fin_ids_after.size() );
 
    last_prop_fin_ids_before.erase(active_key_id_before);
    last_prop_fin_ids_before.insert(active_key_id_after);
@@ -588,7 +588,7 @@ BOOST_FIXTURE_TEST_CASE(update_elected_producers_no_finalizers_changed_test, fin
 
    // Since finalizer keys have not changed, last_finkey_ids should be the same
    auto last_finkey_ids_2 = get_last_prop_fin_ids();
-   BOOST_REQUIRE_EQUAL( 21, last_finkey_ids_2.size() );
+   BOOST_REQUIRE_EQUAL( 21u, last_finkey_ids_2.size() );
    BOOST_REQUIRE_EQUAL( true, last_finkey_ids == last_finkey_ids_2 );
 }
 FC_LOG_AND_RETHROW()
@@ -624,7 +624,7 @@ BOOST_FIXTURE_TEST_CASE(update_elected_producers_finalizers_changed_test, finali
    // Since producer is an active producer, the finalizer key change takes effective
    // immediately.
    auto last_finkey_ids_2 = get_last_prop_fin_ids();
-   BOOST_REQUIRE_EQUAL( 21, last_finkey_ids_2.size() );
+   BOOST_REQUIRE_EQUAL( 21u, last_finkey_ids_2.size() );
 
    // Take a note of new active_key_id
    auto p_info_2 = get_finalizer_info(test_producer);
@@ -686,7 +686,7 @@ BOOST_FIXTURE_TEST_CASE(update_elected_producers_finalizers_replaced_test, final
 
    // find new last_finkey_ids
    auto last_finkey_ids_2 = get_last_prop_fin_ids();
-   BOOST_REQUIRE_EQUAL( 21, last_finkey_ids_2.size() );
+   BOOST_REQUIRE_EQUAL( 21u, last_finkey_ids_2.size() );
    // Make sure new_id is in the new last_finkey_ids
    BOOST_REQUIRE_EQUAL( true, last_finkey_ids_2.contains(producerv_id) );
 
@@ -716,7 +716,7 @@ BOOST_FIXTURE_TEST_CASE(update_elected_producers_finalizers_replaced_test, final
 
    // find new last_finkey_ids
    auto last_finkey_ids_3 = get_last_prop_fin_ids();
-   BOOST_REQUIRE_EQUAL( 21, last_finkey_ids_3.size() );
+   BOOST_REQUIRE_EQUAL( 21u, last_finkey_ids_3.size() );
    // Make sure producerw_id is in the new last_finkey_ids
    BOOST_REQUIRE_EQUAL( true, last_finkey_ids_3.contains(producerw_id) );
 
