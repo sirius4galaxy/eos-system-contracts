@@ -5,6 +5,7 @@
 #include <eosio/chain/abi_serializer.hpp>
 #include <eosio/chain/resource_limits.hpp>
 #include <eosio/testing/tester.hpp>
+#include <eosio/chain/config.hpp>
 
 #include <fc/variant_object.hpp>
 #include <fstream>
@@ -17,7 +18,32 @@ using mvo = fc::mutable_variant_object;
 
 namespace eosio_system {
 
-class eosio_system_tester : public validating_tester {
+
+class base_system_tester : public validating_tester {
+public:
+
+   base_system_tester(): validating_tester({}, nullptr, setup_policy::none) {
+
+      const auto& pfm = control->get_protocol_feature_manager();
+      auto preactivate_feature_digest = pfm.get_builtin_digest(builtin_protocol_feature_t::preactivate_feature);
+      schedule_protocol_features_wo_preactivation( { *preactivate_feature_digest } );
+      produce_block();
+
+      set_code(config::system_account_name, contracts::boot_wasm());
+      set_abi(config::system_account_name, contracts::boot_abi().data());
+      produce_block();
+      preactivate_all_builtin_protocol_features();
+
+      produce_block();
+      set_code(config::system_account_name, contracts::bios_wasm());
+      set_abi(config::system_account_name, contracts::bios_abi().data());
+      // BLS voting is slow. Use only 1 finalizer for default testser.
+      finalizer_keys fin_keys(*this, 1u /* num_keys */, 1u /* finset_size */);
+      fin_keys.activate_savanna(0u /* first_key_idx */);
+   }
+};
+
+class eosio_system_tester : public base_system_tester {
 public:
 
    void basic_setup() {
@@ -96,7 +122,7 @@ public:
    };
 
    eosio_system_tester( setup_level l = setup_level::full, setup_policy policy = setup_policy::full )
-   : validating_tester({}, nullptr, policy) {
+   : base_system_tester() {
       if( l == setup_level::none ) return;
 
       basic_setup();

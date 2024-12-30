@@ -549,7 +549,7 @@ BOOST_FIXTURE_TEST_CASE(multi_activation_tests, finalizer_key_tester) try {
 FC_LOG_AND_RETHROW()
 
 BOOST_FIXTURE_TEST_CASE(switchtosvnn_missing_authority_tests, finalizer_key_tester) try {
-   BOOST_REQUIRE_EQUAL( error( "missing authority of eosio" ),
+   BOOST_REQUIRE_EQUAL( error( "missing authority of flon" ),
                         push_action( alice, "switchtosvnn"_n, mvo()) );
 }
 FC_LOG_AND_RETHROW()

@@ -14,7 +14,7 @@ using namespace std;
 
 using mvo = fc::mutable_variant_object;
 
-class eosio_token_tester : public tester {
+class eosio_token_tester : public eosio_system::base_system_tester {
 public:
 
    eosio_token_tester() {

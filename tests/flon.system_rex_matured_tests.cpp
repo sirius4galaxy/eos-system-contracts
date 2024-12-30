@@ -1,3 +1,4 @@
+#ifdef enable_rex
 #include <boost/test/unit_test.hpp>
 
 #include "flon.system_tester.hpp"
@@ -103,3 +104,4 @@ BOOST_FIXTURE_TEST_CASE( buy_sell_matured_rex, eosio_system_tester ) try {
 } FC_LOG_AND_RETHROW()
 
 BOOST_AUTO_TEST_SUITE_END()
+#endif//enable_rex

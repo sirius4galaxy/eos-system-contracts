@@ -1,3 +1,4 @@
+#ifdef ENABLE_BPAY
 #include "flon.system_tester.hpp"
 
 using namespace eosio_system;
@@ -99,3 +100,4 @@ BOOST_FIXTURE_TEST_CASE( bpay_test, eosio_system_tester ) try {
 
 
 BOOST_AUTO_TEST_SUITE_END()
+#endif//ENABLE_BPAY

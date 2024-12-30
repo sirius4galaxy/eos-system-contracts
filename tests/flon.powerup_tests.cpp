@@ -256,7 +256,7 @@ bool near(A a, B b, D delta) {
 BOOST_AUTO_TEST_SUITE(eosio_system_powerup_tests)
 
 BOOST_FIXTURE_TEST_CASE(config_tests, powerup_tester) try {
-   BOOST_REQUIRE_EQUAL("missing authority of eosio",
+   BOOST_REQUIRE_EQUAL("missing authority of flon",
                        push_action("alice1111111"_n, "cfgpowerup"_n, mvo()("args", make_config())));
    BOOST_REQUIRE_EQUAL(wasm_assert_msg("powerup hasn't been initialized"), powerupexec("alice1111111"_n, 10));
 
