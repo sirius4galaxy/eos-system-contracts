@@ -1819,6 +1819,8 @@ BOOST_AUTO_TEST_CASE(extreme_inflation) try {
 } FC_LOG_AND_RETHROW()
 
 BOOST_AUTO_TEST_SUITE_END()
+
+#ifdef ENABLE_BPAY
 BOOST_AUTO_TEST_SUITE(eosio_system_multiple_producer_pay_tests)
 
 BOOST_FIXTURE_TEST_CASE(multiple_producer_pay, eosio_system_tester, * boost::unit_test::tolerance(1e-10)) try {
@@ -2201,8 +2203,11 @@ BOOST_FIXTURE_TEST_CASE(multiple_producer_pay, eosio_system_tester, * boost::uni
 
 
 BOOST_AUTO_TEST_SUITE_END()
+#endif//ENABLE_BPAY
+
 BOOST_AUTO_TEST_SUITE(eosio_system_votepay_tests)
 
+#ifdef ENABLE_VOTEPAY
 BOOST_FIXTURE_TEST_CASE(multiple_producer_votepay_share, eosio_system_tester, * boost::unit_test::tolerance(1e-10)) try {
 
    const asset net = core_sym::from_string("80.0000");
@@ -2708,7 +2713,6 @@ BOOST_FIXTURE_TEST_CASE(votepay_transition, eosio_system_tester, * boost::unit_t
 
 } FC_LOG_AND_RETHROW()
 
-#ifdef ENABLE_VOTEPAY
 BOOST_AUTO_TEST_CASE(votepay_transition2, * boost::unit_test::tolerance(1e-10)) try {
    eosio_system_tester t(eosio_system_tester::setup_level::minimal);
 
