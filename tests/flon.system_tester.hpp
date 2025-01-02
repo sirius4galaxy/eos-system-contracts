@@ -64,7 +64,9 @@ public:
          token_abi_ser.set_abi(abi, abi_serializer::create_yield_function(abi_serializer_max_time));
       }
 
+      #ifdef ENABLED_REX
       set_code( "flon.fees"_n, contracts::fees_wasm());
+      #endif//ENABLED_REX
 
       set_code( "flon.bpay"_n, contracts::bpay_wasm());
       set_abi( "flon.bpay"_n, contracts::bpay_abi().data() );

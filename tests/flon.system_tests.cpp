@@ -3946,8 +3946,10 @@ BOOST_FIXTURE_TEST_CASE( ram_gift, eosio_system_tester ) try {
 } FC_LOG_AND_RETHROW()
 
 BOOST_AUTO_TEST_SUITE_END()
+
 BOOST_AUTO_TEST_SUITE(eosio_system_origin_rex_tests)
 
+#ifdef ENABLE_REX
 BOOST_FIXTURE_TEST_CASE( rex_rounding_issue, eosio_system_tester ) try {
    const std::vector<name> whales { "whale1"_n, "whale2"_n, "whale3"_n, "whale4"_n , "whale5"_n  };
    const name bob{ "bob"_n }, alice{ "alice"_n };
@@ -5736,7 +5738,7 @@ BOOST_FIXTURE_TEST_CASE( rex_return, eosio_system_tester ) try {
    }
 
 } FC_LOG_AND_RETHROW()
-
+#endif//ENABLE_REX
 
 BOOST_AUTO_TEST_CASE( setabi_bios ) try {
    fc::temp_directory tempdir;

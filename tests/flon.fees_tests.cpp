@@ -1,3 +1,4 @@
+#ifdef ENABLED_REX
 #include "flon.system_tester.hpp"
 
 using namespace eosio_system;
@@ -51,3 +52,4 @@ BOOST_FIXTURE_TEST_CASE( fees_without_rex, eosio_system_tester ) try {
 
 
 BOOST_AUTO_TEST_SUITE_END()
+#endif//ENABLED_REX
