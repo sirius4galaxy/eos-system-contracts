@@ -9,7 +9,7 @@ add_contract(
   ${CMAKE_CURRENT_SOURCE_DIR}/src/native.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/producer_pay.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/powerup.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/rex.cpp
+  # ${CMAKE_CURRENT_SOURCE_DIR}/src/rex.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/voting.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/limit_auth_changes.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/block_info.cpp)
@@ -23,7 +23,8 @@ if(SYSTEM_BLOCKCHAIN_PARAMETERS)
 endif()
 
 target_include_directories(flon.system PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
-                                               ${CMAKE_CURRENT_SOURCE_DIR}/../flon.token/include)
+                                               ${CMAKE_CURRENT_SOURCE_DIR}/../flon.token/include
+                                               ${CMAKE_CURRENT_SOURCE_DIR}/../flon.reward/include)
 
 set_target_properties(flon.system PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}")
 

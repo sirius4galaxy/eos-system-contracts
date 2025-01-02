@@ -1,5 +1,6 @@
 #include <flon.system/flon.system.hpp>
 #include <flon.token/flon.token.hpp>
+#include <flon.reward/flon.reward.hpp>
 
 #include <eosio/crypto.hpp>
 #include <eosio/dispatcher.hpp>
@@ -58,10 +59,10 @@ namespace eosiosystem {
       return gs4;
    }
 
-   symbol system_contract::core_symbol()const {
-      const static auto sym = get_core_symbol();
-      return sym;
-   }
+   // symbol system_contract::core_symbol()const {
+   //    const static auto sym = get_core_symbol();
+   //    return sym;
+   // }
 
    system_contract::~system_contract() {
       _global.set( _gstate, get_self() );
@@ -540,8 +541,8 @@ namespace eosiosystem {
 
       userres.emplace( new_account_name, [&]( auto& res ) {
         res.owner = new_account_name;
-        res.net_weight = asset( 0, system_contract::get_core_symbol() );
-        res.cpu_weight = asset( 0, system_contract::get_core_symbol() );
+        res.net_weight = asset( 0, system_contract::get_core_symbol(get_self()) );
+        res.cpu_weight = asset( 0, system_contract::get_core_symbol(get_self()) );
       });
 
       set_resource_limits( new_account_name, 0, 0, 0 );
@@ -567,9 +568,11 @@ namespace eosiosystem {
       require_auth( get_self() );
       check( version.value == 0, "unsupported version for init action" );
 
+      check( !_gstate.core_symbol.is_valid(), "system contract has already been initialized" );
       auto itr = _rammarket.find(ramcore_symbol.raw());
       check( itr == _rammarket.end(), "system contract has already been initialized" );
 
+      _gstate.core_symbol = core;
       auto system_token_supply   = eosio::token::get_supply(token_account, core.code() );
       check( system_token_supply.symbol == core, "specified core symbol does not exist (precision mismatch)" );
 
@@ -585,6 +588,9 @@ namespace eosiosystem {
 
       token::open_action open_act{ token_account, { {get_self(), active_permission} } };
       open_act.send( rex_account, core, get_self() );
+
+      flon::flon_reward::init_action init_act{ reward_account, { {get_self(), active_permission} } };
+      init_act.send( core );
    }
 
 } /// flon.system

@@ -347,8 +347,14 @@ namespace eosiosystem {
          }
       }
 
-      vote_stake_updater( from );
-      const int64_t staked = update_voting_power( from, stake_net_delta + stake_cpu_delta );
+      // vote_stake_updater( from );
+      // const int64_t staked = update_voting_power( from, stake_net_delta + stake_cpu_delta );
+
+      if( _voters.find( from.value ) == _voters.end() ) {
+         _voters.emplace( from, [&]( auto& v ) {
+            v.owner  = from;
+         });
+      }
    }
 
    void system_contract::update_stake_delegated( const name from, const name receiver, const asset stake_net_delta, const asset stake_cpu_delta )
@@ -422,27 +428,27 @@ namespace eosiosystem {
       } // tot_itr can be invalid, should go out of scope
    }
 
-   int64_t system_contract::update_voting_power( const name& voter, const asset& total_update )
-   {
-      auto voter_itr = _voters.find( voter.value );
-      if( voter_itr == _voters.end() ) {
-         voter_itr = _voters.emplace( voter, [&]( auto& v ) {
-            v.owner  = voter;
-            v.staked = total_update.amount;
-         });
-      } else {
-         _voters.modify( voter_itr, same_payer, [&]( auto& v ) {
-            v.staked += total_update.amount;
-         });
-      }
+   // int64_t system_contract::update_voting_power( const name& voter, const asset& total_update )
+   // {
+   //    auto voter_itr = _voters.find( voter.value );
+   //    if( voter_itr == _voters.end() ) {
+   //       voter_itr = _voters.emplace( voter, [&]( auto& v ) {
+   //          v.owner  = voter;
+   //          v.staked = total_update.amount;
+   //       });
+   //    } else {
+   //       _voters.modify( voter_itr, same_payer, [&]( auto& v ) {
+   //          v.staked += total_update.amount;
+   //       });
+   //    }
 
-      check( 0 <= voter_itr->staked, "stake for voting cannot be negative" );
+   //    check( 0 <= voter_itr->staked, "stake for voting cannot be negative" );
 
-      if( voter_itr->producers.size() || voter_itr->proxy ) {
-         update_votes( voter, voter_itr->proxy, voter_itr->producers, false );
-      }
-      return voter_itr->staked;
-   }
+   //    if( voter_itr->producers.size() || voter_itr->proxy ) {
+   //       update_votes( voter, voter_itr->proxy, voter_itr->producers, false );
+   //    }
+   //    return voter_itr->staked;
+   // }
 
    void system_contract::delegatebw( const name& from, const name& receiver,
                                      const asset& stake_net_quantity,

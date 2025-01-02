@@ -123,7 +123,7 @@ namespace eosiosystem {
 
    // Method parameters commented out to prevent generation of code that parses input data.
    /**
-    * The EOSIO core `native` contract that governs authorization and contracts' abi.
+    * The FULLON core `native` contract that governs authorization and contracts' abi.
     */
    class [[eosio::contract("flon.system")]] native : public eosio::contract {
       public:
@@ -131,7 +131,7 @@ namespace eosiosystem {
          using eosio::contract::contract;
 
          /**
-          * These actions map one-on-one with the ones defined in core layer of EOSIO, that's where their implementation
+          * These actions map one-on-one with the ones defined in core layer of FULLON, that's where their implementation
           * actually is done.
           * They are present here only so they can show up in the abi file and thus user can send them
           * to this contract, but they have no specific implementation at this contract level,
@@ -205,7 +205,7 @@ namespace eosiosystem {
          /**
           * Link authorization action assigns a specific action from a contract to a permission you have created. Five system
           * actions can not be linked `updateauth`, `deleteauth`, `linkauth`, `unlinkauth`, and `canceldelay`.
-          * This is useful because when doing authorization checks, the EOSIO based blockchain starts with the
+          * This is useful because when doing authorization checks, the FULLON based blockchain starts with the
           * action needed to be authorized (and the contract belonging to), and looks up which permission
           * is needed to pass authorization validation. If a link is set, that permission is used for authorization
           * validation otherwise then active is the default, with the exception of `flon.any`.
