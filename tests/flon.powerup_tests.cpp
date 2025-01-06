@@ -1,3 +1,4 @@
+#ifdef ENABLE_POWERUP
 #include <boost/test/unit_test.hpp>
 #include <cstdlib>
 #include <eosio/chain/contract_table_objects.hpp>
@@ -866,3 +867,4 @@ BOOST_AUTO_TEST_CASE(rent_tests) try {
 FC_LOG_AND_RETHROW()
 
 BOOST_AUTO_TEST_SUITE_END()
+#endif//ENABLE_POWERUP

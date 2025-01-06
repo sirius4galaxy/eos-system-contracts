@@ -19,7 +19,8 @@ using mvo = fc::mutable_variant_object;
 class eosio_msig_tester : public tester {
 public:
    eosio_msig_tester() {
-      create_accounts( { "flon.msig"_n, "flon.stake"_n, "flon.ram"_n, "flon.ramfee"_n, "flon.fees"_n, "alice"_n, "bob"_n, "carol"_n } );
+      create_accounts( { "flon.msig"_n, "flon.stake"_n, "flon.ram"_n, "flon.ramfee"_n, "flon.fees"_n, "alice"_n, "bob"_n, "carol"_n ,
+               "flon.reward"_n, "flon.vote"_n } );
       produce_block();
 
       auto trace = base_tester::push_action(config::system_account_name, "setpriv"_n,
@@ -426,6 +427,9 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_all_approve, eosio_msig_tester )
    set_producers( {"alice"_n,"bob"_n,"carol"_n} );
    produce_blocks(50);
 
+   set_code( "flon.reward"_n, contracts::reward_wasm());
+   set_abi( "flon.reward"_n, contracts::reward_abi().data() );
+
    create_accounts( { "flon.token"_n, "flon.rex"_n } );
    set_code( "flon.token"_n, contracts::token_wasm() );
    set_abi( "flon.token"_n, contracts::token_abi().data() );
@@ -546,6 +550,9 @@ BOOST_FIXTURE_TEST_CASE( update_system_contract_major_approve, eosio_msig_tester
    create_accounts( { "apple"_n } );
    set_producers( {"alice"_n,"bob"_n,"carol"_n, "apple"_n} );
    produce_blocks(50);
+
+   set_code( "flon.reward"_n, contracts::reward_wasm());
+   set_abi( "flon.reward"_n, contracts::reward_abi().data() );
 
    create_accounts( { "flon.token"_n, "flon.rex"_n } );
    set_code( "flon.token"_n, contracts::token_wasm() );

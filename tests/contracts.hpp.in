@@ -23,6 +23,8 @@ struct contracts {
    #endif//ENABLE_BPAY
    static std::vector<uint8_t> boot_wasm() { return read_wasm("${CMAKE_BINARY_DIR}/contracts/flon.boot/flon.boot.wasm"); }
    static std::vector<char>    boot_abi() { return read_abi("${CMAKE_BINARY_DIR}/contracts/flon.boot/flon.boot.abi"); }
+   static std::vector<uint8_t> reward_wasm() { return read_wasm("${CMAKE_BINARY_DIR}/contracts/flon.reward/flon.reward.wasm"); }
+   static std::vector<char>    reward_abi() { return read_abi("${CMAKE_BINARY_DIR}/contracts/flon.reward/flon.reward.abi"); }
 
    struct util {
       static std::vector<uint8_t> reject_all_wasm() { return read_wasm("${CMAKE_BINARY_DIR}/contracts/test_contracts/reject_all/reject_all.wasm"); }
