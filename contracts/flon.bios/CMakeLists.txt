@@ -14,8 +14,8 @@ target_compile_options( flon.bios PUBLIC -R${CMAKE_CURRENT_SOURCE_DIR}/ricardian
 
 install(
    FILES
-      ${CMAKE_CURRENT_BINARY_DIR}/fullon.bios.wasm
-      ${CMAKE_CURRENT_BINARY_DIR}/fullon.bios.abi
+      ${CMAKE_CURRENT_BINARY_DIR}/flon.bios.wasm
+      ${CMAKE_CURRENT_BINARY_DIR}/flon.bios.abi
    DESTINATION
-      ${CMAKE_INSTALL_PREFIX}/contracts/fullon.bios
+      ${CMAKE_INSTALL_PREFIX}/contracts/flon.bios
 )

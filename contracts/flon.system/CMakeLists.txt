@@ -48,10 +48,10 @@ target_compile_options(flon.system PUBLIC -R${CMAKE_CURRENT_SOURCE_DIR}/ricardia
 
 install(
   FILES
-     ${CMAKE_CURRENT_BINARY_DIR}/fullon.system.wasm
-     ${CMAKE_CURRENT_BINARY_DIR}/fullon.system.abi
+     ${CMAKE_CURRENT_BINARY_DIR}/flon.system.wasm
+     ${CMAKE_CURRENT_BINARY_DIR}/flon.system.abi
   DESTINATION
-     ${CMAKE_INSTALL_PREFIX}/contracts/fullon.system
+     ${CMAKE_INSTALL_PREFIX}/contracts/flon.system
 )
 
 install(

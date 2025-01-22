@@ -12,8 +12,8 @@ target_compile_options( flon.fees PUBLIC )
 
 install(
    FILES
-      ${CMAKE_CURRENT_BINARY_DIR}/fullon.fees.wasm
-      ${CMAKE_CURRENT_BINARY_DIR}/fullon.fees.abi
+      ${CMAKE_CURRENT_BINARY_DIR}/flon.fees.wasm
+      ${CMAKE_CURRENT_BINARY_DIR}/flon.fees.abi
    DESTINATION
-      ${CMAKE_INSTALL_PREFIX}/contracts/fullon.fees
+      ${CMAKE_INSTALL_PREFIX}/contracts/flon.fees
 )

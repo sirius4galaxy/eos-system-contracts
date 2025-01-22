@@ -15,8 +15,8 @@ target_compile_options( flon.bpay PUBLIC -R${CMAKE_CURRENT_SOURCE_DIR}/ricardian
 
 install(
    FILES
-      ${CMAKE_CURRENT_BINARY_DIR}/fullon.bpay.wasm
-      ${CMAKE_CURRENT_BINARY_DIR}/fullon.bpay.abi
+      ${CMAKE_CURRENT_BINARY_DIR}/flon.bpay.wasm
+      ${CMAKE_CURRENT_BINARY_DIR}/flon.bpay.abi
    DESTINATION
-      ${CMAKE_INSTALL_PREFIX}/contracts/fullon.bpay
+      ${CMAKE_INSTALL_PREFIX}/contracts/flon.bpay
 )

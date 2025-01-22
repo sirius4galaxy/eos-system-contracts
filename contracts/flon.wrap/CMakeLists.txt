@@ -14,8 +14,8 @@ target_compile_options( flon.wrap PUBLIC -R${CMAKE_CURRENT_SOURCE_DIR}/ricardian
 
 install(
    FILES
-      ${CMAKE_CURRENT_BINARY_DIR}/fullon.wrap.wasm
-      ${CMAKE_CURRENT_BINARY_DIR}/fullon.wrap.abi
+      ${CMAKE_CURRENT_BINARY_DIR}/flon.wrap.wasm
+      ${CMAKE_CURRENT_BINARY_DIR}/flon.wrap.abi
    DESTINATION
-      ${CMAKE_INSTALL_PREFIX}/contracts/fullon.wrap
+      ${CMAKE_INSTALL_PREFIX}/contracts/flon.wrap
 )
