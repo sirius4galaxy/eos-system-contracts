@@ -568,11 +568,15 @@ namespace eosiosystem {
       require_auth( get_self() );
       check( version.value == 0, "unsupported version for init action" );
 
-      check( !_gstate.core_symbol.is_valid(), "system contract has already been initialized" );
+      check( !_gstate.total_vote_stake.symbol.is_valid(), "system contract has already been initialized" );
       auto itr = _rammarket.find(ramcore_symbol.raw());
       check( itr == _rammarket.end(), "system contract has already been initialized" );
 
-      _gstate.core_symbol = core;
+      _gstate.total_vote_stake.symbol = core;
+      _gstate.initial_rewards_per_block.symbol = core;
+      _gstate.total_produced_rewards.symbol = core;
+      _gstate.total_unclaimed_rewards.symbol = core;
+
       auto system_token_supply   = eosio::token::get_supply(token_account, core.code() );
       check( system_token_supply.symbol == core, "specified core symbol does not exist (precision mismatch)" );
 

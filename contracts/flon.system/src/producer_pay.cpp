@@ -7,6 +7,15 @@ namespace eosiosystem {
    using eosio::microseconds;
    using eosio::token;
 
+
+   inline constexpr int64_t power(int64_t base, int64_t exp) {
+      int64_t ret = 1;
+      while( exp > 0  ) {
+         ret *= base; --exp;
+      }
+      return ret;
+   }
+
    void system_contract::onblock( ignore<block_header> ) {
       using namespace eosio;
 
@@ -29,24 +38,28 @@ namespace eosiosystem {
       // is eventually completely removed, at which point this line can be removed.
       _gstate2.last_block_num = timestamp;
 
-      /** until activation, no new rewards are paid */
-      if( _gstate.thresh_activated_stake_time == time_point() )
+      /** check producer reward started */
+      if( _gstate.election_activated_time == time_point() || timestamp < _gstate.election_activated_time )
          return;
 
-      if( _gstate.last_pervote_bucket_fill == time_point() )  /// start the presses
-         _gstate.last_pervote_bucket_fill = current_time_point();
 
+
+      time_point now = timestamp;
 
       /**
        * At startup the initial producer may not be one that is registered / elected
        * and therefore there may be no producer object for them.
        */
       auto prod = _producers.find( producer.value );
-      if ( prod != _producers.end() ) {
-         _gstate.total_unpaid_blocks++;
+      if ( prod != _producers.end() && _gstate.reward_started_time != time_point() && now >= _gstate.reward_started_time ) {
+         // cur_period start at 0
+         int64_t cur_period = (now - _gstate.reward_started_time).to_seconds() / reward_halving_period_seconds;
+         auto rewards_per_block = _gstate.initial_rewards_per_block.amount / power(2, cur_period);
          _producers.modify( prod, same_payer, [&](auto& p ) {
-               p.unpaid_blocks++;
+            p.unclaimed_rewards.amount += rewards_per_block;
          });
+         _gstate.total_produced_rewards.amount += rewards_per_block;
+         _gstate.total_unclaimed_rewards.amount += rewards_per_block;
       }
 
       /// only update block producers once every minute, block_timestamp is in half seconds
@@ -59,9 +72,7 @@ namespace eosiosystem {
             auto highest = idx.lower_bound( std::numeric_limits<uint64_t>::max()/2 );
             if( highest != idx.end() &&
                 highest->high_bid > 0 &&
-                (current_time_point() - highest->last_bid_time) > microseconds(useconds_per_day) &&
-                _gstate.thresh_activated_stake_time > time_point() &&
-                (current_time_point() - _gstate.thresh_activated_stake_time) > microseconds(14 * useconds_per_day)
+                (current_time_point() - highest->last_bid_time) > microseconds(useconds_per_day)
             ) {
                _gstate.last_name_close = timestamp;
                channel_to_system_fees( names_account, asset( highest->high_bid, core_symbol() ) );
@@ -80,7 +91,8 @@ namespace eosiosystem {
 
    void system_contract::claimrewards( const name& owner ) {
       require_auth( owner );
-
+      check(false, "unsupport claimrewards");
+      #if 0
       execute_next_schedule();
       const auto& prod = _producers.get( owner.value, "producer not registered" );
       check( prod.active(), "producer does not have an active key" );
@@ -210,6 +222,36 @@ namespace eosiosystem {
          token::transfer_action transfer_act{ token_account, { {vpay_account, active_permission}, {owner, active_permission} } };
          transfer_act.send( vpay_account, owner, asset(producer_per_vote_pay, core_symbol()), "producer vote pay" );
       }
+      #endif
    }
 
+   void system_contract::cfgelection( const time_point& election_activated_time, const time_point& reward_started_time, const asset& initial_rewards_per_block) {
+
+      require_auth(get_self());
+
+      const auto& core_symb = core_symbol();
+      check(initial_rewards_per_block.symbol == core_symb, "reward symbol mismatch with core symbol");
+      check(initial_rewards_per_block.amount >= 0, "reward can not be negative");
+
+      const auto& now = eosio::current_time_point();
+      if (_gstate.election_activated_time == time_point() || _gstate.election_activated_time > now ) {
+         check(election_activated_time > now, "election activated time must larger than now");
+         _gstate.election_activated_time = election_activated_time;
+      } else {
+         check( election_activated_time == _gstate.election_activated_time,
+            "can not change election activated time after election has already been activated");
+      }
+
+      check(reward_started_time >= _gstate.election_activated_time, "reward start time can not less than election activated time");
+
+      if (_gstate.reward_started_time == time_point() || _gstate.reward_started_time > now ) {
+         check(reward_started_time > now, "reward start time must larger than now");
+         _gstate.reward_started_time = reward_started_time;
+      } else {
+         check( reward_started_time == _gstate.reward_started_time,
+            "can not change reward start timee after reward has already been started");
+      }
+
+      _gstate.initial_rewards_per_block = initial_rewards_per_block;
+   }
 } //namespace eosiosystem

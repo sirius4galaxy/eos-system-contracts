@@ -120,6 +120,9 @@ namespace eosiosystem {
 
    static constexpr uint32_t ratio_boost           = 10000;
 
+   static constexpr int64_t  reward_halving_period_seconds  = 5 * seconds_per_year;
+   static constexpr int64_t  reward_halving_period_blocks   = reward_halving_period_seconds * 1000 / block_timestamp::block_interval_ms;
+
    static constexpr int64_t  inflation_precision           = 100;     // 2 decimals
    static constexpr int64_t  default_annual_rate           = 500;     // 5% annual rate
    static constexpr int64_t  pay_factor_precision          = 10000;
@@ -189,30 +192,30 @@ namespace eosiosystem {
    struct [[eosio::table("global"), eosio::contract("flon.system")]] eosio_global_state : eosio::blockchain_parameters {
       uint64_t free_ram()const { return max_ram_size - total_ram_bytes_reserved; }
 
+      asset                total_vote_stake;
       uint64_t             max_ram_size = 64ll*1024 * 1024 * 1024;
       uint64_t             total_ram_bytes_reserved = 0;
       int64_t              total_ram_stake = 0;
 
-      block_timestamp      last_producer_schedule_update;
-      time_point           last_pervote_bucket_fill;
-      int64_t              pervote_bucket = 0;
-      int64_t              perblock_bucket = 0;
-      uint32_t             total_unpaid_blocks = 0; /// all blocks which have been produced but not paid
-      int64_t              total_activated_stake = 0;
-      time_point           thresh_activated_stake_time;
+      // time_point           last_pervote_bucket_fill;
+      time_point           election_activated_time;            /// election activated time
+      time_point           reward_started_time;                /// election activated time
+      asset                initial_rewards_per_block;          /// initial reward per block
+      asset                total_produced_rewards;             /// total produced rewards
+      asset                total_unclaimed_rewards;            /// all rewards which have been produced but not paid
       uint16_t             last_producer_schedule_size = 0;
-      double               total_producer_vote_weight = 0; /// the sum of all producer votes
+      block_timestamp      last_producer_schedule_update;
       block_timestamp      last_name_close;
-      symbol               core_symbol;
+      uint8_t              revision = 0; ///< used to track version updates in the future.
 
 
       // explicit serialization macro is not necessary, used here only to improve compilation time
       EOSLIB_SERIALIZE_DERIVED( eosio_global_state, eosio::blockchain_parameters,
-                                (max_ram_size)(total_ram_bytes_reserved)(total_ram_stake)
-                                (last_producer_schedule_update)(last_pervote_bucket_fill)
-                                (pervote_bucket)(perblock_bucket)(total_unpaid_blocks)(total_activated_stake)(thresh_activated_stake_time)
-                                (last_producer_schedule_size)(total_producer_vote_weight)(last_name_close)
-                                (core_symbol) )
+                                (total_vote_stake)(max_ram_size)(total_ram_bytes_reserved)(total_ram_stake)
+                                (election_activated_time)(reward_started_time)(initial_rewards_per_block)
+                                (total_produced_rewards)(total_unclaimed_rewards)
+                                (last_producer_schedule_size)(last_producer_schedule_update)
+                                (last_name_close)(revision) )
    };
 
    // Defines new global state parameters added after version 1.0
@@ -270,11 +273,10 @@ namespace eosiosystem {
       eosio::public_key                                        producer_key; /// a packed public key object
       bool                                                     is_active = true;
       std::string                                              url;
-      uint32_t                                                 unpaid_blocks = 0;
+      asset                                                    unclaimed_rewards;
       time_point                                               last_claim_time;
       uint16_t                                                 location = 0;
       eosio::block_signing_authority                           producer_authority;
-      asset                                                    unclaimed_rewards;
       uint32_t                                                 reward_shared_ratio  = 0; //reward shared ratio
 
       uint64_t primary_key()const { return owner.value;                             }
@@ -306,11 +308,10 @@ namespace eosiosystem {
             << t.producer_key
             << t.is_active
             << t.url
-            << t.unpaid_blocks
+            << t.unclaimed_rewards
             << t.last_claim_time
             << t.location
             << t.producer_authority
-            << t.unclaimed_rewards
             << t.reward_shared_ratio;
 
          return ds;
@@ -323,11 +324,10 @@ namespace eosiosystem {
                    >> t.producer_key
                    >> t.is_active
                    >> t.url
-                   >> t.unpaid_blocks
+                   >> t.unclaimed_rewards
                    >> t.last_claim_time
                    >> t.location
                    >> t.producer_authority
-                   >> t.unclaimed_rewards
                    >> t.reward_shared_ratio;
       }
    };
@@ -920,7 +920,7 @@ namespace eosiosystem {
          static eosio::symbol get_core_symbol(const name& self) {
             global_state_singleton   global(self, self.value);
             check(global.exists(), "global does not exist");
-            auto sym = global.get().core_symbol;
+            auto sym = global.get().total_vote_stake.symbol;
             check(sym.raw() != 0, "system contract must first be initialized");
             return sym;
          }
@@ -951,6 +951,26 @@ namespace eosiosystem {
           */
          [[eosio::action]]
          void init( unsigned_int version, const symbol& core );
+
+
+         // Actions:
+         /**
+          * The Init elect action initializes the election of producers.
+          * Only succeeds when:
+          * - has self auth
+          * - symbol of initial_rewards_per_block is core symbol
+          * - amount of initial_rewards_per_block is not negtive
+          * - election_activated_time can not less than now when election wasn’t already been initialized
+          * - election_activated_time can not be change when election was already been initialized
+          * - reward_started_time can not less than election_activated_time
+          * - reward_started_time can not less than now when reward wasn’t already been started
+          * - reward_started_time it can not be change when reward was already been started
+          *
+          * @param election_activated_time - election activated time
+          * @param core - reward per block.
+          */
+         [[eosio::action]]
+         void cfgelection( const time_point& election_activated_time, const time_point& reward_started_time, const asset& initial_rewards_per_block);
 
          /**
           * On block action. This special action is triggered when a block is applied by the given producer
@@ -1976,8 +1996,9 @@ namespace eosiosystem {
          // Implementation details:
 
          const eosio::symbol& core_symbol() const {
-            check(_gstate.core_symbol.is_valid(), "system contract must first be initialized");
-            return _gstate.core_symbol;
+            const auto& core_symbol = _gstate.total_vote_stake.symbol;
+            check(core_symbol.is_valid(), "system contract must first be initialized");
+            return core_symbol;
          }
 
          //defined in flon.system.cpp
@@ -2035,7 +2056,6 @@ namespace eosiosystem {
          void register_producer( const name& producer, const eosio::block_signing_authority& producer_authority,
                                  const std::string& url, uint16_t location, optional<uint32_t> reward_shared_ratio );
          void update_elected_producers( const block_timestamp& timestamp );
-         void update_votes( const name& voter, const name& proxy, const std::vector<name>& producers, bool voting );
          void update_producer_votes( const std::vector<name>& producers, int64_t votes_delta,
                                              bool is_adding);
          void propagate_weight_change( const voter_info& voter );
