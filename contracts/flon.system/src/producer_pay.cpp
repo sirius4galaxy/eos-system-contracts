@@ -235,7 +235,7 @@ namespace eosiosystem {
 
       const auto& now = eosio::current_time_point();
       if (_gstate.election_activated_time == time_point() || _gstate.election_activated_time > now ) {
-         check(election_activated_time > now, "election activated time must larger than now");
+         check(election_activated_time >= now, "election activated time not less than now");
          _gstate.election_activated_time = election_activated_time;
       } else {
          check( election_activated_time == _gstate.election_activated_time,
@@ -245,7 +245,7 @@ namespace eosiosystem {
       check(reward_started_time >= _gstate.election_activated_time, "reward start time can not less than election activated time");
 
       if (_gstate.reward_started_time == time_point() || _gstate.reward_started_time > now ) {
-         check(reward_started_time > now, "reward start time must larger than now");
+         check(reward_started_time >= now, "reward start time can not less than now");
          _gstate.reward_started_time = reward_started_time;
       } else {
          check( reward_started_time == _gstate.reward_started_time,
